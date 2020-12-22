@@ -7,6 +7,27 @@ namespace IoT.Simulator.Tools
 {
     public static class ConfigurationHelpers
     {
+        public static void CheckEnvironmentConfigurationFiles()
+        {
+
+            StringBuilder sb = new StringBuilder();
+
+            var appsettings = $"appsettings.json";
+            if (!File.Exists(appsettings))
+                sb.AppendLine($"{appsettings} not found.");
+
+            var devicesettings = $"devicesettings.json";
+            if (!File.Exists(devicesettings))
+                sb.AppendLine($"{devicesettings} not found.");
+
+            var modulessettings = $"modulessettings.json";
+            if (!File.Exists(modulessettings))
+                sb.AppendLine($"{modulessettings} not found.");
+
+            if (sb.Length > 0)
+                throw new MissingEnvironmentConfigurationFileException(sb.ToString());
+        }
+
         public static void CheckEnvironmentConfigurationFiles(string environment)
         {
             if (string.IsNullOrEmpty(environment))
