@@ -1,4 +1,6 @@
 ﻿using IoT.Simulator.Exceptions;
+using IoT.Simulator.Settings;
+using IoT.Simulator.Settings.DPS;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -61,23 +63,23 @@ namespace IoT.Simulator.Tools
         }
 
 
-        public static async Task WriteDeviceSettings(JToken content)
+        public static async Task WriteDeviceSettings(DeviceSettings content)
         {
-            await WriteSettings(content, DEVICE_SETTINGS_FILE_NAME);
+            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), DEVICE_SETTINGS_FILE_NAME);
         }
 
-        public static async Task WriteModulesSettings(JToken content)
+        public static async Task WriteModulesSettings(ModuleSettings content)
         {
-            await WriteSettings(content, MODULES_SETTINGS_FILE_NAME);
+            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), MODULES_SETTINGS_FILE_NAME);
         }
 
-        public static async Task WriteDpsSettings(JToken content)
+        public static async Task WriteDpsSettings(DPSSettings content)
         {
-            await WriteSettings(content, DPS_SETTINGS_FILE_NAME);
+            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), DPS_SETTINGS_FILE_NAME);
         }
 
 
-        private static async Task WriteSettings(JToken content, string fileName)
+        private static async Task WriteSettings(string content, string fileName)
         {
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
@@ -87,7 +89,7 @@ namespace IoT.Simulator.Tools
 
             await File.WriteAllTextAsync(
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName),
-                JsonConvert.SerializeObject(content, Formatting.Indented));            
+                content);            
         }
 
     }
