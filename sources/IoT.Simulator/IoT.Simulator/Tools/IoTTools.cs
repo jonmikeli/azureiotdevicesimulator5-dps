@@ -1,8 +1,10 @@
-﻿using IoT.Simulator.Extensions;
+﻿using IoT.Simulator.Exceptions;
+using IoT.Simulator.Extensions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Threading.Tasks;
 
 namespace IoT.Simulator.Tools
 {
@@ -22,14 +24,14 @@ namespace IoT.Simulator.Tools
             //Hostname
             string hostname = connectionString.ExtractValue("HostName");
             if (string.IsNullOrEmpty(hostname))
-                throw new ArgumentNullException("hostname", "No hostname has been found within the connection string");
+                throw new ConnectionStringException("hostname", "No hostname has been found within the connection string");
 
             logger.LogDebug($"{logPrefix}::IoT Hub hostname: {hostname}");
 
             //DeviceId
             string deviceId = connectionString.ExtractValue("DeviceId");
             if (string.IsNullOrEmpty(deviceId))
-                throw new ArgumentNullException("DeviceId", "No deviceId has been found within the connection string");
+                throw new ConnectionStringException("DeviceId", "No deviceId has been found within the connection string");
 
             logger.LogDebug($"{logPrefix}::DeviceId:{deviceId}::CheckDeviceConnectionStringData");
         }
