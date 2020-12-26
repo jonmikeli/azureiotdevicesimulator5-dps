@@ -1,12 +1,7 @@
 ﻿using Microsoft.Azure.Devices.Client;
 
 using Newtonsoft.Json;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Converters;
 
 namespace IoT.Simulator.Settings.DPS
 {
@@ -15,13 +10,11 @@ namespace IoT.Simulator.Settings.DPS
         [JsonProperty("idScope")]
         public string IdScope { get; set; }
 
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
         [JsonProperty("primaryKey")]
         public string PrimaryKey { get; set; }
 
         [JsonProperty("enrollmentType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public EnrollmentType EnrollmentType { get; set; }
 
         [JsonProperty("globalDeviceEndpoint")]
@@ -29,6 +22,7 @@ namespace IoT.Simulator.Settings.DPS
         public string GlobalDeviceEndpoint { get; set; }
 
         [JsonProperty("transportType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         ///Default = TransportType.Mqtt
         public TransportType TransportType { get; set; }
     }
