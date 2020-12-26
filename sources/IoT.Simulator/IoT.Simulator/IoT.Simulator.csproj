@@ -71,7 +71,7 @@
       <DependentUpon>devicesettings.json</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>
-    <None Update="dpsSettings.json">
+    <None Update="dpssettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Messages\commissioning.json">

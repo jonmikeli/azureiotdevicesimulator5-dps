@@ -1,6 +1,7 @@
 ﻿using IoT.Simulator.Exceptions;
 using IoT.Simulator.Services;
 using IoT.Simulator.Settings;
+using IoT.Simulator.Settings.DPS;
 using IoT.Simulator.Tools;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +41,7 @@ namespace IoT.Simulator
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .AddJsonFile("devicesettings.json", optional: false, reloadOnChange: true)
                     .AddJsonFile("modulessettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile("dpssettings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables();
 
                 _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
@@ -67,6 +69,7 @@ namespace IoT.Simulator
                 builder.AddJsonFile($"appsettings.{_environmentName}.json", optional: true, reloadOnChange: true);
                 builder.AddJsonFile($"devicesettings.{_environmentName}.json", optional: true, reloadOnChange: true);
                 builder.AddJsonFile($"modulessettings.{_environmentName}.json", optional: true, reloadOnChange: true);
+                builder.AddJsonFile($"dpssettings.{_environmentName}.json", optional: true, reloadOnChange: true);
 
 
                 Configuration = builder.Build();
@@ -153,6 +156,7 @@ namespace IoT.Simulator
                 services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<DeviceSettings>(Configuration);
                 services.Configure<ModulesSettings>(Configuration);
+                services.Configure<DPSSettings>(Configuration);
 
             }
         }
