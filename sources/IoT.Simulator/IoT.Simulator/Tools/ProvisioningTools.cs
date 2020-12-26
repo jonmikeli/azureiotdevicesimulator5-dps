@@ -35,12 +35,9 @@ namespace IoT.Simulator.Tools
             return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(deviceId)));
         }
 
-        internal ProvisioningTransportHandler GetTransportHandler(DPSCommandParametersBase parameters)
+        internal static ProvisioningTransportHandler GetTransportHandler(TransportType transportType)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
-
-            return parameters.TransportType switch
+            return transportType switch
             {
                 TransportType.Mqtt => new ProvisioningTransportHandlerMqtt(),
                 TransportType.Mqtt_Tcp_Only => new ProvisioningTransportHandlerMqtt(TransportFallbackType.WebSocketOnly),
@@ -49,7 +46,7 @@ namespace IoT.Simulator.Tools
                 //TransportType.Amqp_Tcp_Only => new ProvisioningTransportHandlerAmqp(TransportFallbackType.WebSocketOnly),
                 //TransportType.Amqp_WebSocket_Only => new ProvisioningTransportHandlerAmqp(TransportFallbackType.TcpOnly),
                 //TransportType.Http1 => new ProvisioningTransportHandlerHttp(),
-                _ => throw new NotSupportedException($"Unsupported transport type {parameters.TransportType}"),
+                _ => throw new NotSupportedException($"Unsupported transport type {transportType}"),
             };
         }
     }
