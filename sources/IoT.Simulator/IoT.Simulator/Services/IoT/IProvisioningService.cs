@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace IoT.Simulator.Services
 {
-    interface IProvisioningService
+    public interface IProvisioningService
     {
         Task<string> ProvisionDevice();
     }
