@@ -15,8 +15,6 @@ namespace IoT.Simulator
 {
     class Program
     {
-        private static DeviceClient _deviceClient;
-
         // The device connection string to authenticate the device with your IoT hub.
         // Using the Azure CLI:
         // az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyDotnetDevice --output table
