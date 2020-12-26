@@ -1,25 +1,19 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace IoT.Simulator.Settings.DPS
 {
     public class DPSSettings
     {
         [JsonProperty("enrollmentType")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public EnrollmentType EnrollmentType { get; set; }
+        public EnrollmentType EnrollmentType { get; set; }        
 
         [JsonProperty("individualEnrollmentSettings")]
         public IndividualEnrollment IndividualEnrollment {get;set;}
 
         [JsonProperty("groupEnrollmentSettings")]
-        public GroupEnrollment GroupEnrollment { get; set; }        
+        public GroupEnrollment GroupEnrollment { get; set; }
     }
 
     public class IndividualEnrollment
