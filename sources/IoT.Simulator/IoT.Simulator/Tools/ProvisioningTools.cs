@@ -24,7 +24,7 @@ namespace IoT.Simulator.Tools
         /// <seealso>
         /// https://docs.microsoft.com/en-us/azure/iot-edge/how-to-auto-provision-symmetric-keys?view=iotedge-2018-06#derive-a-device-key
         /// </seealso>
-        private static string ComputeDerivedSymmetricKey(string enrollmentKey, string deviceId)
+        internal static string ComputeDerivedSymmetricKey(string enrollmentKey, string deviceId)
         {
             if (string.IsNullOrWhiteSpace(enrollmentKey))
             {
@@ -35,7 +35,7 @@ namespace IoT.Simulator.Tools
             return Convert.ToBase64String(hmac.ComputeHash(Encoding.UTF8.GetBytes(deviceId)));
         }
 
-        private ProvisioningTransportHandler GetTransportHandler(DPSCommandParametersBase parameters)
+        internal ProvisioningTransportHandler GetTransportHandler(DPSCommandParametersBase parameters)
         {
             if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
