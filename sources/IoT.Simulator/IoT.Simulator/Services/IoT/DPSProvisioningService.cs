@@ -93,7 +93,7 @@ namespace IoT.Simulator.Services
                         _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Registration status: {deviceRegistrationResult.Status}.");
                         if (deviceRegistrationResult.Status != ProvisioningRegistrationStatusType.Assigned)
                         {
-                            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Registration status did not assign a hub, so exiting this sample.");
+                            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::Registration status did not assign a hub, so exiting this sample.");
                         }
                         else
                         {
@@ -101,7 +101,7 @@ namespace IoT.Simulator.Services
                             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Creating symmetric key authentication for IoT Hub...");
 
                             var devicePrimaryKey = security.GetPrimaryKey();
-                            IAuthenticationMethod auth = new DeviceAuthenticationWithRegistrySymmetricKey(deviceRegistrationResult.DeviceId,devicePrimaryKey);
+                            IAuthenticationMethod auth = new DeviceAuthenticationWithRegistrySymmetricKey(deviceRegistrationResult.DeviceId, devicePrimaryKey);
 
                             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Testing the provisioned device with IoT Hub...");
 
@@ -118,6 +118,8 @@ namespace IoT.Simulator.Services
                             result = $"HostName={deviceRegistrationResult.AssignedHub}.azure-devices.net;DeviceId={deviceRegistrationResult.DeviceId};SharedAccessKey={devicePrimaryKey}";
                         }
                     }
+                    else
+                        _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::No provisioning result has been received.");
                 }
             }
            
