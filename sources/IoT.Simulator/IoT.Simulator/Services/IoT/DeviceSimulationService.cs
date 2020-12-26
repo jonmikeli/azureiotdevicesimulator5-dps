@@ -114,7 +114,7 @@ namespace IoT.Simulator.Services
             {
                 _deviceSettings.ConnectionString = await _provisioningService.ProvisionDevice();
 
-                //TODO: persist the data.                    
+                await ConfigurationHelpers.WriteDeviceSettings(_deviceSettings);
             }
             
             //At this stage, the connection string should be set properly and the device client should be able to communicate with the IoT Hub with no issues.
