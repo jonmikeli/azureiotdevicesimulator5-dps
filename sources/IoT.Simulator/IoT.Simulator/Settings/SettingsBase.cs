@@ -12,15 +12,10 @@ namespace IoT.Simulator.Settings
         [JsonProperty("connectionString")]
         public string ConnectionString { get; set; }
 
+        [JsonProperty("id", Required = Required.Always)]
         public string DeviceId
         {
-            get
-            {
-                if (!string.IsNullOrEmpty(ConnectionString))
-                    return ConnectionString.ExtractValue("DeviceId");
-                else
-                    return string.Empty;
-            }
+            get;set;
         }
 
         public string HostName
