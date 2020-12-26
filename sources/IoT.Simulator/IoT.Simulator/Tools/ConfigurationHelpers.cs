@@ -20,7 +20,7 @@ namespace IoT.Simulator.Tools
         public static readonly string MODULES_SETTINGS_FILE_NAME = "modulessettings";
         public static readonly string DPS_SETTINGS_FILE_NAME = "dpssettings";
 
-        public static void CheckEnvironmentConfigurationFiles()
+        public static void CheckConfigurationFiles()
         {
 
             StringBuilder sb = new StringBuilder();
@@ -33,6 +33,9 @@ namespace IoT.Simulator.Tools
 
             if (!File.Exists(MODULES_SETTINGS_FILE_NAME))
                 sb.AppendLine($"{MODULES_SETTINGS_FILE_NAME} not found.");
+
+            if (!File.Exists(DPS_SETTINGS_FILE_NAME))
+                sb.AppendLine($"{DPS_SETTINGS_FILE_NAME} not found.");
 
             if (sb.Length > 0)
                 throw new MissingEnvironmentConfigurationFileException(sb.ToString());
@@ -56,6 +59,10 @@ namespace IoT.Simulator.Tools
             var modulessettings = $"{MODULES_SETTINGS_FILE_NAME}.{environment}.json";
             if (!File.Exists(modulessettings))
                 sb.AppendLine($"{modulessettings} not found.");
+
+            var dpssettings = $"{DPS_SETTINGS_FILE_NAME}.{environment}.json";
+            if (!File.Exists(dpssettings))
+                sb.AppendLine($"{dpssettings} not found.");
 
             if (sb.Length > 0)
                 throw new MissingEnvironmentConfigurationFileException(sb.ToString());
