@@ -42,9 +42,10 @@ namespace IoT.Simulator
                     .AddJsonFile("devicesettings.json", optional: false, reloadOnChange: true)
                     .AddJsonFile("modulessettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile("dpssettings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables();
+                    .AddEnvironmentVariables();                
 
-                _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+                LoadCommandParameters();
+                LoadEnvironmentVariables();
 
                 if (string.IsNullOrWhiteSpace(_environmentName))
                 {
@@ -128,6 +129,25 @@ namespace IoT.Simulator
         }
 
 
+        #region Private methods
+        #region Console and environment parameters
+        /// <summary>
+        /// Analyzes and persists console/command parameters.
+        /// </summary>
+        static void LoadCommandParameters()
+        {
+
+
+        }
+
+        /// <summary>
+        /// Analyzes and persists environment variables.
+        /// </summary>
+        static void LoadEnvironmentVariables()
+        {
+            _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+        }
+        #endregion
         //logging
         //https://andrewlock.net/using-dependency-injection-in-a-net-core-console-application/
         static void ConfigureServices(IServiceCollection services)
@@ -259,5 +279,6 @@ namespace IoT.Simulator
                 logger.LogDebug($"MODULES: {simulators.Count()} module simulator(s) initialized and running.");
             }
         }
+        #endregion
     }
 }
