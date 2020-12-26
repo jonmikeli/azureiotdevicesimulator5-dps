@@ -1,5 +1,6 @@
 ﻿using IoT.Simulator.Extensions;
 using IoT.Simulator.Settings;
+using IoT.Simulator.Settings.DPS;
 using IoT.Simulator.Tools;
 
 using Microsoft.Azure.Devices.Client;
@@ -33,8 +34,15 @@ namespace IoT.Simulator.Services
         private ITelemetryMessageService _telemetryMessagingService;
         private IErrorMessageService _errorMessagingService;
         private ICommissioningMessageService _commissioningMessagingService;
+        private IProvisioningService _provisioningService;
 
-        public DeviceSimulationService(IOptions<DeviceSettings> deviceSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ICommissioningMessageService commissioningMessagingService, ILoggerFactory loggerFactory)
+        public DeviceSimulationService(
+            IOptions<DeviceSettings> deviceSettings,
+            ITelemetryMessageService telemetryMessagingService,
+            IErrorMessageService errorMessagingService,
+            ICommissioningMessageService commissioningMessagingService,
+            IProvisioningService provisioningService,
+            ILoggerFactory loggerFactory)
         {
             if (deviceSettings == null)
                 throw new ArgumentNullException(nameof(deviceSettings));
@@ -54,12 +62,15 @@ namespace IoT.Simulator.Services
             if (commissioningMessagingService == null)
                 throw new ArgumentNullException(nameof(commissioningMessagingService));
 
+            if (provisioningService == null)
+                throw new ArgumentNullException(nameof(provisioningService));
+
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
 
             _deviceSettings = deviceSettings.Value;
             _simulationSettings = deviceSettings.Value.SimulationSettings;
-
+           
             _deviceId = _deviceSettings.DeviceId;
             _iotHub = _deviceSettings.HostName;
 
@@ -70,6 +81,7 @@ namespace IoT.Simulator.Services
             _telemetryMessagingService = telemetryMessagingService;
             _errorMessagingService = errorMessagingService;
             _commissioningMessagingService = commissioningMessagingService;
+            _provisioningService = provisioningService;
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
@@ -93,6 +105,19 @@ namespace IoT.Simulator.Services
         {
             string logPrefix = "system".BuildLogPrefix();
 
+
+            //Connectivity tests
+            //Control if a connection string exists (ideally, stored in TPM/HSM or any secured location.
+            //If there is no connection string, check if the DPS settings are provided.
+            //If so, provision the device and persist the connection string for upcoming boots.
+            if (string.IsNullOrEmpty(_deviceSettings.ConnectionString))
+            {
+                _deviceSettings.ConnectionString = await _provisioningService.ProvisionDevice();
+
+                //TODO: persist the data.                    
+            }
+            
+            //At this stage, the connection string should be set properly and the device client should be able to communicate with the IoT Hub with no issues.
             try
             {
                 IoTTools.CheckDeviceConnectionStringData(_deviceSettings.ConnectionString, _logger);
