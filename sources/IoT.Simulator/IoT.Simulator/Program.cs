@@ -44,9 +44,12 @@ namespace IoT.Simulator
                     .AddJsonFile("dpssettings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables();                
 
+
+                //Loading dynamic settings to facilitate dynamic scalability and distribution
                 LoadCommandParameters();
                 LoadEnvironmentVariables();
 
+                //Loading environment related settings
                 if (string.IsNullOrWhiteSpace(_environmentName))
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
