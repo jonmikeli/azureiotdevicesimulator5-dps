@@ -139,8 +139,7 @@ namespace IoT.Simulator
         /// </summary>
         static void LoadCommandParameters()
         {
-
-
+            //Load the parameters and put them as environment variables (environment variables will always be of higher priority
         }
 
         /// <summary>
@@ -189,7 +188,8 @@ namespace IoT.Simulator
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.AddSingleton<ISimulationService, DeviceSimulationService>();
+            services.AddSingleton<IProvisioningService, DPSProvisioningService>();
+            services.AddSingleton<ISimulationService, DeviceSimulationService>();            
         }
 
         static void RegisterMessagingServices(IServiceCollection services)
