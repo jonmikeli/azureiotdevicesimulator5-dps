@@ -15,10 +15,10 @@ namespace IoT.Simulator.Tools
 {
     public static class ConfigurationHelpers
     {
-        public static readonly string APP_SETTINGS_FILE_NAME = "appsettings.json";
-        public static readonly string DEVICE_SETTINGS_FILE_NAME = "devicesettings.json";
-        public static readonly string MODULES_SETTINGS_FILE_NAME = "modulessettings.json";
-        public static readonly string DPS_SETTINGS_FILE_NAME = "dpssettings.json";
+        public static readonly string APP_SETTINGS_FILE_NAME = "appsettings";
+        public static readonly string DEVICE_SETTINGS_FILE_NAME = "devicesettings";
+        public static readonly string MODULES_SETTINGS_FILE_NAME = "modulessettings";
+        public static readonly string DPS_SETTINGS_FILE_NAME = "dpssettings";
 
         public static void CheckEnvironmentConfigurationFiles()
         {
