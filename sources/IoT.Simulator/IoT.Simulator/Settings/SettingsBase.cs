@@ -12,11 +12,8 @@ namespace IoT.Simulator.Settings
         [JsonProperty("connectionString")]
         public string ConnectionString { get; set; }
 
-        [JsonProperty("id", Required = Required.Always)]
-        public string DeviceId
-        {
-            get;set;
-        }
+        [JsonProperty("deviceId", Required = Required.Always)]
+        public string DeviceId { get;set; }
 
         public string HostName
         {

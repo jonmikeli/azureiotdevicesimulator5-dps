@@ -84,6 +84,9 @@ namespace IoT.Simulator
                 if (deviceSettings == null)
                     throw new ArgumentException("No device settings have been configured.");
 
+                if (string.IsNullOrEmpty(deviceSettings.DeviceId))
+                    throw new ArgumentException("No device id has been found.");
+
                 if (deviceSettings.SimulationSettings == null)
                     throw new ArgumentException("No device simulation settings have been configured.");
 
@@ -176,7 +179,6 @@ namespace IoT.Simulator
                 services.Configure<DeviceSettings>(Configuration);
                 services.Configure<ModulesSettings>(Configuration);
                 services.Configure<DPSSettings>(Configuration);
-
             }
         }
 
