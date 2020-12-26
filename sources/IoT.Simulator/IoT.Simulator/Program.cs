@@ -7,6 +7,10 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+
+using Newtonsoft.Json;
+
 using System;
 using System.IO;
 using System.Linq;
@@ -79,6 +83,14 @@ namespace IoT.Simulator
                 IServiceCollection services = new ServiceCollection();
 
                 ConfigureServices(services);
+
+                //WARNING: it seems that IOptions do not work properly with default deserializers
+                var dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+                if (!string.IsNullOrEmpty(dpsSettingsJson))
+                {
+                    var dpsSettings = Options.Create(JsonConvert.DeserializeObject<DPSSettings>(dpsSettingsJson));
+                    Configuration.Bind(dpsSettings);
+                }
 
                 var deviceSettings = Configuration.Get<DeviceSettings>();
                 if (deviceSettings == null)
