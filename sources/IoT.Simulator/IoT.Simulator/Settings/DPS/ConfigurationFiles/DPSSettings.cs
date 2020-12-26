@@ -10,11 +10,12 @@ namespace IoT.Simulator.Settings.DPS
 {
     public class DPSSettings
     {
-        [JsonProperty("individualEnrollment")]
+        [JsonProperty("individualEnrollmentSettings")]
         public IndividualEnrollment IndividualEnrollment {get;set;}
-        [JsonProperty("groupEnrollment")]
+        [JsonProperty("groupEnrollmentSettings")]
         public GroupEnrollment GroupEnrollment { get; set; }
-
+        [JsonProperty("enrollmentType")]
+        public EnrollmentType EnrollmentType { get; set; }
     }
 
     public class IndividualEnrollment
@@ -24,6 +25,8 @@ namespace IoT.Simulator.Settings.DPS
 
     public class GroupEnrollment
     {
+        [JsonProperty("securityType")]
+        public SecurityType SecurityType { get; set; }
         [JsonProperty("symetricKeySettings")]
         public DPSSymmetricKeySettings SymetricKeySettings { get; set; }
         [JsonProperty("X509Settings")]
