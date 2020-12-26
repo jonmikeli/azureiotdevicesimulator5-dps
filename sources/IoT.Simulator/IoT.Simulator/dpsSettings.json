@@ -1,9 +1,16 @@
 {
   "dpsSettings": {
-    "individualEnrollment": {},
-    "groupEnrollment": {
+    "enrollmentType": "Group",
+    "individualEnrollmentSettings": {},
+    "groupEnrollmentSettings": {
+      "securityType": "SymetricKey",
       "symetricKeySettings": {
-
+        "idScope": "",
+        "id": "",
+        "primaryKey": "",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
       }
     }
   }
