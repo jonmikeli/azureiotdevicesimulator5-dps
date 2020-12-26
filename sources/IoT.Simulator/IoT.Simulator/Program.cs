@@ -18,7 +18,6 @@ namespace IoT.Simulator
         // The device connection string to authenticate the device with your IoT hub.
         // Using the Azure CLI:
         // az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyDotnetDevice --output table
-        private static string _iotHubConnectionString;
         private static string _environmentName;
 
         public static IConfiguration Configuration { get; set; }
