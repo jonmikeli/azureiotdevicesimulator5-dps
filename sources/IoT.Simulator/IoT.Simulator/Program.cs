@@ -144,6 +144,13 @@ namespace IoT.Simulator
 
         #region Private methods
         #region DPS
+        /// <summary>
+        /// Checks and loads the DPS settings, as .NET IOptions.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="configuration"></param>
+        /// <param name="args"></param>
+        /// <param name="_environmentName"></param>
         private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string[] args, string _environmentName)
         {
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
@@ -172,6 +179,7 @@ namespace IoT.Simulator
                 }
             }
 
+            //The any DPS setting has been found, they are bound as .NET IOptions.
             if (dpsSettings != null)
             {
                 var dpsSettingsOptions = Options.Create(dpsSettings);
@@ -179,7 +187,7 @@ namespace IoT.Simulator
                 configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
             }
             else
-                throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).")
+                throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");
         }
         #endregion
 
