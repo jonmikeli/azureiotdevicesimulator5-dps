@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+using System.ComponentModel;
+
 namespace IoT.Simulator.Settings.DPS
 {
     public class DPSSettings
@@ -10,6 +12,7 @@ namespace IoT.Simulator.Settings.DPS
 
         [JsonProperty("enrollmentType")]
         [JsonConverter(typeof(StringEnumConverter))]
+        [DefaultValue(EnrollmentType.Group)]
         public EnrollmentType EnrollmentType { get; set; }
 
         //[JsonProperty("individualEnrollmentSettings")]
@@ -28,6 +31,7 @@ namespace IoT.Simulator.Settings.DPS
     {
         [JsonProperty("securityType")]
         [JsonConverter(typeof(StringEnumConverter))]
+        [DefaultValue(SecurityType.SymetricKey)]
         public SecurityType SecurityType { get; set; }
 
         [JsonProperty("symetricKeySettings")]

@@ -200,15 +200,19 @@ namespace IoT.Simulator
             //Load the parameters and put them as environment variables (environment variables will always be of higher priority
             // Parse application parameters
             DPSCommandParametersBase parameters = null;
-            ParserResult<DPSCommandParametersBase> result = Parser.Default.ParseArguments<DPSCommandParametersBase>(args)
-                .WithParsed(parsedParams =>
-                {
-                    parameters = parsedParams;
-                })
-                .WithNotParsed(errors =>
-                {
-                    Environment.Exit(1);
-                });
+
+            if (args != null && args.Length > 4)
+            {
+                ParserResult<DPSCommandParametersBase> result = Parser.Default.ParseArguments<DPSCommandParametersBase>(args)
+                    .WithParsed(parsedParams =>
+                    {
+                        parameters = parsedParams;
+                    })
+                    .WithNotParsed(errors =>
+                    {
+                        Environment.Exit(1);
+                    });
+            }
 
             return parameters;
         }
@@ -225,6 +229,7 @@ namespace IoT.Simulator
             if (parameters != null && !string.IsNullOrEmpty(parameters.IdScope) && !string.IsNullOrEmpty(parameters.PrimaryKey))
             {
                 settings = new DPSSettings();
+                settings.EnrollmentType = EnrollmentType.Group;
                 settings.GroupEnrollment = new GroupEnrollmentSettings();
                 settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
 
@@ -253,9 +258,10 @@ namespace IoT.Simulator
                 string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
                 string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
 
-                if (string.IsNullOrEmpty(idScope) && string.IsNullOrEmpty(primarySymmetricKey))
+                if (!string.IsNullOrEmpty(idScope) && !string.IsNullOrEmpty(primarySymmetricKey))
                 {
                     settings = new DPSSettings();
+                    settings.EnrollmentType = EnrollmentType.Group;
                     settings.GroupEnrollment = new GroupEnrollmentSettings();
                     settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
 

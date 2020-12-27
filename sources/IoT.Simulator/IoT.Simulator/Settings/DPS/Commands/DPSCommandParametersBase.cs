@@ -16,12 +16,12 @@ namespace IoT.Simulator.Settings.DPS
             HelpText = "The Id Scope of the DPS instance")]
         public string IdScope { get; set; }
 
-        [Option(
-            'i',
-            "Id",
-            Required = true,
-            HelpText = "The registration Id when using individual enrollment, or the desired device Id when using group enrollment.")]
-        public string Id { get; set; }
+        //[Option(
+        //    'i',
+        //    "Id",
+        //    Required = false,
+        //    HelpText = "The registration Id when using individual enrollment, or the desired device Id when using group enrollment.")]
+        //public string Id { get; set; }
 
         [Option(
             'p',
