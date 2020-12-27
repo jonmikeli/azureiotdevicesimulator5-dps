@@ -101,21 +101,21 @@ namespace IoT.Simulator.Services
                             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Creating symmetric key authentication for IoT Hub...");
 
                             var devicePrimaryKey = security.GetPrimaryKey();
-                            IAuthenticationMethod auth = new DeviceAuthenticationWithRegistrySymmetricKey(deviceRegistrationResult.DeviceId, devicePrimaryKey);
+                            //IAuthenticationMethod auth = new DeviceAuthenticationWithRegistrySymmetricKey(deviceRegistrationResult.DeviceId, devicePrimaryKey);
 
-                            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Testing the provisioned device with IoT Hub...");
+                            //_logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Testing the provisioned device with IoT Hub...");
 
-                            using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
-                            {
-                                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sending a telemetry message after provisioning to test the process...");
+                            //using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                            //{
+                            //    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sending a telemetry message after provisioning to test the process...");
 
-                                using var message = new Message(Encoding.UTF8.GetBytes("TestMessage"));
-                                await iotClient.SendEventAsync(message);
+                            //    using var message = new Message(Encoding.UTF8.GetBytes("TestMessage"));
+                            //    await iotClient.SendEventAsync(message);
 
-                                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Finished.");
-                            }
+                            //    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Finished.");
+                            //}
 
-                            result = $"HostName={deviceRegistrationResult.AssignedHub}.azure-devices.net;DeviceId={deviceRegistrationResult.DeviceId};SharedAccessKey={devicePrimaryKey}";
+                            result = $"HostName={deviceRegistrationResult.AssignedHub};DeviceId={deviceRegistrationResult.DeviceId};SharedAccessKey={devicePrimaryKey}";
                         }
                     }
                     else
