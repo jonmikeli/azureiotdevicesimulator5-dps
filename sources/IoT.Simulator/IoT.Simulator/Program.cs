@@ -146,8 +146,8 @@ namespace IoT.Simulator
         #region DPS
         private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string[] args, string _environmentName)
         {
-            //Loading dynamic settings to facilitate dynamic scalability and distribution
-            LoadDPSEnvironmentVariables();
+            //TODO: take into account environment variables or command parameters
+            //LoadDPSEnvironmentVariables();
             //var typedParameters = LoadCommandParameters(args);
 
             //WARNING: it seems that IOptions do not work properly with default deserializers
