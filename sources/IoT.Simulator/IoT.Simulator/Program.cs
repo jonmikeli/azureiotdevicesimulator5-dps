@@ -147,27 +147,40 @@ namespace IoT.Simulator
         private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string[] args, string _environmentName)
         {
             //TODO: take into account environment variables or command parameters
-            LoadDPSEnvironmentVariables();
-            //var typedParameters = LoadCommandParameters(args);
+            DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
+            DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
 
-            //WARNING: it seems that IOptions do not work properly with default deserializers
-            string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
-            if (File.Exists($"dpssettings.{_environmentName}.json"))
-                dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+            //Overwriting process in among environment, command and file settings
+            DPSSettings dpsSettings = dpsEnvironmentSettings;
+            if (dpsCommandSettings != null)
+                dpsSettings = dpsCommandSettings;
 
-            if (!string.IsNullOrEmpty(dpsSettingsJson))
+            if (dpsSettings == null)
             {
-                JObject jData = JObject.Parse(dpsSettingsJson);
+                //WARNING: it seems that IOptions do not work properly with default deserializers
+                string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
+                if (File.Exists($"dpssettings.{_environmentName}.json"))
+                    dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
 
-                if (jData != null && jData.ContainsKey(DPSSettings.DPSSettingsSection))
+                if (!string.IsNullOrEmpty(dpsSettingsJson))
                 {
-                    DPSSettings dpsSettings = jData[DPSSettings.DPSSettingsSection].ToObject<DPSSettings>();
+                    JObject jData = JObject.Parse(dpsSettingsJson);
 
-                    var dpsSettingsOptions = Options.Create(dpsSettings);
-                    services.AddSingleton(dpsSettingsOptions);
-                    configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
+                    if (jData != null && jData.ContainsKey(DPSSettings.DPSSettingsSection))
+                    {
+                        dpsSettings = jData[DPSSettings.DPSSettingsSection].ToObject<DPSSettings>();                        
+                    }
                 }
             }
+
+            if (dpsSettings != null)
+            {
+                var dpsSettingsOptions = Options.Create(dpsSettings);
+                services.AddSingleton(dpsSettingsOptions);
+                configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
+            }
+            else
+                throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).")
         }
         #endregion
 
@@ -175,7 +188,7 @@ namespace IoT.Simulator
         /// <summary>
         /// Analyzes and persists console/command parameters.
         /// </summary>
-        static DPSCommandParametersBase LoadCommandParameters(string[] args)
+        static DPSCommandParametersBase ParseCommandParameters(string[] args)
         {
             //Load the parameters and put them as environment variables (environment variables will always be of higher priority
             // Parse application parameters
@@ -193,15 +206,32 @@ namespace IoT.Simulator
             return parameters;
         }
 
-        static void BuildAdnRegisterOptionsFromParameters(DPSCommandParametersBase parameters)
+        static DPSSettings LoadDPSOptionsFromCommandParameters()
         {
+            DPSSettings settings = null;
 
+            DPSCommandParametersBase parameters = ParseCommandParameters(Environment.GetCommandLineArgs());
+            if (parameters != null && !string.IsNullOrEmpty(parameters.IdScope) && !string.IsNullOrEmpty(parameters.PrimaryKey))
+            {
+                settings = new DPSSettings();
+                settings.GroupEnrollment = new GroupEnrollmentSettings();
+                settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
+
+                settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
+                settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
+                settings.GroupEnrollment.SymetricKeySettings.EnrollmentType = EnrollmentType.Group;
+
+                settings.GroupEnrollment.SymetricKeySettings.IdScope = parameters.IdScope;
+                settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = parameters.PrimaryKey;
+            }
+
+            return settings;
         }
 
         /// <summary>
         /// Analyzes and persists environment variables.
         /// </summary>
-        static DPSSettings LoadDPSEnvironmentVariables()
+        static DPSSettings LoadDPSOptionsFromEnvironmentVariables()
         {
             DPSSettings settings = null;
 
@@ -226,7 +256,7 @@ namespace IoT.Simulator
                     settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
 
                     //THINK: Overwrite the device Id?
-                    var deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
+                    //var deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
                 }
             }
 
