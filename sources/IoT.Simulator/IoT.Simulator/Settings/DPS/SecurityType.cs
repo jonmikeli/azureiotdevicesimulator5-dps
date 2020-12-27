@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace IoT.Simulator.Settings.DPS
 {
@@ -11,8 +7,11 @@ namespace IoT.Simulator.Settings.DPS
     /// </summary>
     public enum SecurityType
     {
+        [EnumMember(Value ="SymetricKey")]
         SymetricKey,
+        [EnumMember(Value = "X509")]
         X509,
+        [EnumMember(Value = "TPM")]
         TPM
     }
 }

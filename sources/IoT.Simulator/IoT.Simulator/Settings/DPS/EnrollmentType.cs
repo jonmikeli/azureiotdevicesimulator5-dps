@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace IoT.Simulator.Settings.DPS
 {
@@ -14,11 +10,13 @@ namespace IoT.Simulator.Settings.DPS
         /// <summary>
         ///  Enrollment for a single device.
         /// </summary>
+        [EnumMember(Value = "Individual")]
         Individual,
 
         /// <summary>
         /// Enrollment for a group of devices.
         /// </summary>
-        Group,
+        [EnumMember(Value = "Group")]
+        Group
     }
 }
