@@ -102,7 +102,7 @@
       <TransformOnBuild>true</TransformOnBuild>
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>devicesettings.json</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

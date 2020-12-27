@@ -35,6 +35,7 @@ namespace IoT.Simulator.Services
         private IErrorMessageService _errorMessagingService;
         private ICommissioningMessageService _commissioningMessagingService;
         private IProvisioningService _provisioningService;
+        private string _environmentName;
 
         public DeviceSimulationService(
             IOptions<DeviceSettings> deviceSettings,
@@ -83,6 +84,8 @@ namespace IoT.Simulator.Services
             _commissioningMessagingService = commissioningMessagingService;
             _provisioningService = provisioningService;
 
+            _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
             _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator created.");
@@ -113,8 +116,8 @@ namespace IoT.Simulator.Services
             if (string.IsNullOrEmpty(_deviceSettings.ConnectionString))
             {
                 _deviceSettings.ConnectionString = await _provisioningService.ProvisionDevice();
-
-                await ConfigurationHelpers.WriteDeviceSettings(_deviceSettings);
+                
+                await ConfigurationHelpers.WriteDeviceSettings(_deviceSettings, _environmentName);
             }
             
             //At this stage, the connection string should be set properly and the device client should be able to communicate with the IoT Hub with no issues.
