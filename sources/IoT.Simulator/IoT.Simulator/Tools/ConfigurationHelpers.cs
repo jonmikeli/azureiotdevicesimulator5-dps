@@ -70,19 +70,31 @@ namespace IoT.Simulator.Tools
         }
 
 
-        public static async Task WriteDeviceSettings(DeviceSettings content)
+        public static async Task WriteDeviceSettings(DeviceSettings content, string environment)
         {
-            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), DEVICE_SETTINGS_FILE_NAME);
+            string fileName = $"{DEVICE_SETTINGS_FILE_NAME}.json";
+            if (!string.IsNullOrEmpty(environment))
+                fileName = $"{DEVICE_SETTINGS_FILE_NAME}.{environment}.json";
+
+            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
         }
 
-        public static async Task WriteModulesSettings(ModuleSettings content)
+        public static async Task WriteModulesSettings(ModuleSettings content, string environment)
         {
-            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), MODULES_SETTINGS_FILE_NAME);
+            string fileName = $"{MODULES_SETTINGS_FILE_NAME}.json";
+            if (!string.IsNullOrEmpty(environment))
+                fileName = $"{MODULES_SETTINGS_FILE_NAME}.{environment}.json";
+
+            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
         }
 
-        public static async Task WriteDpsSettings(DPSSettings content)
+        public static async Task WriteDpsSettings(DPSSettings content, string environment)
         {
-            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), DPS_SETTINGS_FILE_NAME);
+            string fileName = $"{DPS_SETTINGS_FILE_NAME}.json";
+            if (!string.IsNullOrEmpty(environment))
+                fileName = $"{DPS_SETTINGS_FILE_NAME}.{environment}.json";
+
+            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
         }
 
 
