@@ -5,6 +5,7 @@ using IoT.Simulator.Services;
 using IoT.Simulator.Settings;
 using IoT.Simulator.Settings.DPS;
 using IoT.Simulator.Tools;
+
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +32,6 @@ namespace IoT.Simulator
 
         private static void Main(string[] args)
         {
-
             Console.WriteLine("=======================================================================");
             Console.WriteLine(AssemblyInformationHelper.HeaderMessage);
             Console.WriteLine("=======================================================================");
@@ -68,7 +68,7 @@ namespace IoT.Simulator
                     builder.AddJsonFile($"modulessettings.{_environmentName}.json", optional: true, reloadOnChange: true);
                     builder.AddJsonFile($"dpssettings.{_environmentName}.json", optional: true, reloadOnChange: true);
 
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;                    
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine($"Environment related files loaded for: '{_environmentName}'.");
                     Console.ResetColor();
                 }
@@ -79,16 +79,16 @@ namespace IoT.Simulator
                     Console.ResetColor();
                     Console.WriteLine("Execution will continue with default settings in appsettings.json, devicesettings.json and modulessettings.json.");
                 }
-              
+
                 Configuration = builder.Build();
 
                 //Service provider and DI
                 IServiceCollection services = new ServiceCollection();
-                ConfigureServices(services);                               
+                ConfigureServices(services);
 
                 //DPS and provisioning
                 LoadDPSandProvisioningSettings(services, Configuration, args, _environmentName);
-                
+
                 //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
                 if (deviceSettings == null)
@@ -147,7 +147,7 @@ namespace IoT.Simulator
         private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string[] args, string _environmentName)
         {
             //TODO: take into account environment variables or command parameters
-            //LoadDPSEnvironmentVariables();
+            LoadDPSEnvironmentVariables();
             //var typedParameters = LoadCommandParameters(args);
 
             //WARNING: it seems that IOptions do not work properly with default deserializers
@@ -201,9 +201,36 @@ namespace IoT.Simulator
         /// <summary>
         /// Analyzes and persists environment variables.
         /// </summary>
-        static void LoadDPSEnvironmentVariables()
+        static DPSSettings LoadDPSEnvironmentVariables()
         {
-            _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+            DPSSettings settings = null;
+
+            var localVariables = Environment.GetEnvironmentVariables();
+
+            if (localVariables != null && localVariables.Count >= 2)
+            {             
+                string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
+                string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+
+                if (string.IsNullOrEmpty(idScope) && string.IsNullOrEmpty(primarySymmetricKey))
+                {
+                    settings = new DPSSettings();
+                    settings.GroupEnrollment = new GroupEnrollmentSettings();
+                    settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
+
+                    settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
+                    settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
+                    settings.GroupEnrollment.SymetricKeySettings.EnrollmentType = EnrollmentType.Group;
+
+                    settings.GroupEnrollment.SymetricKeySettings.IdScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
+                    settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+
+                    //THINK: Overwrite the device Id?
+                    var deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
+                }
+            }
+
+            return settings;
         }
         #endregion
 
@@ -246,7 +273,7 @@ namespace IoT.Simulator
                 throw new ArgumentNullException(nameof(services));
 
             services.AddSingleton<IProvisioningService, DPSProvisioningService>();
-            services.AddSingleton<ISimulationService, DeviceSimulationService>();            
+            services.AddSingleton<ISimulationService, DeviceSimulationService>();
         }
 
         static void RegisterMessagingServices(IServiceCollection services)
