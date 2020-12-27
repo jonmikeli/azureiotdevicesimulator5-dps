@@ -65,6 +65,11 @@ namespace IoT.Simulator
                 try
                 {
                     ConfigurationHelpers.CheckEnvironmentConfigurationFiles(_environmentName);
+
+                    builder.AddJsonFile($"appsettings.{_environmentName}.json", optional: true, reloadOnChange: true);
+                    builder.AddJsonFile($"devicesettings.{_environmentName}.json", optional: true, reloadOnChange: true);
+                    builder.AddJsonFile($"modulessettings.{_environmentName}.json", optional: true, reloadOnChange: true);
+                    builder.AddJsonFile($"dpssettings.{_environmentName}.json", optional: true, reloadOnChange: true);
                 }
                 catch (MissingEnvironmentConfigurationFileException ex)
                 {
@@ -73,13 +78,7 @@ namespace IoT.Simulator
                     Console.ResetColor();
                     Console.WriteLine("Execution will continue with default settings in appsettings.json, devicesettings.json and modulessettings.json.");
                 }
-
-                builder.AddJsonFile($"appsettings.{_environmentName}.json", optional: true, reloadOnChange: true);
-                builder.AddJsonFile($"devicesettings.{_environmentName}.json", optional: true, reloadOnChange: true);
-                builder.AddJsonFile($"modulessettings.{_environmentName}.json", optional: true, reloadOnChange: true);
-                builder.AddJsonFile($"dpssettings.{_environmentName}.json", optional: true, reloadOnChange: true);
-
-
+              
                 Configuration = builder.Build();
 
                 //Service provider and DI
@@ -88,14 +87,18 @@ namespace IoT.Simulator
                 ConfigureServices(services);
 
                 //WARNING: it seems that IOptions do not work properly with default deserializers
-                var dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+                string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
+                if (File.Exists($"dpssettings.{_environmentName}.json"))
+                    dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+                
                 if (!string.IsNullOrEmpty(dpsSettingsJson))
                 {
                     JObject jData = JObject.Parse(dpsSettingsJson);
 
-                    if (jData != null && jData.ContainsKey("dpsSettings"))
+                    if (jData != null && jData.ContainsKey(DPSSettings.DPSSettingsSection))
                     {
-                        DPSSettings dpsSettings = jData["dpsSettings"].ToObject<DPSSettings>();
+                        DPSSettings dpsSettings = jData[DPSSettings.DPSSettingsSection].ToObject<DPSSettings>();
+
                         var dpsSettingsOptions = Options.Create(dpsSettings);
                         services.AddSingleton(dpsSettingsOptions);
                         Configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);

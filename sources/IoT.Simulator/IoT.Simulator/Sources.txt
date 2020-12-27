@@ -3,3 +3,15 @@
 Modules IoT PnP
 https://docs.microsoft.com/fr-fr/azure/iot-pnp/tutorial-migrate-device-to-module
 https://docs.microsoft.com/fr-fr/azure/iot-pnp/tutorial-multiple-components-csharp (multicomponent)
+
+WORKING
+https://docs.microsoft.com/en-us/azure/iot-dps/quick-create-device-symmetric-key-csharp
+https://docs.microsoft.com/en-us/azure/iot-dps/how-to-legacy-device-symm-key
+https://docs.microsoft.com/en-us/azure/iot-dps/quick-create-simulated-device-tpm-csharp
+https://docs.microsoft.com/en-us/azure/iot-dps/concepts-tpm-attestation
+
+https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/iot-dps/about-iot-dps.md
+
+Security
+https://docs.microsoft.com/en-us/azure/iot-dps/concepts-device-oem-security-practices
+https://blogs.getcertifiedgetahead.com/tpm-hsm-hardware-encryption-devices/

@@ -1,0 +1,15 @@
+{
+  "dpsSettings": {
+    "enrollmentType": "Group",
+    "groupEnrollmentSettings": {
+      "securityType": "SymetricKey",
+      "symetricKeySettings": {
+        "idScope": "0ne000E3ED3",
+        "primaryKey": "wi3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rag==",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
+      }
+    }
+  }
+}

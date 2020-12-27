@@ -1,23 +1,21 @@
 {
- "modules":[
-  {
-    "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
-    "simulationSettings": {
-      "enableLatencyTests": false,
-      "latencyTestsFrecuency": 10,
-      "enableTelemetryMessages": true,
-      "telemetryFrecuency": 20,
-      "enableErrorMessages": false,
-      "errorFrecuency": 30,
-      "enableCommissioningMessages": false,
-      "commissioningFrecuency": 60,
-      "enableTwinReportedMessages": false,
-      "twinReportedMessagesFrecuency": 60,
-      "enableReadingTwinProperties": true,
-      "enableC2DDirectMethods": true,
-      "enableC2DMessages": true,
-      "enableTwinPropertiesDesiredChangesNotifications": true
+  "modules": [
+    {
+      "connectionString": "HostName=iothubtestsedgepnp.azure-devices.net;DeviceId=simulator5;ModuleId=moduleTest1;SharedAccessKey=W6212aO8KTpV/IsMPe8ClrlXmXyWxGW/csz5YfaUV0U=",
+      "simulationSettings": {
+        "enableTelemetryMessages": true,
+        "telemetryFrecuency": 20,
+        "enableErrorMessages": true,
+        "errorFrecuency": 30,
+        "enableCommissioningMessages": true,
+        "commissioningFrecuency": 60,
+        "enableTwinReportedMessages": true,
+        "twinReportedMessagesFrecuency": 60,
+        "enableReadingTwinProperties": true,
+        "enableC2DDirectMethods": true,
+        "enableC2DMessages": true,
+        "enableTwinPropertiesDesiredChangesNotifications": true
+      }
     }
-  }
   ]
 }
