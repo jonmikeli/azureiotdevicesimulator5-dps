@@ -20,10 +20,17 @@ namespace IoT.Simulator.Settings.DPS
         [DefaultValue(EnrollmentType.Group)]
         public EnrollmentType EnrollmentType { get; set; }
 
+        private string _globalDeviceEndpoint = "global.azure-devices-provisioning.net";
         [JsonProperty("globalDeviceEndpoint")]
-        [DefaultValue("global.azure-devices-provisioning.net")]
         ///"global.azure-devices-provisioning.net"          
-        public string GlobalDeviceEndpoint { get; set; }
+        public string GlobalDeviceEndpoint
+        {
+            get { return _globalDeviceEndpoint; }
+            set {
+                if (value != _globalDeviceEndpoint)
+                    _globalDeviceEndpoint = value;
+            }
+        }
 
         [JsonProperty("transportType")]
         [JsonConverter(typeof(StringEnumConverter))]
