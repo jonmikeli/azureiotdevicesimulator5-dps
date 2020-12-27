@@ -46,14 +46,11 @@ namespace IoT.Simulator
                     .AddJsonFile("devicesettings.json", optional: false, reloadOnChange: true)
                     .AddJsonFile("modulessettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile("dpssettings.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables();                
-
-
-                //Loading dynamic settings to facilitate dynamic scalability and distribution
-                //var typedParameters = LoadCommandParameters(args);
-                LoadEnvironmentVariables();
+                    .AddEnvironmentVariables();
 
                 //Loading environment related settings
+                _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+
                 if (string.IsNullOrWhiteSpace(_environmentName))
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -87,10 +84,10 @@ namespace IoT.Simulator
 
                 //Service provider and DI
                 IServiceCollection services = new ServiceCollection();
-                ConfigureServices(services);
+                ConfigureServices(services);                               
 
                 //DPS and provisioning
-                LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
+                LoadDPSandProvisioningSettings(services, Configuration, args, _environmentName);
                 
                 //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
@@ -147,8 +144,12 @@ namespace IoT.Simulator
 
         #region Private methods
         #region DPS
-        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
+        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string[] args, string _environmentName)
         {
+            //Loading dynamic settings to facilitate dynamic scalability and distribution
+            LoadDPSEnvironmentVariables();
+            //var typedParameters = LoadCommandParameters(args);
+
             //WARNING: it seems that IOptions do not work properly with default deserializers
             string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
             if (File.Exists($"dpssettings.{_environmentName}.json"))
@@ -200,7 +201,7 @@ namespace IoT.Simulator
         /// <summary>
         /// Analyzes and persists environment variables.
         /// </summary>
-        static void LoadEnvironmentVariables()
+        static void LoadDPSEnvironmentVariables()
         {
             _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
         }
