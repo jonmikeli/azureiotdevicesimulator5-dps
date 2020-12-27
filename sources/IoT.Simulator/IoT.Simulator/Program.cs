@@ -193,7 +193,7 @@ namespace IoT.Simulator
 
         #region Console and environment parameters
         /// <summary>
-        /// Analyzes and persists console/command parameters.
+        /// Parses console/command parameters.
         /// </summary>
         static DPSCommandParametersBase ParseCommandParameters(string[] args)
         {
@@ -213,6 +213,10 @@ namespace IoT.Simulator
             return parameters;
         }
 
+        /// <summary>
+        /// Parses and types command parameters.
+        /// </summary>
+        /// <returns></returns>
         static DPSSettings LoadDPSOptionsFromCommandParameters()
         {
             DPSSettings settings = null;
@@ -236,7 +240,7 @@ namespace IoT.Simulator
         }
 
         /// <summary>
-        /// Analyzes and persists environment variables.
+        /// Gets DPS parameters from environment variables.
         /// </summary>
         static DPSSettings LoadDPSOptionsFromEnvironmentVariables()
         {
