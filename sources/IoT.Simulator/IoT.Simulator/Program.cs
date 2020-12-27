@@ -87,7 +87,7 @@ namespace IoT.Simulator
                 ConfigureServices(services);
 
                 //DPS and provisioning
-                LoadDPSandProvisioningSettings(services, Configuration, args, _environmentName);
+                LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
 
                 //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
@@ -151,7 +151,7 @@ namespace IoT.Simulator
         /// <param name="configuration"></param>
         /// <param name="args"></param>
         /// <param name="_environmentName"></param>
-        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string[] args, string _environmentName)
+        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
         {
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
             DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
