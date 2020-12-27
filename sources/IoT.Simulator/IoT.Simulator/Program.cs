@@ -146,6 +146,7 @@ namespace IoT.Simulator
 
 
         #region Private methods
+        #region DPS
         private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
         {
             //WARNING: it seems that IOptions do not work properly with default deserializers
@@ -167,7 +168,7 @@ namespace IoT.Simulator
                 }
             }
         }
-
+        #endregion
 
         #region Console and environment parameters
         /// <summary>
@@ -204,6 +205,8 @@ namespace IoT.Simulator
             _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
         }
         #endregion
+
+        #region Simulation services
         //logging
         //https://andrewlock.net/using-dependency-injection-in-a-net-core-console-application/
         static void ConfigureServices(IServiceCollection services)
@@ -335,6 +338,7 @@ namespace IoT.Simulator
                 logger.LogDebug($"MODULES: {simulators.Count()} module simulator(s) initialized and running.");
             }
         }
+        #endregion
         #endregion
     }
 }
