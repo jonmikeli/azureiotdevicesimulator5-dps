@@ -70,6 +70,10 @@ namespace IoT.Simulator
                     builder.AddJsonFile($"devicesettings.{_environmentName}.json", optional: true, reloadOnChange: true);
                     builder.AddJsonFile($"modulessettings.{_environmentName}.json", optional: true, reloadOnChange: true);
                     builder.AddJsonFile($"dpssettings.{_environmentName}.json", optional: true, reloadOnChange: true);
+
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;                    
+                    Console.WriteLine($"Environment related files loaded for: '{_environmentName}'.");
+                    Console.ResetColor();
                 }
                 catch (MissingEnvironmentConfigurationFileException ex)
                 {
