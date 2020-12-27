@@ -1,4 +1,6 @@
-﻿using IoT.Simulator.Exceptions;
+﻿using CommandLine;
+
+using IoT.Simulator.Exceptions;
 using IoT.Simulator.Services;
 using IoT.Simulator.Settings;
 using IoT.Simulator.Settings.DPS;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 using System;
 using System.IO;
@@ -47,7 +50,7 @@ namespace IoT.Simulator
 
 
                 //Loading dynamic settings to facilitate dynamic scalability and distribution
-                LoadCommandParameters();
+                //var typedParameters = LoadCommandParameters(args);
                 LoadEnvironmentVariables();
 
                 //Loading environment related settings
@@ -88,8 +91,15 @@ namespace IoT.Simulator
                 var dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
                 if (!string.IsNullOrEmpty(dpsSettingsJson))
                 {
-                    var dpsSettings = Options.Create(JsonConvert.DeserializeObject<DPSSettings>(dpsSettingsJson));
-                    Configuration.Bind(dpsSettings);
+                    JObject jData = JObject.Parse(dpsSettingsJson);
+
+                    if (jData != null && jData.ContainsKey("dpsSettings"))
+                    {
+                        DPSSettings dpsSettings = jData["dpsSettings"].ToObject<DPSSettings>();
+                        var dpsSettingsOptions = Options.Create(dpsSettings);
+                        services.AddSingleton(dpsSettingsOptions);
+                        Configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
+                    }
                 }
 
                 var deviceSettings = Configuration.Get<DeviceSettings>();
@@ -149,9 +159,27 @@ namespace IoT.Simulator
         /// <summary>
         /// Analyzes and persists console/command parameters.
         /// </summary>
-        static void LoadCommandParameters()
+        static DPSCommandParametersBase LoadCommandParameters(string[] args)
         {
             //Load the parameters and put them as environment variables (environment variables will always be of higher priority
+            // Parse application parameters
+            DPSCommandParametersBase parameters = null;
+            ParserResult<DPSCommandParametersBase> result = Parser.Default.ParseArguments<DPSCommandParametersBase>(args)
+                .WithParsed(parsedParams =>
+                {
+                    parameters = parsedParams;
+                })
+                .WithNotParsed(errors =>
+                {
+                    Environment.Exit(1);
+                });
+
+            return parameters;
+        }
+
+        static void BuildAdnRegisterOptionsFromParameters(DPSCommandParametersBase parameters)
+        {
+
         }
 
         /// <summary>
@@ -190,7 +218,7 @@ namespace IoT.Simulator
                 services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<DeviceSettings>(Configuration);
                 services.Configure<ModulesSettings>(Configuration);
-                services.Configure<DPSSettings>(Configuration);
+                services.Configure<DPSSettings>(Configuration.GetSection(DPSSettings.DPSSettingsSection));
             }
         }
 
