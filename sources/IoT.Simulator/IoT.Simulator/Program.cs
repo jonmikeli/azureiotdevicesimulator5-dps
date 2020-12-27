@@ -146,7 +146,6 @@ namespace IoT.Simulator
         #region DPS
         private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string[] args, string _environmentName)
         {
-            //TODO: take into account environment variables or command parameters
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
             DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
 
