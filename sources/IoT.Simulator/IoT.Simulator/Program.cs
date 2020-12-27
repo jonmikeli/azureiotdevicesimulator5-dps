@@ -87,28 +87,12 @@ namespace IoT.Simulator
 
                 //Service provider and DI
                 IServiceCollection services = new ServiceCollection();
-
                 ConfigureServices(services);
 
-                //WARNING: it seems that IOptions do not work properly with default deserializers
-                string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
-                if (File.Exists($"dpssettings.{_environmentName}.json"))
-                    dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+                //DPS and provisioning
+                LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
                 
-                if (!string.IsNullOrEmpty(dpsSettingsJson))
-                {
-                    JObject jData = JObject.Parse(dpsSettingsJson);
-
-                    if (jData != null && jData.ContainsKey(DPSSettings.DPSSettingsSection))
-                    {
-                        DPSSettings dpsSettings = jData[DPSSettings.DPSSettingsSection].ToObject<DPSSettings>();
-
-                        var dpsSettingsOptions = Options.Create(dpsSettings);
-                        services.AddSingleton(dpsSettingsOptions);
-                        Configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
-                    }
-                }
-
+                //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
                 if (deviceSettings == null)
                     throw new ArgumentException("No device settings have been configured.");
@@ -162,6 +146,29 @@ namespace IoT.Simulator
 
 
         #region Private methods
+        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
+        {
+            //WARNING: it seems that IOptions do not work properly with default deserializers
+            string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
+            if (File.Exists($"dpssettings.{_environmentName}.json"))
+                dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+
+            if (!string.IsNullOrEmpty(dpsSettingsJson))
+            {
+                JObject jData = JObject.Parse(dpsSettingsJson);
+
+                if (jData != null && jData.ContainsKey(DPSSettings.DPSSettingsSection))
+                {
+                    DPSSettings dpsSettings = jData[DPSSettings.DPSSettingsSection].ToObject<DPSSettings>();
+
+                    var dpsSettingsOptions = Options.Create(dpsSettings);
+                    services.AddSingleton(dpsSettingsOptions);
+                    configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
+                }
+            }
+        }
+
+
         #region Console and environment parameters
         /// <summary>
         /// Analyzes and persists console/command parameters.
