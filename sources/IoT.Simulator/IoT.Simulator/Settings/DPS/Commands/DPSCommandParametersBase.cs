@@ -33,7 +33,7 @@ namespace IoT.Simulator.Settings.DPS
         [Option(
             'e',
             "EnrollmentType",
-            Default = EnrollmentType.Individual,
+            Default = EnrollmentType.Group,
             HelpText = "The type of enrollment: Individual or Group")]
         public EnrollmentType EnrollmentType { get; set; }
 
