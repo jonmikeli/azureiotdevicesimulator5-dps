@@ -5,23 +5,26 @@ namespace IoT.Simulator.Settings.DPS
 {
     public class DPSSettings
     {
+
+        public const string DPSSettingsSection = "dpsSettings";
+
         [JsonProperty("enrollmentType")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public EnrollmentType EnrollmentType { get; set; }        
+        public EnrollmentType EnrollmentType { get; set; }
 
-        [JsonProperty("individualEnrollmentSettings")]
-        public IndividualEnrollment IndividualEnrollment {get;set;}
+        //[JsonProperty("individualEnrollmentSettings")]
+        //public IndividualEnrollmentSettings IndividualEnrollment {get;set;}
 
         [JsonProperty("groupEnrollmentSettings")]
-        public GroupEnrollment GroupEnrollment { get; set; }
+        public GroupEnrollmentSettings GroupEnrollment { get; set; }
     }
 
-    public class IndividualEnrollment
+    public class IndividualEnrollmentSettings
     {
 
     }
 
-    public class GroupEnrollment
+    public class GroupEnrollmentSettings
     {
         [JsonProperty("securityType")]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -30,10 +33,10 @@ namespace IoT.Simulator.Settings.DPS
         [JsonProperty("symetricKeySettings")]
         public DPSSymmetricKeySettings SymetricKeySettings { get; set; }
 
-        [JsonProperty("X509Settings")]
-        public DPSX509Settings X509Settings { get; set; }
+        //[JsonProperty("X509Settings")]
+        //public DPSX509Settings X509Settings { get; set; }
 
-        [JsonProperty("tpmSettings")]
-        public DPSTPMSettings TMPSettings { get; set; }
+        //[JsonProperty("tpmSettings")]
+        //public DPSTPMSettings TMPSettings { get; set; }
     }
 }
