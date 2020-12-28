@@ -1,9 +1,9 @@
 # Azure IoT Device Simulator (.NET s5) - DPS version - Readme
 
 ## New features
-This project is the next step of a set of simulators which were born with the purpose to help IoT developers and testers. This new version takes the regular simulator and adds to him Device Provisioning Capabilities (DPS). For now, the supported provisioning mode is of type:
- - group
- - symmetric key
+This new version of the Azure IoT Device Simulator is adds a step to a set of tools that were born with the purpose to help IoT developers and testers. The main change resides on the provisioning process and the integration of the Device Provisioning Service (DPS). The current version implements:
+ - group enrollment
+ - with a symmetric key
 
 This responds to more "enterprise" oriented use cases but without the complexity of adding certificates.
 This said, upcoming updates will add the support of X509 certificates.
