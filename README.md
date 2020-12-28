@@ -29,7 +29,7 @@ Example of uses:
 <br/>
 
 Technical information:
- - .NET 5
+ - .NET 5 (C#)
  - Microsoft Azure IoT SDK (provisioning, properties, tags, C2D/D2C, device modules*)
 
 _* Device modules do not refer to IoT Edge modules but to IoT Device modules._
