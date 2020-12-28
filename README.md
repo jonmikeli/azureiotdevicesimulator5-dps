@@ -43,6 +43,7 @@ _* Device modules do not refer to IoT Edge modules but to IoT Device modules._
 <br/>
 
 ## Global features
+ - device provisioning (group enrollment with symetric keys)
  - device level simulation (C2D/D2C)
  - module level simulation (C2M/M2C)
  - device simulation configuration based on JSON files
