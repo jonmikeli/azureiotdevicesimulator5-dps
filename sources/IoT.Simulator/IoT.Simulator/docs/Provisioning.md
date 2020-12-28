@@ -23,3 +23,11 @@ The simulator is prepared to work with different types of settings situations.
  2-If the simulator finds a connection string, it uses it avoiding the provisioning process.
 
 This implementation allows to cover different use cases, many of them being security (or good practices) oriented.
+
+## Simulator connection string (device)
+
+## Passing DPS parameters
+
+### Environment variables
+### Command line parameters
+### Configuration file
