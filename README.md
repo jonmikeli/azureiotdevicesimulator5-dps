@@ -30,7 +30,9 @@ Example of uses:
 
 Technical information:
  - .NET 5
- - Microsoft Azure IoT SDK (Device capabilities, including IoT Hub modules)
+ - Microsoft Azure IoT SDK (provisioning, properties, tags, C2D/D2C, device modules*)
+
+_* Device modules do not refer to IoT Edge modules but to IoT Device modules._
 
 <br/>
 
