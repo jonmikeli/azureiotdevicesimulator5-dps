@@ -9,6 +9,7 @@ The application consist of:
    - [appsettings.json](####appsettings.json) (described below)
    - [devicesettings.json](####devicesettings.json) (described below)
    - [modulessettings.json](####modulessettings.json) (described below)
+   - [dpssettings.json](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md)
  - message template files
    - [commissioning.json](####comissioning.json) (examples below)
    - [error.json](####error.json) (examples below)
@@ -209,7 +210,8 @@ The device behavior is configured by the *devicessettings.json* configuration fi
 
 ```json
 {
-  "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];SharedAccessKey=[KEY]",
+  "deviceId":"",
+  "connectionString": "",
   "simulationSettings": {
     "enableLatencyTests": false,
     "latencyTestsFrecuency": 10,
@@ -310,7 +312,8 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
 
 ```json
 {
-  "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];SharedAccessKey=[KEY]",
+  "deviceId":"",
+  "connectionString": "",
   "simulationSettings": {
     "enableLatencyTests": false,
     "latencyTestsFrecuency": 10,
