@@ -1,4 +1,4 @@
-﻿# Azure IoT Device Simulator - How To
+﻿# Azure IoT Device Simulator (.NET 5) - DPS version - How To
 
 
 ## How to use the Azure IoT Device Simulator?
