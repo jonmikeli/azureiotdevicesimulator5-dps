@@ -1,4 +1,4 @@
-# Azure IoT Device Simulator (.NET5) - DPS version - Readme
+# Azure IoT Device Simulator (.NET s5) - DPS version - Readme
 
 ## New features
 This project is the next step of a set of simulators which were born with the purpose to help IoT developers and testers. This new version takes the regular simulator and adds to him Device Provisioning Capabilities (DPS). For now, the supported provisioning mode is of type:
