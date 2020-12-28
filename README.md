@@ -1,6 +1,15 @@
-# Azure IoT Device Simulator - Readme
+# Azure IoT Device Simulator (.NET5) - DPS version - Readme
 
-This project has for purpose to help IoT developers and testers. The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulated device.
+## New features
+This project is the next step of a set of simulators which were born with the purpose to help IoT developers and testers. This new version takes the regular simulator and adds to him Device Provisioning Capabilities (DPS). For now, the supported provisioning mode is of type:
+ - group
+ - symmetric key
+
+This responds to more "enterprise" oriented use cases but without the complexity of adding certificates.
+This said, upcoming updates will add the support of X509 certificates.
+
+## Description
+The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulated device.
 
 <br/>
 
