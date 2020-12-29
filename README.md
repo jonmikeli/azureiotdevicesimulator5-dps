@@ -63,12 +63,12 @@ The implemented provisioning relies on [Azure IoT Hub Device Provisioning Servic
 The simulator has the capability to call the DPS with the provided configuration and get an IoT Hub connection string according to the policies configured in it.
 More details [here](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md).
 
-The simulator has been designed to work in different provisioning use cases.
+The simulator has been designed to work in different provisioning use cases:
  1-If the simulator has no connection string, a provisioning process is initiated.
    This process requires a DPS configuration to be set (details [here](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md)).
    The DPS configuration can be provided by:
-     - environment variables (recommended and useful for containerized targets)
-     - command line parameters, that will overwrite the environment variables (recommended for not containerized targets)
+     - environment variables (recommended and useful for containerized targets. It does not compromise security levels.)
+     - command line parameters, that will overwrite the environment variables (recommended for not containerized targets. Similarly to the previous point,it keeps the level of the security rules.)
      - if none of former are found, a dpssettings.json file with the mentioned settings (not recommended even though it is probably quite practical for development purposes)
  2-If the simulator finds a connection string, it uses it avoiding the provisioning process.
 
