@@ -5,10 +5,8 @@ The implemented provisioning relies on [Azure IoT Hub Device Provisioning Servic
 
 ## Azure IoT Hub Device Provisioning Service
 
-The simulator has the capability to contact the DPS with the provided configuration and get a connection string to an Azure IoT Hub.
+The simulator has the capability to contact the DPS with the provided configuration and get a connection string for an Azure IoT Hub.
 The Azure IoT Hub is assigned according to the rules set in the DPS.
-
-DPS allows the simulator to provision and get its running connection string dynamically. For more details about what this means, see [here](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md).
 
 ## Simulator DPS settings
 
