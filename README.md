@@ -43,15 +43,15 @@ _* Device modules do not refer to IoT Edge modules but to IoT Device modules._
 <br/>
 
 ## Global features
- - device provisioning (group enrollment with symetric keys)
- - device level simulation (C2D/D2C)
- - module level simulation (C2M/M2C)
- - device simulation configuration based on JSON files
- - module simulation configuration based on JSON files
- - no specific limitation on the number of modules (only limited by Microsoft Azure IoT Hub constraints)
- - simple and lightweight application, containerizable
- - message templates based on JSON (3 message types by default in this first version)
- - implementation of full IoT flows (C2D, D2C, C2M, M2C) - see below for more details
+ - device provisioning (group enrollment with symetric keys).
+ - device level simulation (C2D/D2C).
+ - module level simulation (C2M/M2C).
+ - device simulation configuration based on JSON files.
+ - module simulation configuration based on JSON files.
+ - no specific limitation on the number of modules (only limited by Microsoft Azure IoT Hub constraints).
+ - simple and lightweight application, containerizable.
+ - message templates based on JSON (3 message types by default in this first version).
+ - implementation of full IoT flows (C2D, D2C, C2M, M2C) - see below for more details.
 
 
 ## Functional features
