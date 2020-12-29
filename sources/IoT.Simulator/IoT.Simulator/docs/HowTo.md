@@ -9,7 +9,7 @@ If you need detailed documentation about what Azure IoT Device Simulator is, you
  - [Readme](../../../../Readme.md)
  - [Help](Help.md)
 
-
+You can also containerize the simulator to take the advantage of all that containers offer.
 
 ## How to get a Docker image?
 ### Prerequisites
