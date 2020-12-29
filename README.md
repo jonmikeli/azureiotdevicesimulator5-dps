@@ -61,8 +61,7 @@ _* Device modules do not refer to IoT Edge modules but to IoT Device modules._
 *Provisioning*
 The implemented provisioning relies on [Azure IoT Hub Device Provisioning Service](https://docs.microsoft.com/en-us/azure/iot-dps/).
 The simulator has the capability to call the DPS with the provided configuration and get an IoT Hub connection string according to the policies configured in it.
-
-DPS allows the simulator to provision and get its running connection string dynamically. For more details about what this means, see [here](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md).
+More details [here](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md).
 
 The simulator is prepared to work with different types of settings situations.
  1-If the simulator has no connection string, a provisioning process is initiated.
