@@ -4,7 +4,7 @@ This section describes the different artifacts of the solution and how they work
 
 ## Application
 The application consist of:
- - an application console (.NET 5)
+ - an application console (.NET 5, C#)
  - configuration files:
    - [appsettings.json](####appsettings.json) (described below)
    - [devicesettings.json](####devicesettings.json) (described below)
