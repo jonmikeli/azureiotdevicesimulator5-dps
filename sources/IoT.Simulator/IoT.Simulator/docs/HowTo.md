@@ -154,6 +154,34 @@ This file allows configuring module(s) simulation settings.
 >
 > Do not forget to set your own values for `connectionString`. 
 
+### dpssettings.json
+This file allows configuring the DPS settings.
+
+```json
+{
+  "dpsSettings": {
+    "enrollmentType": "Group",
+    "groupEnrollmentSettings": {
+      "securityType": "SymetricKey",
+      "symetricKeySettings": {
+        "idScope": "[TO BE REPLACED]",
+        "primaryKey": "[TO BE REPLACED]",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
+      }
+    }
+  }
+}
+
+```
+
+This settings corresponds to the current implementation.
+Iteration after iteration, more possibilities will be added.
+
+> NOTE
+>
+> In very secured environments, the primaryKey should not be stored in such a configuration file.
 
 
 ## Message templates
