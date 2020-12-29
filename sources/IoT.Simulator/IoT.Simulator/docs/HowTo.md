@@ -11,8 +11,7 @@ If you need detailed documentation about what Azure IoT Device Simulator is, you
 
 You can also containerize the simulator to take the advantage of all that containers offer.
 
-## Docker
-### Prerequisites
+## Docker prerequisites
 In order to use a Docker container, you need to check [Docker](https://www.docker.com/) prerequisites.
 
 Do not forget you will need an internet connection with specific open ports:
@@ -24,7 +23,7 @@ Do not forget you will need an internet connection with specific open ports:
 Finally, you will need enough storage memory to build the Docker image and create your containers.
 
 
-### Steps to follow
+## Steps to run the simulator
 The Azure IoT Device Simulator needs two basic things before starting:
  - settings (need to be updated with proper connection settings)
  - message templates (included by default)
