@@ -30,7 +30,7 @@ The Azure IoT Device Simulator needs two basic things before starting:
 
  Once those items are ready, a single command allows starting the application.
 
-#### Settings
+### Settings
 Settings are based on 3 files:
  - [appsettings.json](#####appsettings.json)
  - [devicesettings.json](#####devicesettings.json)
@@ -45,7 +45,7 @@ For details and explanations, see [help](Help.md).
 > The solution looks for settings files following the pattern *file.ENVIRONMENT.json* (similar to transformation files).
 > Default setting files will be loaded first in case no environment file is found.
 
-##### appsettings.json
+### appsettings.json
 This file allows configuring system related items (logs, etc).
 
 **Release**
@@ -87,7 +87,7 @@ Detailed logs settings.
 }
 ```
 
-##### devicesettings.json
+### devicesettings.json
 This file allows configuring device simulation settings.
 
 ```json
@@ -115,7 +115,7 @@ This file allows configuring device simulation settings.
 
 ```
 
-##### modulessettings.json
+### modulessettings.json
 This file allows configuring module(s) simulation settings.
 
 ```json
@@ -152,7 +152,7 @@ This file allows configuring module(s) simulation settings.
 
 
 
-#### Message templates
+## Message templates
 You will find in this section the default templates of the messages sent by the simulator.
 You are totally free to change and adapt them to your needs.
 
@@ -161,7 +161,7 @@ You are totally free to change and adapt them to your needs.
 > This first version includes a dependency between message templates and message service implementation (randomized values and ID properties).
 > For that reason, if the message template is completely reviewed and new randomized properties are added, you will need to either update the existing message service or create yours and update the IoC/DI settings.
 
-##### Measured data / telemetry message
+### Measured data / telemetry message
 ```json
 {
   "deviceId": "",
@@ -188,7 +188,7 @@ You are totally free to change and adapt them to your needs.
 }
 ```
 
-##### Error message
+### Error message
 ```json
 {
   "deviceId": "",
@@ -201,7 +201,7 @@ You are totally free to change and adapt them to your needs.
 }
 ```
 
-##### Commissioning message
+### Commissioning message
 ```json
 {
   "deviceId": "",
@@ -217,7 +217,7 @@ You are totally free to change and adapt them to your needs.
 } 
 ```
 
-#### Commands
+## Commands
 **Regular**
 ```cmd
 dotnet IoT.Simulator.dll
