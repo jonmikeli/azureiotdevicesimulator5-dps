@@ -102,6 +102,7 @@ The features at the module level are the identical to the device features except
 ## Global technical features
 
 Functional features are based on these generic technical features:
+ - device provisioning and reprovisioning.
  - telemetry sent from a device.
  - a device can contain one or many modules.
  - each module behaves independently with its own flows (C2M/M2C) and its configuration settings.
