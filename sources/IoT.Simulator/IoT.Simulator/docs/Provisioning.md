@@ -26,3 +26,5 @@ The simulator has been designed to work in different provisioning use cases:
 ### Environment variables
 ### Command line parameters
 ### Configuration file
+
+## Device modules
