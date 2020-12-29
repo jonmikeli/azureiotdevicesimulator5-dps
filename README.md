@@ -9,7 +9,7 @@ The group enrollment has been implemented first because it may respond to broade
 Upcoming iterations will implement provisioning with X509 devices.
 
 ## Description
-The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulated device.
+The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulator.
 
 <br/>
 
