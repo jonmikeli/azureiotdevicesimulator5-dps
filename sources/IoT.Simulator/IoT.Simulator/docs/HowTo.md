@@ -11,7 +11,7 @@ If you need detailed documentation about what Azure IoT Device Simulator is, you
 
 You can also containerize the simulator to take the advantage of all that containers offer.
 
-## How to get a Docker image?
+## Docker
 ### Prerequisites
 In order to use a Docker container, you need to check [Docker](https://www.docker.com/) prerequisites.
 
@@ -21,7 +21,7 @@ Do not forget you will need an internet connection with specific open ports:
  - 443
 [Ports](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-protocols) required to communicate with Microsoft Azure IoT Hub.
 
-Finally, you will need enough storage memory to download the Docker image and create your containers.
+Finally, you will need enough storage memory to build the Docker image and create your containers.
 
 
 ### Steps to follow
