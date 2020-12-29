@@ -71,8 +71,6 @@ The simulator has been designed to work in different provisioning use cases:
      - command line parameters, that will overwrite the environment variables (recommended for not containerized targets. Similarly to the previous point,it keeps the level of the security rules.).
      - if none of the previous settings are found, a dpssettings.json file will be loaded (not recommended unless the JSON file is persisted in a secured location).
  2-If the simulator finds a connection string, it uses and it skips the provisioning process.
-
-This implementation allows to cover different use cases, many of them being security (or good practices) oriented.
  
 *Commands*
  - request latency test
