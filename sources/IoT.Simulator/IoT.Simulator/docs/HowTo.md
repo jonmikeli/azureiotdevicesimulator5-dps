@@ -32,9 +32,10 @@ The Azure IoT Device Simulator needs two basic things before starting:
 
 ### Settings
 Settings are based on 3 files:
- - [appsettings.json](#####appsettings.json)
- - [devicesettings.json](#####devicesettings.json)
- - [modulessettings.json](#####modulessettings.json)
+ - [appsettings.json](###appsettings.json)
+ - [devicesettings.json](###devicesettings.json)
+ - [modulessettings.json](###modulessettings.json)
+ - [dpssettings.json](###dpssettings.json)
 
 For details and explanations, see [help](Help.md).
 
@@ -92,7 +93,8 @@ This file allows configuring device simulation settings.
 
 ```json
 {
-  "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];SharedAccessKey=[SHARED KEY]",
+  "deviceId": "[required]",
+  "connectionString": "",
   "simulationSettings": {
     "enableLatencyTests": false,
     "latencyTestsFrecuency": 30,
@@ -114,6 +116,8 @@ This file allows configuring device simulation settings.
 }
 
 ```
+
+The device Id is required to feed the provisioning.
 
 ### modulessettings.json
 This file allows configuring module(s) simulation settings.
