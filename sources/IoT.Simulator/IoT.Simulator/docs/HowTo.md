@@ -3,14 +3,12 @@
 
 ## How to use the Azure IoT Device Simulator?
 
-The IoT simulator has been containerized in order to simplify its delivery and use.
-You can find the Docker image at [this location](https://hub.docker.com/r/jonmikeli/azureiotdevicesimulator).
-
-If you need or prefer the binary format, you can use the source code to compile the application and use it as a regular .NET 5 Console application.
+You can use the source code to compile the application and use it as a regular .NET 5 Console application.
 
 If you need detailed documentation about what Azure IoT Device Simulator is, you can find additional information at:
  - [Readme](../../../../Readme.md)
  - [Help](Help.md)
+
 
 
 ## How to get a Docker image?
