@@ -53,6 +53,7 @@ namespace IoT.Simulator.API.DeviceManagement.Services
         }
 
         #region Public methods
+        #region Devices
         public async Task<SIoT.Device> GetDeviceAsync(string deviceId)
         {
             Device data = await GetIoTHubDeviceAsync(deviceId);
@@ -346,6 +347,11 @@ namespace IoT.Simulator.API.DeviceManagement.Services
         #endregion
         #endregion
 
+        #region Modules
+
+        #endregion
+        #endregion
+
         #region Private methods
         private async Task<Device> GetIoTHubDeviceAsync(string deviceId)
         {
@@ -372,6 +378,28 @@ namespace IoT.Simulator.API.DeviceManagement.Services
             }
 
             return device;
+        }
+
+        private async Task<Module> AddModuleToDeviceAsync(string deviceId, string moduleId)
+        {
+            if (string.IsNullOrEmpty(deviceId))
+                throw new ArgumentNullException(nameof(deviceId));
+
+            if (string.IsNullOrEmpty(moduleId))
+                throw new ArgumentNullException(nameof(moduleId));
+
+            Module module;
+            try
+            {
+                module = await _registryManager.AddModuleAsync(new Module(deviceId, moduleId));
+            }
+            catch (DeviceAlreadyExistsException ex)
+            {
+                _logger.LogWarning(ex, ex.Message);
+                module = await _registryManager.GetModuleAsync(deviceId, moduleId);
+            }
+
+            return module;
         }
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using IoT.Simulator.API.DeviceManagement.Services.Model.IoT;
 
+
 using Microsoft.Azure.Devices.Shared;
 
 using Newtonsoft.Json.Linq;
@@ -35,6 +36,8 @@ namespace IoT.Simulator.API.DeviceManagement.Services.Contracts
 
         Task<JsonDocument> GetDevices2Async(int maxCount);
         Task<JsonDocument> GetDevices2Async(string query, int maxCount);
+
+        Task<Module> AddModuleToDeviceAsync(string deviceId, string moduleId)
 
     }
 }
