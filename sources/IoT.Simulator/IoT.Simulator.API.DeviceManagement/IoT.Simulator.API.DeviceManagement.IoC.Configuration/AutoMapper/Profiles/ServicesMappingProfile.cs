@@ -18,6 +18,13 @@ namespace IoT.Simulator.API.DeviceManagement.IoC.Configuration.AutoMapper.Profil
                 .ForMember(dest => dest.AuthenticationPrimaryKey, opts => opts.MapFrom(src => src.Authentication.SymmetricKey != null ? src.Authentication.SymmetricKey.PrimaryKey : "NA"))
                 .ForMember(dest => dest.AuthenticationSecondaryKey, opts => opts.MapFrom(src => src.Authentication.SymmetricKey != null ? src.Authentication.SymmetricKey.PrimaryKey : "NA"))
                 .ReverseMap();
+
+            CreateMap<A.Module, S.IoT.Module>()
+                .ForMember(dest => dest.AuthenticationType, opts => opts.MapFrom(src => src.Authentication.Type))
+                .ForMember(dest => dest.AuthenticationPrimaryKey, opts => opts.MapFrom(src => src.Authentication.SymmetricKey != null ? src.Authentication.SymmetricKey.PrimaryKey : "NA"))
+                .ForMember(dest => dest.AuthenticationSecondaryKey, opts => opts.MapFrom(src => src.Authentication.SymmetricKey != null ? src.Authentication.SymmetricKey.PrimaryKey : "NA"))
+                .ReverseMap();
+
             CreateMap<AS.Twin, S.IoT.Twins>()
                 .ForMember(dest => dest.Tags, opts => opts.MapFrom(src => JsonConvert.DeserializeObject<S.IoT.Tags>(src.Tags.ToJson(Formatting.Indented))))
                 .ForPath(dest => dest.Properties.Desired, opts => opts.MapFrom(src => JObject.Parse(src.Properties.Desired.ToJson(Formatting.Indented))))
