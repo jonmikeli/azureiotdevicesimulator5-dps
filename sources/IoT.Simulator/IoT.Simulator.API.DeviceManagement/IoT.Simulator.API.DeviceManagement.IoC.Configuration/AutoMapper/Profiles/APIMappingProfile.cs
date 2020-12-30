@@ -10,6 +10,7 @@ namespace IoT.Simulator.API.DeviceManagement.IoC.Configuration.AutoMapper.Profil
         public APIMappingProfile()
         {
             CreateMap<SIoT.Device, DCIoT.Device>().ReverseMap();
+            CreateMap<SIoT.Module, DCIoT.Module>().ReverseMap();
             CreateMap<SIoT.DeviceIoTSettings, DCIoT.DeviceIoTSettings>().ReverseMap();
             CreateMap<SIoT.Location, DCIoT.Location>().ReverseMap();
             CreateMap<SIoT.Tags, DCIoT.Tags>().ReverseMap();
