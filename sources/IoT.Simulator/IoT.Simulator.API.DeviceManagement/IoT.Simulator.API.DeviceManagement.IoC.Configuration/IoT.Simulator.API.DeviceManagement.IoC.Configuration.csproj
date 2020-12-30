@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IoT.Simulator.API.DeviceManagement.API.DataContracts\IoT.Simulator.API.DeviceManagement.API.DataContracts.csproj" />
+    <ProjectReference Include="..\IoT.Simulator.API.DeviceManagement.Services\IoT.Simulator.API.DeviceManagement.Services.csproj" />
+  </ItemGroup>
+
+</Project>
