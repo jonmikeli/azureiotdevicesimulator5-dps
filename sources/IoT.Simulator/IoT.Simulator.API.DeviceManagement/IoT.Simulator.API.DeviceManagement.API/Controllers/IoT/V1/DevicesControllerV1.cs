@@ -161,6 +161,31 @@ namespace IoT.Simulator.API.DeviceManagement.API.Controllers.IoT.V1
 
             return await _provisioningService.GetDevicesAsync(request.Query, request.MaxCount);
         }
+
+        /// <summary>
+        /// Registers a device module within a given IoT Hub
+        /// </summary>       
+        /// <remarks>
+        /// The module is created and registered with no properties.
+        /// </remarks>        
+        /// <returns>Module entity containing device related information</returns>
+        /// <response code="201">Returns the newly created item.</response>s
+        [HttpPost]
+        [Route("modules/add")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Device))]
+        public async Task<Module> AddModuleToDevice([FromBody] ProvisionModuleRequest value)
+        {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
+            var data = await _provisioningService.AddModuleToDeviceAsync(value.DeviceId, value.ModuleId);
+
+            if (data != null)
+                return _mapper.Map<Module>(data);
+            else
+                return null;
+
+        }
         #endregion
 
         #region PUT
