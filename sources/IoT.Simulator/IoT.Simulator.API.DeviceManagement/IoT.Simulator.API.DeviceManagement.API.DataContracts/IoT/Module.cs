@@ -2,6 +2,9 @@
 
 namespace IoT.Simulator.API.DeviceManagement.API.DataContracts.IoT
 {
+    /// <summary>
+    /// Module datacontract summary to be replaced
+    /// </summary>
     public class Module
     {
         public string Id { get; set; }
