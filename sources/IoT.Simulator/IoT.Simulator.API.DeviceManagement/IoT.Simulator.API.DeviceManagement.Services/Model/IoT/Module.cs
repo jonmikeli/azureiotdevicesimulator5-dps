@@ -13,7 +13,7 @@ namespace IoT.Simulator.API.DeviceManagement.Services.Model.IoT
         public DateTime ConnectionStateUpdatedTime { get; set; }        
         public DateTime LastActivityTime { get; }
         public int CloudToDeviceMessageCount { get; set; }
-        public string AuthenticationMechanism { get; set; }
+        public string AuthenticationType { get; set; }
         public string AuthenticationPrimaryKey { get; set; }
         public string AuthenticationSecondaryKey { get; set; }        
     }
