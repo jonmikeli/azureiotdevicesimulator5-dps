@@ -37,7 +37,7 @@ namespace IoT.Simulator.API.DeviceManagement.Services.Contracts
         Task<JsonDocument> GetDevices2Async(int maxCount);
         Task<JsonDocument> GetDevices2Async(string query, int maxCount);
 
-        Task<Module> AddModuleToDeviceAsync(string deviceId, string moduleId);
+        Task<Module> AddModuleAsync(string deviceId, string moduleId);
 
     }
 }

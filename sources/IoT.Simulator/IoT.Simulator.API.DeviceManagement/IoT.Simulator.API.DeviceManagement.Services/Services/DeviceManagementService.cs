@@ -348,7 +348,15 @@ namespace IoT.Simulator.API.DeviceManagement.Services
         #endregion
 
         #region Modules
+        public async Task<SIoT.Module> AddModuleAsync(string deviceId, string moduleId)
+        {
+            Module iotModule = await AddModuleToDeviceAsync(deviceId, moduleId);
 
+            if (iotModule != null)
+                return _mapper.Map<SIoT.Module>(iotModule);
+            else
+                return null;
+        }
         #endregion
         #endregion
 

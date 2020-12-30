@@ -178,7 +178,7 @@ namespace IoT.Simulator.API.DeviceManagement.API.Controllers.IoT.V1
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            var data = await _provisioningService.AddModuleToDeviceAsync(value.DeviceId, value.ModuleId);
+            var data = await _provisioningService.AddModuleAsync(value.DeviceId, value.ModuleId);
 
             if (data != null)
                 return _mapper.Map<Module>(data);
