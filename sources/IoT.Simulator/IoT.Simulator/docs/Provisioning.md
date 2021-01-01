@@ -56,6 +56,12 @@ It is persisted in clear for develoment purposes but keep in mind this data shou
 ```
 
 ## Passing DPS parameters
+The simulator accepts different ways to use the DPS settings:
+ - envionment variables
+ - command line parameters
+ - configuration file
+
+The first two are oriented to secured environments and avoiding to persist those settings. Any locally persisted information should be saved in a very secured environment (cryptography, HSM, TPM, etc).
 
 ### Environment variables
 ### Command line parameters
