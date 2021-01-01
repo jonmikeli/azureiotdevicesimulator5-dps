@@ -76,8 +76,12 @@ The list of the environment variables to set are:
 >
 > If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
 
-
 ### Command line parameters
+The previous variables may be set through command variables too.
+The required parameters are the same:
+ - -s, the Id Scope of the DPS
+ - -p, the primary key of the DPS
+
 ### Configuration file
 
 ## Device modules
