@@ -96,6 +96,16 @@ The required parameters are the same:
  - -s, the Id Scope of the DPS
  - -p, the primary key of the DPS
 
+_Linux (bash)_
+```bash
+dotnet IoT.Simulator.dll -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
+```
+
+_Windows (cmd)_
+```cmd
+dotnet IoT.Simulator.dll -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
+```
+
 ### Configuration file
 
 ## Device modules
