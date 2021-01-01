@@ -26,7 +26,7 @@ The DPS will send back to the device requesting the provisioning, the data allow
 That connection settings may be stored at the device level to avoid having to reprovision the device.
 They should be stored in a secured manner.
 
-The simulator stores the connection string in the devicesettings.json file.
+The simulator stores the connection string in the `devicesettings.json` file.
 It is persisted in clear for develoment purposes but keep in mind this data should be protected more securely in production environments.
 
 ```json
