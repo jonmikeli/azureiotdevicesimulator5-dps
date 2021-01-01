@@ -30,6 +30,29 @@ The simulator stores the connection string in the devicesettings.json file.
 It is persisted in clear for develoment purposes but keep in mind this data should be protected more securely in production environments.
 
 ```json
+{
+  "deviceId": "",
+  "connectionString": "",
+  "simulationSettings": {
+    "enableLatencyTests": false,
+    "latencyTestsFrecuency": 30,
+    "enableDevice": true,
+    "enableModules": false,
+    "enableTelemetryMessages": false,
+    "telemetryFrecuency": 10,
+    "enableErrorMessages": false,
+    "errorFrecuency": 20,
+    "enableCommissioningMessages": false,
+    "commissioningFrecuency": 30,
+    "enableTwinReportedMessages": false,
+    "twinReportedMessagesFrecuency": 60,
+    "enableReadingTwinProperties": false,
+    "enableC2DDirectMethods": true,
+    "enableC2DMessages": true,
+    "enableTwinPropertiesDesiredChangesNotifications": true
+  }
+}
+
 ```
 
 ## Passing DPS parameters
