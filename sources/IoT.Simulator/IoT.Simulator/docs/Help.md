@@ -9,7 +9,7 @@ The application consist of:
    - [appsettings.json](####appsettings.json) (described below)
    - [devicesettings.json](####devicesettings.json) (described below)
    - [modulessettings.json](####modulessettings.json) (described below)
-   - [dpssettings.json](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md))
+   - [dpssettings.json](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md)
  - message template files
    - [commissioning.json](####comissioning.json) (examples below)
    - [error.json](####error.json) (examples below)
