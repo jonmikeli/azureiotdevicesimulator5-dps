@@ -69,7 +69,7 @@ The first two are oriented to secured environments and avoiding to persist those
 
 ### Environment variables
 The list of the environment variables to set are:
- - DPS_IDSCOPE, Id Scope of the DPS
+ - DPS_IDSCOPE, the Id Scope of the DPS
  - PRIMARY_SYMMETRIC_KEY, primary pey of the DPS
 
 > NOTE
