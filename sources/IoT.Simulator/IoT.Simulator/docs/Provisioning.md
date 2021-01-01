@@ -72,6 +72,20 @@ The list of the environment variables to set are:
  - DPS_IDSCOPE, the Id Scope of the DPS
  - PRIMARY_SYMMETRIC_KEY, the primary pey of the DPS
 
+_Linux (bash)_
+```bash
+export DPS_IDSCOPE=[YOUR ID SCOPE]
+export PRIMARY_SYMMETRIC_KEY=[YOUR PRIMMARY KEY]
+dotnet IoT.Simulator.dll
+```
+
+_Windows (cmd)_
+```cmd
+set DPS_IDSCOPE=[YOUR ID SCOPE]
+set PRIMARY_SYMMETRIC_KEY=[YOUR PRIMMARY KEY]
+dotnet IoT.Simulator.dll
+```
+
 > NOTE
 >
 > If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
