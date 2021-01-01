@@ -63,6 +63,10 @@ The simulator accepts different ways to use the DPS settings:
 
 The first two are oriented to secured environments and avoiding to persist those settings. Any locally persisted information should be saved in a very secured environment (cryptography, HSM, TPM, etc).
 
+> NOTE
+>
+> The deviceId parameter is mandatory to make the provisioning successful. It is located in the `devicesettings.json` file for all the types of configuration.
+
 ### Environment variables
 The list of the environment variables to set are:
  - DPS_IDSCOPE
