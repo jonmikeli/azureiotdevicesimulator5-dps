@@ -20,6 +20,17 @@ The simulator has been designed to work in different provisioning use cases:
  2-If the simulator finds a connection string, it uses and it skips the provisioning process.
 
 ## Simulator connection string (device)
+If the provisioning process succeeds, it will create a device identity in a given IoT Hub.
+The DPS will send back to the device requesting the provisioning, the data allowing the device to identify and connect to the IoT Hub.
+
+That connection settings may be stored at the device level to avoid having to reprovision the device.
+They should be stored in a secured manner.
+
+The simulator stores the connection string in the devicesettings.json file.
+It is persisted in clear for develoment purposes but keep in mind this data should be protected more securely in production environments.
+
+```json
+```
 
 ## Passing DPS parameters
 
