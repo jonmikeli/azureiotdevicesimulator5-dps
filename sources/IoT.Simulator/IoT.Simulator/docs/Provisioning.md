@@ -69,8 +69,12 @@ The first two are oriented to secured environments and avoiding to persist those
 
 ### Environment variables
 The list of the environment variables to set are:
- - DPS_IDSCOPE
- - PRIMARY_SYMMETRIC_KEY
+ - DPS_IDSCOPE, Id Scope of the DPS
+ - PRIMARY_SYMMETRIC_KEY, primary pey of the DPS
+
+> NOTE
+>
+> If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
 
 
 ### Command line parameters
