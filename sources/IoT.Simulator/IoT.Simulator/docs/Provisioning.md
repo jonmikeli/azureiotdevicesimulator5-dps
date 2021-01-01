@@ -107,6 +107,29 @@ dotnet IoT.Simulator.dll -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
 ```
 
 ### Configuration file
+DPS settings can also be provided through a configuration file.
+It looks like this:
+
+```json
+{
+  "dpsSettings": {
+    "enrollmentType": "Group",
+    "groupEnrollmentSettings": {
+      "securityType": "SymetricKey",
+      "symetricKeySettings": {
+        "idScope": "[YOUR ID SCOPE]",
+        "primaryKey": "[YOUR PRIMARY KEY]",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
+      }
+    }
+  }
+}
+```
+
+Parameters like enrollmentType, securityType, globalDeviceEndpoint and transportType are fixed for now.
+Upcoming versions should allow more possibilities.
 
 ## Device modules
 At the time this post has been written, it did not seem to be a way to create device modules (a.k.a. module identities) during the provisioning process.
