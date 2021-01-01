@@ -67,6 +67,10 @@ The first two are oriented to secured environments and avoiding to persist those
 >
 > The deviceId parameter is mandatory to make the provisioning successful. It is located in the `devicesettings.json` file for all the types of configuration.
 
+The first settings to be checked are environment variables.
+Command line settings overwrite any environment variables settings.
+If no environment setting or command line parameters are provided, a configuration file is searched. 
+
 ### Environment variables
 The list of the environment variables to set are:
  - DPS_IDSCOPE, the Id Scope of the DPS
