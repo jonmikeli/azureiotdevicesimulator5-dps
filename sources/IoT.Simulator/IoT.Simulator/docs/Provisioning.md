@@ -56,7 +56,7 @@ It is persisted in clear for develoment purposes but keep in mind this data shou
 ```
 
 ## Passing DPS parameters
-### 3 possibilities
+### Different possibilities
 The simulator accepts different ways to use the DPS settings:
  - envionment variables
  - command line parameters
