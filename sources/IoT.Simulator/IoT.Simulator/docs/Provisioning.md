@@ -56,6 +56,7 @@ It is persisted in clear for develoment purposes but keep in mind this data shou
 ```
 
 ## Passing DPS parameters
+### 3 possibilities
 The simulator accepts different ways to use the DPS settings:
  - envionment variables
  - command line parameters
@@ -67,6 +68,7 @@ The first two are oriented to secured environments and avoiding to persist those
 >
 > The deviceId parameter is mandatory to make the provisioning successful. It is located in the `devicesettings.json` file for all the types of configuration.
 
+### Priorities
 The first settings to be checked are environment variables.
 Command line settings overwrite any environment variables settings.
 If no environment setting or command line parameters are provided, a configuration file is searched. 
