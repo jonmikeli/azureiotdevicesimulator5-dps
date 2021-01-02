@@ -139,5 +139,5 @@ Upcoming versions should allow more possibilities.
 At the time this post has been written, it did not seem to be a way to create device modules (a.k.a. module identities) during the provisioning process.
 
 This can be implemented by code but it requires one of the steps below:
- - reference the Azure IoT Hub Service SDK (which requires a SAS connection string to the IoT Hub with specific rights....not really matching the security constraints we are looking for in the implemented scenario with DPS).
- - reference a REST API taking in charge the logic of creation device modules. The provisioned device could call that REST API once DPS has done his job and that the device is provisioned.
+ - reference the Azure IoT Hub Service SDK (which requires in turn a SAS connection string to the IoT Hub with specific rights....not really matching the security constraints we are looking for in the implemented scenario with DPS).
+ - reference a REST API taking in charge the creation of device modules. The provisioned device could call that REST API once DPS would have done his job and that the device was provisioned.
