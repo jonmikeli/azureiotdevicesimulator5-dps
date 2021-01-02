@@ -10,7 +10,7 @@ The Azure IoT Hub is assigned according to the rules set in the DPS.
 
 ## Simulator DPS settings
 
-The simulator has been designed to work in different provisioning use cases:
+The simulator has been designed to work with different provisioning use cases:
  1-If the simulator has no connection string, a provisioning process is initiated.
    This process requires a DPS configuration to be set.
    The DPS configuration can be provided by:
