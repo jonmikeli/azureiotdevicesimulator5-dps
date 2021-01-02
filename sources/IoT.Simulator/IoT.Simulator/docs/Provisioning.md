@@ -132,7 +132,7 @@ It looks like this:
 }
 ```
 
-Parameters like enrollmentType, securityType, globalDeviceEndpoint and transportType are fixed for now.
+Parameters like `enrollmentType`, `securityType`, `globalDeviceEndpoint` and `transportType` cannot be changed for now.
 Upcoming versions should allow more possibilities.
 
 ## Device modules
