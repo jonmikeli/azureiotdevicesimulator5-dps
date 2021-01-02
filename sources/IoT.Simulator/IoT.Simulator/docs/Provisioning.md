@@ -20,7 +20,7 @@ The simulator has been designed to work with different provisioning use cases:
  2-If the simulator finds a connection string, the provisioning process is skipped and the found connection string is used.
 
 ## Simulator connection string (device)
-If the provisioning process succeeds, it will create a device identity in a given IoT Hub.
+If the provisioning process succeeds, it will create a device identity in the associated Azure IoT Hub.
 The DPS will send back to the device requesting the provisioning, the data allowing the device to identify and connect to the IoT Hub.
 
 That connection settings may be stored at the device level to avoid having to reprovision the device.
