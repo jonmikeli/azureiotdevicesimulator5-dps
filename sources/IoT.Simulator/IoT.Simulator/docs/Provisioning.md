@@ -141,5 +141,5 @@ At the time this post has been written, it did not seem to be a way to create de
 This can be implemented by code but it requires one of the steps below:
  - reference the Azure IoT Hub Service SDK (which requires in turn a SAS connection string to the IoT Hub with specific rights....not really matching the security constraints we are looking for in the implemented scenario with DPS).
  - reference a REST API taking in charge the creation of device modules. The provisioned device could call that REST API once DPS would have done his job and that the device was provisioned. A version of a [REST endpoint implementing](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/sources/IoT.Simulator/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/Controllers/IoT/V1/DevicesControllerV1.cs) this has been included in the solution. The used REST API is based on a REST API Template for .NET:
- - [Visual Studio version](https://marketplace.visualstudio.com/items?itemName=JonMikelInza.IoTHubDotNet5RESTAPITemplate)
- - [CLI version](https://www.nuget.org/packages/JMI.DotNet5.IoTHub.REST.API.Template.CSharp/)
+   - [Visual Studio version](https://marketplace.visualstudio.com/items?itemName=JonMikelInza.IoTHubDotNet5RESTAPITemplate)
+   - [CLI version](https://www.nuget.org/packages/JMI.DotNet5.IoTHub.REST.API.Template.CSharp/)
