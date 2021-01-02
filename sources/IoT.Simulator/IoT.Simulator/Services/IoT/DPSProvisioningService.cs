@@ -9,7 +9,11 @@ using Microsoft.Azure.Devices.Shared;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using System;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,14 +21,20 @@ namespace IoT.Simulator.Services
 {
     public class DPSProvisioningService : IProvisioningService
     {
+        private AppSettings _appSettings;
         private DPSSettings _dpsSettings;
         private DeviceSettings _deviceSettings;
         private readonly ILogger<DPSProvisioningService> _logger;
 
-        public DPSProvisioningService(IOptions<DPSSettings> dpsSettings,
+        public DPSProvisioningService(
+            IOptions<AppSettings> appSettings,
+            IOptions<DPSSettings> dpsSettings,
             IOptions<DeviceSettings> deviceSettings,
             ILoggerFactory loggerFactory)
         {
+            if (appSettings == null)
+                throw new ArgumentNullException(nameof(appSettings));
+
             if (deviceSettings == null)
                 throw new ArgumentNullException(nameof(deviceSettings));
 
@@ -40,6 +50,7 @@ namespace IoT.Simulator.Services
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
 
+            _appSettings = appSettings.Value;
             _dpsSettings = dpsSettings.Value;
             _deviceSettings = deviceSettings.Value;
 
@@ -128,7 +139,55 @@ namespace IoT.Simulator.Services
 
         public async Task<string> AddModuleIdentityToDevice(string moduleId)
         {
-            return null;
+            if (_appSettings.DeviceManagementServiceSettings == null)
+                throw new ArgumentNullException("_appSettings.DeviceManagementServiceSettings");
+
+            if (string.IsNullOrEmpty(_appSettings.DeviceManagementServiceSettings.BaseUrl))
+                throw new ArgumentNullException("_appSettings.DeviceManagementServiceSettings.BaseUrl");
+
+            if (string.IsNullOrEmpty(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute))
+                throw new ArgumentNullException("_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute");
+
+            if (string.IsNullOrEmpty(moduleId))
+                throw new ArgumentNullException(nameof(moduleId));
+
+            string result = string.Empty;
+            string logPrefix = "DPSProvisioningService.AddModuleIdentityToDevice".BuildLogPrefix();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_appSettings.DeviceManagementServiceSettings.BaseUrl);
+
+                string jsonContent = JsonConvert.SerializeObject(new
+                {
+                    deviceId = _deviceSettings.DeviceId,
+                    moduleId = moduleId
+                });
+
+                HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute, content);
+
+                if (response != null)
+                {
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Adding the module entity to the device...");
+
+                    string resultContent = await response.Content.ReadAsStringAsync();                    
+
+                    if (!string.IsNullOrEmpty(resultContent))
+                    {
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device management service called.");
+
+                        JObject jData = JObject.Parse(resultContent);                        
+                        string primaryKey = jData.Value<string>("authenticationPrimaryKey");
+
+                        result = $"HostName={_deviceSettings.HostName};DeviceId={_deviceSettings.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::{moduleId}::Module identity added to device.");
+                    }
+                }
+            }
+            
+            return result;
         }
     }
 }
