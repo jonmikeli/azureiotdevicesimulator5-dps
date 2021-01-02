@@ -16,7 +16,7 @@ The simulator has been designed to work with different provisioning use cases:
    The DPS configuration can be provided by:
      - environment variables (might be useful in containerized platforms. Pay attention though to the processes allowed to read the environment variables.).
      - command line parameters, that will overwrite any existing environment variables setting (recommended for not containerized targets. This is probably the safest alternative among the three, in terms of security.).
-     - if none of the previous settings are found, a dpssettings.json file will be loaded (not recommended unless the JSON file is persisted in a secured location).
+     - if none of the previous settings are found, a `dpssettings.json` file will be loaded (recommended only for development platforms, unless the JSON is encrypted or stored in safe location.).
  2-If the simulator finds a connection string, it uses and it skips the provisioning process.
 
 ## Simulator connection string (device)
