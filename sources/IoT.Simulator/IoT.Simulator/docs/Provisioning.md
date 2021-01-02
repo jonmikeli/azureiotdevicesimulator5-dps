@@ -62,11 +62,9 @@ The simulator accepts different ways to use the DPS settings:
  - command line parameters
  - configuration file
 
-The first two are oriented to secured environments and avoiding to persist those settings. Any locally persisted information should be saved in a very secured environment (cryptography, HSM, TPM, etc).
-
 > NOTE
 >
-> The deviceId parameter is mandatory to make the provisioning successful. It is located in the `devicesettings.json` file for all the types of configuration.
+> The deviceId parameter is required by the provisioning process. It is located in the `devicesettings.json` file for all the configuration types.
 
 ### Priorities
 The first settings to be checked are environment variables.
