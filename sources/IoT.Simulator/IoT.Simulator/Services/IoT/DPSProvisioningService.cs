@@ -125,5 +125,10 @@ namespace IoT.Simulator.Services
            
             return result;
         }
+
+        public async Task<string> AddModuleIdentityToDevice(string moduleId)
+        {
+            return null;
+        }
     }
 }

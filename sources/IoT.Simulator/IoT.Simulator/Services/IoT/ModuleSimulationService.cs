@@ -1,11 +1,15 @@
-﻿using IoT.Simulator.Extensions;
+﻿using IoT.Simulator.Exceptions;
+using IoT.Simulator.Extensions;
 using IoT.Simulator.Settings;
 using IoT.Simulator.Tools;
+
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Extensions.Logging;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,9 +29,18 @@ namespace IoT.Simulator.Services
         private ITelemetryMessageService _telemetryMessagingService;
         private IErrorMessageService _errorMessagingService;
         private ICommissioningMessageService _commissioningMessagingService;
+        private IProvisioningService _provisioningService;
+        private string _environmentName;
 
 
-        public ModuleSimulationService(ModuleSettings settings, SimulationSettingsModule simulationSettings, ITelemetryMessageService telemetryMessagingService, IErrorMessageService errorMessagingService, ICommissioningMessageService commissioningMessagingService, ILoggerFactory loggerFactory)
+        public ModuleSimulationService(
+            ModuleSettings settings,
+            SimulationSettingsModule simulationSettings,
+            ITelemetryMessageService telemetryMessagingService,
+            IErrorMessageService errorMessagingService,
+            ICommissioningMessageService commissioningMessagingService,
+            IProvisioningService provisioningService,
+            ILoggerFactory loggerFactory)
         {
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
@@ -60,7 +73,8 @@ namespace IoT.Simulator.Services
             _telemetryInterval = 10;
             _stopProcessing = false;
 
-            _moduleClient = ModuleClient.CreateFromConnectionString(ModuleSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
+            _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+
             _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Logger created.");
             _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Module simulator created.");
         }
@@ -81,52 +95,73 @@ namespace IoT.Simulator.Services
         public async Task InitiateSimulationAsync()
         {
             string logPrefix = "system".BuildLogPrefix();
-
-            IoTTools.CheckModuleConnectionStringData(ModuleSettings.ConnectionString, _logger);
-
-            // Connect to the IoT hub using the MQTT protocol
-
-            _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Module client created.");
-
-            if (SimulationSettings.EnableTwinPropertiesDesiredChangesNotifications)
+           
+            try
             {
-                await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertyChange, null);
-                _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Twin Desired Properties update callback handler registered.");
+                //Connectivity tests
+                //Control if a connection string exists (ideally, stored in TPM/HSM or any secured location.
+                //If there is no connection string, check if the DPS settings are provided.
+                //If so, provision the device and persist the connection string for upcoming boots.
+                if (string.IsNullOrEmpty(ModuleSettings.ConnectionString))
+                {
+                    ModuleSettings.ConnectionString = await _provisioningService.ProvisionDevice();
+                    await ConfigurationHelpers.WriteModulesSettings(ModuleSettings, _environmentName);
+                }
+
+                IoTTools.CheckModuleConnectionStringData(ModuleSettings.ConnectionString, _logger);
+
+                // Connect to the IoT hub using the MQTT protocol
+                _moduleClient = ModuleClient.CreateFromConnectionString(ModuleSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
+                _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Module client created.");
+
+                if (SimulationSettings.EnableTwinPropertiesDesiredChangesNotifications)
+                {
+                    await _moduleClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertyChange, null);
+                    _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Twin Desired Properties update callback handler registered.");
+                }
+
+                //Configuration
+                if (SimulationSettings.EnableC2DDirectMethods)
+                    //Register C2D Direct methods handlers            
+                    await RegisterC2DDirectMethodsHandlersAsync(_moduleClient, ModuleSettings, _logger);
+
+                if (SimulationSettings.EnableC2DMessages)
+                    //Start receiving C2D messages
+
+                    ReceiveC2DMessagesAsync(_moduleClient, ModuleSettings, _logger);
+
+                //Messages
+                if (SimulationSettings.EnableTelemetryMessages)
+                    SendDeviceToCloudMessagesAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, _logger); //interval is a global variable changed by processes
+
+                if (SimulationSettings.EnableErrorMessages)
+                    SendDeviceToCloudErrorAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, SimulationSettings.ErrorFrecuency, _logger);
+
+                if (SimulationSettings.EnableCommissioningMessages)
+                    SendDeviceToCloudCommissioningAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, SimulationSettings.CommissioningFrecuency, _logger);
+
+                if (SimulationSettings.EnableReadingTwinProperties)
+                {
+                    //Twins
+                    _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::INITIALIZATION::Retrieving twin.");
+                    Twin twin = await _moduleClient.GetTwinAsync();
+
+                    if (twin != null)
+                        _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::INITIALIZATION::Device twin: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
+                    else
+                        _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::INITIALIZATION::No device twin.");
+                }
+
+                _moduleClient.SetConnectionStatusChangesHandler(new ConnectionStatusChangesHandler(ConnectionStatusChanged));
             }
-
-            //Configuration
-            if (SimulationSettings.EnableC2DDirectMethods)
-                //Register C2D Direct methods handlers            
-                await RegisterC2DDirectMethodsHandlersAsync(_moduleClient, ModuleSettings, _logger);
-
-            if (SimulationSettings.EnableC2DMessages)
-                //Start receiving C2D messages
-
-                ReceiveC2DMessagesAsync(_moduleClient, ModuleSettings, _logger);
-
-            //Messages
-            if (SimulationSettings.EnableTelemetryMessages)
-                SendDeviceToCloudMessagesAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, _logger); //interval is a global variable changed by processes
-
-            if (SimulationSettings.EnableErrorMessages)
-                SendDeviceToCloudErrorAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, SimulationSettings.ErrorFrecuency, _logger);
-
-            if (SimulationSettings.EnableCommissioningMessages)
-                SendDeviceToCloudCommissioningAsync(_moduleClient, ModuleSettings.DeviceId, ModuleSettings.ModuleId, SimulationSettings.CommissioningFrecuency, _logger);
-
-            if (SimulationSettings.EnableReadingTwinProperties)
+            catch (ConnectionStringException ex)
             {
-                //Twins
-                _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::INITIALIZATION::Retrieving twin.");
-                Twin twin = await _moduleClient.GetTwinAsync();
-
-                if (twin != null)
-                    _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::INITIALIZATION::Device twin: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
-                else
-                    _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::INITIALIZATION::No device twin.");
+                _logger.LogError($"{logPrefix}::{ModuleSettings.ArtifactId}::ConnectionStringException:{ex.Message}");
             }
-
-            _moduleClient.SetConnectionStatusChangesHandler(new ConnectionStatusChangesHandler(ConnectionStatusChanged));
+            catch (Exception ex)
+            {
+                _logger.LogError($"{logPrefix}::{ModuleSettings.ArtifactId}::{ex.Message}");
+            }
         }
 
         private void ConnectionStatusChanged(ConnectionStatus status, ConnectionStatusChangeReason reason)

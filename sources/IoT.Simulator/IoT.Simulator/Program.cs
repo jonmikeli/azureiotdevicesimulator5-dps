@@ -368,6 +368,7 @@ namespace IoT.Simulator
                             serviceProvider.GetService<ITelemetryMessageService>(),
                             serviceProvider.GetService<IErrorMessageService>(),
                             serviceProvider.GetService<ICommissioningMessageService>(),
+                            serviceProvider.GetService<IProvisioningService>(),
                             loggerFactory);
 
                         services.AddSingleton<IModuleSimulationService, ModuleSimulationService>(iServiceProvider => simulator);
