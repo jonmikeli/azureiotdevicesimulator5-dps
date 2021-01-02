@@ -51,7 +51,7 @@ namespace IoT.Simulator.Tools
             //ModuleId
             string moduleId = connectionString.ExtractValue("ModuleId");
             if (string.IsNullOrEmpty(moduleId))
-                throw new ArgumentNullException(nameof(moduleId), "No hostname has been found within the connection string");
+                throw new ConnectionStringException("No hostname has been found within the connection string", nameof(moduleId));
 
             logger.LogDebug($"{logPrefix}::ModuleId:{moduleId}::CheckModuleConnectionStringData");
         }
