@@ -16,8 +16,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace IoT.Simulator
 {
@@ -30,7 +32,7 @@ namespace IoT.Simulator
 
         public static IConfiguration Configuration { get; set; }
 
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             Console.WriteLine("=======================================================================");
             Console.WriteLine(AssemblyInformationHelper.HeaderMessage);
@@ -122,7 +124,7 @@ namespace IoT.Simulator
                 else
                 {
                     if (deviceSettings.SimulationSettings.EnableDevice)
-                        StartDevicesSimulators(serviceProvider, logger);
+                        await StartDevicesSimulatorsAsync(serviceProvider, logger);
 
                     if (deviceSettings.SimulationSettings.EnableModules)
                         StartModulesSimulators(serviceProvider, logger);
@@ -374,7 +376,7 @@ namespace IoT.Simulator
             }
         }
 
-        static void StartDevicesSimulators(IServiceProvider serviceProvider, ILogger logger)
+        static async Task StartDevicesSimulatorsAsync(IServiceProvider serviceProvider, ILogger logger)
         {
             if (serviceProvider == null)
                 throw new ArgumentNullException(nameof(serviceProvider));
@@ -385,10 +387,13 @@ namespace IoT.Simulator
             var simulators = serviceProvider.GetServices<ISimulationService>();
             if (simulators != null && simulators.Any())
             {
+                List<Task> tasksToBeAwaited = new List<Task>();
                 foreach (var item in simulators)
                 {
-                    item.InitiateSimulationAsync();
+                    tasksToBeAwaited.Add(item.InitiateSimulationAsync());
                 }
+
+                await Task.WhenAll(tasksToBeAwaited);
 
                 logger.LogDebug($"DEVICES: {simulators.Count()} device simulator(s) initialized and running.");
             }
