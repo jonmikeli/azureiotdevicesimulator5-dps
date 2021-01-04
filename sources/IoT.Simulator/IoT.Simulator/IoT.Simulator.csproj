@@ -56,11 +56,11 @@
       <TransformOnBuild>true</TransformOnBuild>
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>appsettings.json</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="appsettings.json">
       <TransformOnBuild>true</TransformOnBuild>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="appsettings.Release.json">
       <IsTransformFile>true</IsTransformFile>
@@ -74,10 +74,10 @@
       <IsTransformFile>true</IsTransformFile>
     </None>
     <None Update="dpssettings.Development.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="dpssettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="dpsSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Messages\commissioning.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -89,16 +89,16 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="modulessettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="modulessettings.Development.json">
       <TransformOnBuild>true</TransformOnBuild>
       <IsTransformFile>true</IsTransformFile>
       <DependentUpon>modulessettings.json</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="devicesettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="devicesettings.Development.json">
       <TransformOnBuild>true</TransformOnBuild>

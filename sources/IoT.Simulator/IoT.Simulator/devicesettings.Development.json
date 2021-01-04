@@ -5,7 +5,7 @@
     "enableLatencyTests": false,
     "latencyTestsFrecuency": 30,
     "enableDevice": true,
-    "enableModules": false,
+    "enableModules": true,
     "enableTelemetryMessages": true,
     "telemetryFrecuency": 10,
     "enableErrorMessages": false,
