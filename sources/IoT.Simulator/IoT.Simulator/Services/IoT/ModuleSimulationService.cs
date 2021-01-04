@@ -104,7 +104,7 @@ namespace IoT.Simulator.Services
                 //If so, provision the device and persist the connection string for upcoming boots.
                 if (string.IsNullOrEmpty(ModuleSettings.ConnectionString))
                 {
-                    ModuleSettings.ConnectionString = await _provisioningService.ProvisionDevice();
+                    ModuleSettings.ConnectionString = await _provisioningService.AddModuleIdentityToDevice(ModuleSettings.ModuleId);
                     await ConfigurationHelpers.WriteModulesSettings(ModuleSettings, _environmentName);
                 }
 
