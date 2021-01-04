@@ -309,7 +309,8 @@ namespace IoT.Simulator
 
                 services.AddOptions();
 
-                services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
+                //services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
+                services.Configure<AppSettings>(Configuration);
                 services.Configure<DeviceSettings>(Configuration);
                 services.Configure<ModulesSettings>(Configuration);
                 services.Configure<DPSSettings>(Configuration.GetSection(DPSSettings.DPSSettingsSection));
