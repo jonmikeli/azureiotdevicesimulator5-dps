@@ -29,7 +29,7 @@ namespace IoT.Simulator.Services
         public DPSProvisioningService(
             IOptions<AppSettings> appSettings,
             IOptions<DPSSettings> dpsSettings,
-            IOptions<DeviceSettings> deviceSettings,
+            IOptionsSnapshot<DeviceSettings> deviceSettings,
             ILoggerFactory loggerFactory)
         {
             if (appSettings == null)
@@ -147,6 +147,9 @@ namespace IoT.Simulator.Services
 
             if (string.IsNullOrEmpty(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute))
                 throw new ArgumentNullException("_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute");
+
+            if (string.IsNullOrEmpty(moduleId))
+                throw new ArgumentNullException(nameof(moduleId));
 
             if (string.IsNullOrEmpty(moduleId))
                 throw new ArgumentNullException(nameof(moduleId));
