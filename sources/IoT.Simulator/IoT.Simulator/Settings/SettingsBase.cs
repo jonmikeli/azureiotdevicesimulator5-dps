@@ -26,7 +26,6 @@ namespace IoT.Simulator.Settings
 
                     if (!string.IsNullOrEmpty(_connectionString))
                     {
-                        DeviceId = ConnectionString.ExtractValue("DeviceId");
                         HostName = ConnectionString.ExtractValue("HostName");
                     }
                 }

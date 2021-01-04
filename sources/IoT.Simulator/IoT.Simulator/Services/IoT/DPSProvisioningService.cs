@@ -23,23 +23,20 @@ namespace IoT.Simulator.Services
     {
         private AppSettings _appSettings;
         private DPSSettings _dpsSettings;
-        private DeviceSettings _deviceSettings;
+        private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
         private readonly ILogger<DPSProvisioningService> _logger;
 
         public DPSProvisioningService(
             IOptions<AppSettings> appSettings,
             IOptions<DPSSettings> dpsSettings,
-            IOptionsSnapshot<DeviceSettings> deviceSettings,
+            IOptionsMonitor<DeviceSettings> deviceSettingsDelegate,
             ILoggerFactory loggerFactory)
         {
             if (appSettings == null)
                 throw new ArgumentNullException(nameof(appSettings));
 
-            if (deviceSettings == null)
-                throw new ArgumentNullException(nameof(deviceSettings));
-
-            if (deviceSettings.Value == null)
-                throw new ArgumentNullException("deviceSettings.Value", "No device configuration has been loaded.");
+            if (deviceSettingsDelegate == null)
+                throw new ArgumentNullException(nameof(deviceSettingsDelegate));
 
             if (dpsSettings == null)
                 throw new ArgumentNullException(nameof(dpsSettings));
@@ -52,13 +49,13 @@ namespace IoT.Simulator.Services
 
             _appSettings = appSettings.Value;
             _dpsSettings = dpsSettings.Value;
-            _deviceSettings = deviceSettings.Value;
+            _deviceSettingsDelegate = deviceSettingsDelegate;
 
             _logger = loggerFactory.CreateLogger<DPSProvisioningService>();
 
             string logPrefix = "system.dps.provisioning".BuildLogPrefix();
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::DPS Provisioning service created.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DPS Provisioning service created.");
         }
 
         public async Task<string> ProvisionDevice()
@@ -75,16 +72,16 @@ namespace IoT.Simulator.Services
                     throw new ArgumentNullException("_dpsSettings.GroupEnrollment", "No group enrollment settings have been found.");
 
                 if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymetricKey)
-                    _dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey = ProvisioningTools.ComputeDerivedSymmetricKey(_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey, _deviceSettings.DeviceId);
+                    _dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey = ProvisioningTools.ComputeDerivedSymmetricKey(_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey, _deviceSettingsDelegate.CurrentValue.DeviceId);
             }
 
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Initializing the device provisioning client...");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");
 
             // For individual enrollments, the first parameter must be the registration Id, where in the enrollment
             // the device Id is already chosen. However, for group enrollments the device Id can be requested by
             // the device, as long as the key has been computed using that value.
             // Also, the secondary could could be included, but was left out for the simplicity of this sample.
-            using (var security = new SecurityProviderSymmetricKey(_deviceSettings.DeviceId,_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey,null))
+            using (var security = new SecurityProviderSymmetricKey(_deviceSettingsDelegate.CurrentValue.DeviceId,_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey,null))
             {
                 using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
                 {
@@ -94,22 +91,22 @@ namespace IoT.Simulator.Services
                         security,
                         transportHandler);
 
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Initialized for registration Id {security.GetRegistrationID()}.");
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Registering with the device provisioning service...");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initialized for registration Id {security.GetRegistrationID()}.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registering with the device provisioning service...");
 
                     DeviceRegistrationResult deviceRegistrationResult = await provClient.RegisterAsync();
 
                     if (deviceRegistrationResult != null)
                     {
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Registration status: {deviceRegistrationResult.Status}.");
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registration status: {deviceRegistrationResult.Status}.");
                         if (deviceRegistrationResult.Status != ProvisioningRegistrationStatusType.Assigned)
                         {
-                            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::Registration status did not assign a hub, so exiting this sample.");
+                            _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registration status did not assign a hub, so exiting this sample.");
                         }
                         else
                         {
-                            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
-                            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Creating symmetric key authentication for IoT Hub...");
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Creating symmetric key authentication for IoT Hub...");
 
                             var devicePrimaryKey = security.GetPrimaryKey();
                             //IAuthenticationMethod auth = new DeviceAuthenticationWithRegistrySymmetricKey(deviceRegistrationResult.DeviceId, devicePrimaryKey);
@@ -130,7 +127,7 @@ namespace IoT.Simulator.Services
                         }
                     }
                     else
-                        _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::No provisioning result has been received.");
+                        _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No provisioning result has been received.");
                 }
             }
            
@@ -151,9 +148,6 @@ namespace IoT.Simulator.Services
             if (string.IsNullOrEmpty(moduleId))
                 throw new ArgumentNullException(nameof(moduleId));
 
-            if (string.IsNullOrEmpty(moduleId))
-                throw new ArgumentNullException(nameof(moduleId));
-
             string result = string.Empty;
             string logPrefix = "DPSProvisioningService.AddModuleIdentityToDevice".BuildLogPrefix();
 
@@ -163,7 +157,7 @@ namespace IoT.Simulator.Services
 
                 string jsonContent = JsonConvert.SerializeObject(new
                 {
-                    deviceId = _deviceSettings.DeviceId,
+                    deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId,
                     moduleId = moduleId
                 });
 
@@ -172,20 +166,20 @@ namespace IoT.Simulator.Services
 
                 if (response != null)
                 {
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Adding the module entity to the device...");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Adding the module entity to the device...");
 
                     string resultContent = await response.Content.ReadAsStringAsync();                    
 
                     if (!string.IsNullOrEmpty(resultContent))
                     {
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device management service called.");
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device management service called.");
 
                         JObject jData = JObject.Parse(resultContent);                        
                         string primaryKey = jData.Value<string>("authenticationPrimaryKey");
 
-                        result = $"HostName={_deviceSettings.HostName};DeviceId={_deviceSettings.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+                        result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
 
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::{moduleId}::Module identity added to device.");
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Module identity added to device.");
                     }
                 }
             }

@@ -39,7 +39,6 @@ namespace IoT.Simulator.Settings
                 {
                     _connectionString = value;
                     DeviceId = ConnectionString.ExtractValue("DeviceId");
-                    ModuleId = ConnectionString.ExtractValue("ModuleId");
                     HostName = ConnectionString.ExtractValue("HostName");
                 }
             }
