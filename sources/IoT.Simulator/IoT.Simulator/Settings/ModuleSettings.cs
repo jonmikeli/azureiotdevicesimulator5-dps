@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace IoT.Simulator.Settings
 {
     public class ModuleSettings : SettingsBase
-    {        
+    {
         [JsonProperty("moduleId", Required = Required.Always)]
         public string ModuleId { get; set; }
 
@@ -23,6 +23,24 @@ namespace IoT.Simulator.Settings
         public SimulationSettingsModule SimulationSettings
         {
             get; set;
+        }
+
+        private string _connectionString;
+        public new string ConnectionString
+        {
+            get
+            {
+                return _connectionString;
+            }
+
+            set
+            {
+                if (value != _connectionString)
+                {
+                    _connectionString = value;
+                    DeviceId = ConnectionString.ExtractValue("DeviceId");
+                }
+            }
         }
     }
 }
