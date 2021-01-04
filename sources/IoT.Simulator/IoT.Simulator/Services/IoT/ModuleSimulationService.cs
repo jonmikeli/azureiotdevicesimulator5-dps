@@ -57,6 +57,9 @@ namespace IoT.Simulator.Services
             if (commissioningMessagingService == null)
                 throw new ArgumentNullException(nameof(commissioningMessagingService));
 
+            if (provisioningService == null)
+                throw new ArgumentNullException(nameof(provisioningService));
+
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory));
 
@@ -69,6 +72,8 @@ namespace IoT.Simulator.Services
             _telemetryMessagingService = telemetryMessagingService;
             _errorMessagingService = errorMessagingService;
             _commissioningMessagingService = commissioningMessagingService;
+
+            _provisioningService = provisioningService;
 
             _telemetryInterval = 10;
             _stopProcessing = false;
