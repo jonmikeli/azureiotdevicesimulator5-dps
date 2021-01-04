@@ -26,6 +26,7 @@ namespace IoT.Simulator.Settings
         }
 
         private string _connectionString;
+        [JsonProperty("connectionString")]
         public new string ConnectionString
         {
             get
