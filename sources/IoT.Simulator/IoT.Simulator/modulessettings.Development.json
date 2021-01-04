@@ -1,7 +1,8 @@
 {
   "modules": [
     {
-      "connectionString": "HostName=iothubtestsedgepnp.azure-devices.net;DeviceId=simulator5;ModuleId=moduleTest1;SharedAccessKey=W6212aO8KTpV/IsMPe8ClrlXmXyWxGW/csz5YfaUV0U=",
+      "connectionString": "",
+      "moduleId": "module1",
       "simulationSettings": {
         "enableTelemetryMessages": true,
         "telemetryFrecuency": 20,
