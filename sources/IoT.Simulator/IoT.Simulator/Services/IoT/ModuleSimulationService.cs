@@ -109,7 +109,14 @@ namespace IoT.Simulator.Services
                 if (string.IsNullOrEmpty(ModuleSettings.ConnectionString))
                 {
                     ModuleSettings.ConnectionString = await _provisioningService.AddModuleIdentityToDevice(ModuleSettings.ModuleId);
-                    await ConfigurationHelpers.WriteModulesSettings(ModuleSettings, _environmentName);
+
+                    if (string.IsNullOrEmpty(ModuleSettings.ConnectionString))
+                        _logger.LogWarning($"{logPrefix}::{ModuleSettings.ArtifactId}::No module connection string has been created.");
+                    else
+                    {
+                        _logger.LogDebug($"{logPrefix}::{ModuleSettings.ArtifactId}::Module connection string being persisted.");
+                        await ConfigurationHelpers.WriteModulesSettings(ModuleSettings, _environmentName);
+                    }
                 }
 
                 IoTTools.CheckModuleConnectionStringData(ModuleSettings.ConnectionString, _logger);

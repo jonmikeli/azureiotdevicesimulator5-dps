@@ -85,7 +85,7 @@ namespace IoT.Simulator.Tools
             if (!string.IsNullOrEmpty(environment))
                 fileName = $"{MODULES_SETTINGS_FILE_NAME}.{environment}.json";
 
-            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
+            await WriteModuleSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
         }
 
         public static async Task WriteDpsSettings(DPSSettings content, string environment)
@@ -97,7 +97,6 @@ namespace IoT.Simulator.Tools
             await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
         }
 
-
         private static async Task WriteSettings(string content, string fileName)
         {
             if (content == null)
@@ -108,7 +107,40 @@ namespace IoT.Simulator.Tools
 
             await File.WriteAllTextAsync(
                 Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName),
-                content);            
+                content);
+        }
+
+        private static async Task WriteModuleSettings(string content, string fileName)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException(nameof(fileName));
+
+            string fullPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
+
+            JObject jModulesContainer = null;
+            if(File.Exists(fullPath))
+            {
+                jModulesContainer = JObject.Parse(File.ReadAllText(fullPath));
+                JArray jModulesArray = jModulesContainer["modules"] as JArray;
+
+                if (jModulesArray != null)
+                    jModulesArray.Add(JObject.Parse(content));
+            }
+            else
+            {
+                JArray jModulesArray = new JArray();
+                jModulesArray.Add(JObject.Parse(content));
+
+                jModulesContainer = new JObject();                
+                jModulesContainer.Add("modules", jModulesArray);
+            }
+
+            string dataToSerialize = JsonConvert.SerializeObject(jModulesContainer, Formatting.Indented);
+
+            await File.WriteAllTextAsync(fullPath, dataToSerialize);            
         }
 
     }
