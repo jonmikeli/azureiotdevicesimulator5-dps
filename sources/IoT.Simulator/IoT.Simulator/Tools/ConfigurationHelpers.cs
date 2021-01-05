@@ -87,7 +87,7 @@ namespace IoT.Simulator.Tools
             if (!string.IsNullOrEmpty(environment))
                 fileName = $"{MODULES_SETTINGS_FILE_NAME}.{environment}.json";
 
-            await WriteModuleSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
+            await LockedWriteModuleSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
         }
 
         public static async Task WriteDpsSettings(DPSSettings content, string environment)
@@ -112,6 +112,20 @@ namespace IoT.Simulator.Tools
                 content);
         }
 
+        private static async Task LockedWriteModuleSettings(string content, string fileName)
+        {
+            if (content == null)
+                throw new ArgumentNullException(nameof(content));
+
+            if (string.IsNullOrEmpty(fileName))
+                throw new ArgumentNullException(nameof(fileName));
+
+            LockManager.GetLock(fileName, async () =>
+            {
+                await WriteModuleSettings(content, fileName);
+            });
+        }
+
         private static async Task WriteModuleSettings(string content, string fileName)
         {
             if (content == null)
@@ -124,7 +138,6 @@ namespace IoT.Simulator.Tools
 
             ModuleSettings typedModule = JsonConvert.DeserializeObject<ModuleSettings>(content);
 
-            //TODO: implement a thread safe access
             ModulesSettings modulesSettings = null;
             if(File.Exists(fullPath))
             {
