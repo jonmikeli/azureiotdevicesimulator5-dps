@@ -10,6 +10,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace IoT.Simulator.Tools
 {
@@ -120,26 +122,33 @@ namespace IoT.Simulator.Tools
 
             string fullPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
 
+            ModuleSettings typedModule = JsonConvert.DeserializeObject<ModuleSettings>(content);
+
             //TODO: implement a thread safe access
-            JObject jModulesContainer = null;
+            ModulesSettings modulesSettings = null;
             if(File.Exists(fullPath))
             {
-                jModulesContainer = JObject.Parse(File.ReadAllText(fullPath));
-                JArray jModulesArray = jModulesContainer["modules"] as JArray;
+                modulesSettings = JsonConvert.DeserializeObject<ModulesSettings>(File.ReadAllText(fullPath));
 
-                if (jModulesArray != null)
-                    jModulesArray.Add(JObject.Parse(content));
+                if (modulesSettings != null)
+                {
+                    if (modulesSettings.Modules == null)
+                        modulesSettings.Modules = new List<ModuleSettings> { typedModule};
+                    else
+                    {
+                        ModuleSettings existingModule = modulesSettings.Modules.SingleOrDefault(i => i.ModuleId == typedModule.ModuleId);
+
+                        if (existingModule != null)
+                            existingModule.ConnectionString = typedModule.ConnectionString;
+                        else
+                            modulesSettings.Modules.Add(typedModule);
+                    }
+                }
             }
             else
-            {
-                JArray jModulesArray = new JArray();
-                jModulesArray.Add(JObject.Parse(content));
+                modulesSettings = new ModulesSettings { Modules = new List<ModuleSettings> { typedModule} };
 
-                jModulesContainer = new JObject();                
-                jModulesContainer.Add("modules", jModulesArray);
-            }
-
-            string dataToSerialize = JsonConvert.SerializeObject(jModulesContainer, Formatting.Indented);
+            string dataToSerialize = JsonConvert.SerializeObject(modulesSettings, Formatting.Indented);
 
             await File.WriteAllTextAsync(fullPath, dataToSerialize);            
         }

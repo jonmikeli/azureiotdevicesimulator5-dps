@@ -6,6 +6,6 @@ namespace IoT.Simulator.Settings
     public class ModulesSettings
     {
         [JsonProperty("modules")]
-        public IEnumerable<ModuleSettings> Modules { get; set; }
+        public IList<ModuleSettings> Modules { get; set; }
     }
 }
