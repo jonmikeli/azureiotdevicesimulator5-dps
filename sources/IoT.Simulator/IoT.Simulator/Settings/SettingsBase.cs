@@ -32,7 +32,7 @@ namespace IoT.Simulator.Settings
             }
         }
 
-        [JsonProperty("deviceId", Required = Required.Always)]
+        [JsonProperty("deviceId", Required = Required.Always, NullValueHandling = NullValueHandling.Include)]
         public string DeviceId { get;set; }
 
         public string HostName
