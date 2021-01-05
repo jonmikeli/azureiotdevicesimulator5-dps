@@ -120,6 +120,7 @@ namespace IoT.Simulator.Tools
 
             string fullPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
 
+            //TODO: implement a thread safe access
             JObject jModulesContainer = null;
             if(File.Exists(fullPath))
             {
