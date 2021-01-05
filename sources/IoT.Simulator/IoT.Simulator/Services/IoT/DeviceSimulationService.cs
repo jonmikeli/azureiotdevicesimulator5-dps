@@ -116,8 +116,14 @@ namespace IoT.Simulator.Services
             if (string.IsNullOrEmpty(_deviceSettings.ConnectionString))
             {
                 _deviceSettings.ConnectionString = await _provisioningService.ProvisionDevice();
-                
-                await ConfigurationHelpers.WriteDeviceSettings(_deviceSettings, _environmentName);
+
+                if (string.IsNullOrEmpty(_deviceSettings.ConnectionString))
+                    _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::No device connection string has been created.");
+                else
+                {
+                    _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::Device connection string being persisted.");
+                    await ConfigurationHelpers.WriteDeviceSettings(_deviceSettings, _environmentName);
+                }
             }
             
             //At this stage, the connection string should be set properly and the device client should be able to communicate with the IoT Hub with no issues.
