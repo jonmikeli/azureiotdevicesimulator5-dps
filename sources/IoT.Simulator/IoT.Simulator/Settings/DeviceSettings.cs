@@ -14,5 +14,7 @@ namespace IoT.Simulator.Settings
         [JsonProperty("simulationSettings")]
         public SimulationSettingsDevice SimulationSettings
         { get; set; }
+
+
     }
 }
