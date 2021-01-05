@@ -1,8 +1,28 @@
 {
   "modules": [
     {
+      "deviceId": "simulatedDevice1",
       "connectionString": "",
-      "moduleId": "module1",
+      "moduleId": "moduleA1",
+      "simulationSettings": {
+        "enableTelemetryMessages": true,
+        "telemetryFrecuency": 20,
+        "enableErrorMessages": true,
+        "errorFrecuency": 30,
+        "enableCommissioningMessages": true,
+        "commissioningFrecuency": 60,
+        "enableTwinReportedMessages": true,
+        "twinReportedMessagesFrecuency": 60,
+        "enableReadingTwinProperties": true,
+        "enableC2DDirectMethods": true,
+        "enableC2DMessages": true,
+        "enableTwinPropertiesDesiredChangesNotifications": true
+      }
+    },
+    {
+      "deviceId": "simulatedDevice1",
+      "connectionString": "",
+      "moduleId": "moduleA2",
       "simulationSettings": {
         "enableTelemetryMessages": true,
         "telemetryFrecuency": 20,

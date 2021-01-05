@@ -1,8 +1,9 @@
 {
  "modules":[
   {
+    "deviceId": "[REQUIRED]",
     "connectionString": "",
-    "moduleId": "module2",
+    "moduleId": "[REQUIRED]",
     "simulationSettings": {
       "enableLatencyTests": false,
       "latencyTestsFrecuency": 10,

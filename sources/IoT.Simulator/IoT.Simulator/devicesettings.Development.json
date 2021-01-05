@@ -1,5 +1,5 @@
 {
-  "deviceId": "simulatedDevice1",
+  "deviceId": "simulatedDevice2",
   "connectionString": "",
   "simulationSettings": {
     "enableLatencyTests": false,
