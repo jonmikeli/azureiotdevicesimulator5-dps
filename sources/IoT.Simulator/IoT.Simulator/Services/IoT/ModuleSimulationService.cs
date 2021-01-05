@@ -35,7 +35,6 @@ namespace IoT.Simulator.Services
 
         public ModuleSimulationService(
             ModuleSettings settings,
-            SimulationSettingsModule simulationSettings,
             ITelemetryMessageService telemetryMessagingService,
             IErrorMessageService errorMessagingService,
             ICommissioningMessageService commissioningMessagingService,
@@ -45,8 +44,8 @@ namespace IoT.Simulator.Services
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));
 
-            if (simulationSettings == null)
-                throw new ArgumentNullException(nameof(simulationSettings));
+            if (settings.SimulationSettings == null)
+                throw new ArgumentNullException("settings.SimulationSettings");
 
             if (telemetryMessagingService == null)
                 throw new ArgumentNullException(nameof(telemetryMessagingService));
@@ -66,7 +65,7 @@ namespace IoT.Simulator.Services
             string logPrefix = "system".BuildLogPrefix();
 
             ModuleSettings = settings;
-            SimulationSettings = simulationSettings;
+            SimulationSettings = settings.SimulationSettings;
             _logger = loggerFactory.CreateLogger<ModuleSimulationService>();
 
             _telemetryMessagingService = telemetryMessagingService;

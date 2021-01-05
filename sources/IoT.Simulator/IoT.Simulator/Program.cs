@@ -365,7 +365,6 @@ namespace IoT.Simulator
                     {
                         var simulator = new ModuleSimulationService(
                             item,
-                            item.SimulationSettings,
                             serviceProvider.GetService<ITelemetryMessageService>(),
                             serviceProvider.GetService<IErrorMessageService>(),
                             serviceProvider.GetService<ICommissioningMessageService>(),

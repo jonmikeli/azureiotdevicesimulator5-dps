@@ -401,7 +401,7 @@ namespace IoT.Simulator.API.DeviceManagement.Services
             {
                 module = await _registryManager.AddModuleAsync(new Module(deviceId, moduleId));
             }
-            catch (DeviceAlreadyExistsException ex)
+            catch (ModuleAlreadyExistsException ex)
             {
                 _logger.LogWarning(ex, ex.Message);
                 module = await _registryManager.GetModuleAsync(deviceId, moduleId);
