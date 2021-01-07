@@ -120,9 +120,9 @@ namespace IoT.Simulator.Tools
             if (string.IsNullOrEmpty(fileName))
                 throw new ArgumentNullException(nameof(fileName));
 
-            LockManager.GetLock(fileName, async () =>
+            LockManager.GetLock(fileName, () =>
             {
-                await WriteModuleSettings(content, fileName);
+                WriteModuleSettings(content, fileName);
             });
         }
 
