@@ -73,7 +73,7 @@
       <DependentUpon>devicesettings.json</DependentUpon>
       <IsTransformFile>true</IsTransformFile>
     </None>
-    <None Update="dpssettings.Development.json">
+    <None Update="dpsSettings.Development.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="dpsSettings.json">

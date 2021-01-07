@@ -6,7 +6,7 @@
       "moduleId": "moduleA1",
       "simulationSettings": {
         "enableTelemetryMessages": true,
-        "telemetryFrecuency": 20,
+        "telemetryFrecuency": 15,
         "enableErrorMessages": true,
         "errorFrecuency": 30,
         "enableCommissioningMessages": true,
@@ -25,7 +25,7 @@
       "moduleId": "moduleA2",
       "simulationSettings": {
         "enableTelemetryMessages": true,
-        "telemetryFrecuency": 20,
+        "telemetryFrecuency": 30,
         "enableErrorMessages": true,
         "errorFrecuency": 30,
         "enableCommissioningMessages": true,
