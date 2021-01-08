@@ -16,3 +16,9 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 #ENTRYPOINT ["dotnet", "IoT.Simulator.dll"]
+
+EXPOSE 8883
+EXPOSE 443
+EXPOSE 5671
+
+LABEL version="v1.0" environment="dev" author="Jon Mikel Inza" copyright="JMI" github="https://github.com/jonmikeli/azureiotdevicesimulator5-dps" name="IoT.Simulator.Dps" description="Docker image fo an IoT Simulator taking in charge DPS provisioning." tags="IoT;Simulator;DPS;IoTHub;Azure IoT SDK;net5;chsarp"
