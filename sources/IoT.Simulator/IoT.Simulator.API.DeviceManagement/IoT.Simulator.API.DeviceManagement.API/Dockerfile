@@ -16,6 +16,7 @@ COPY . .
 WORKDIR "/src/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API"
 RUN dotnet build "IoT.Simulator.API.DeviceManagement.API.csproj" -c Release -o /app/build
 
+#Default dev certificate created and embedded inside the image
 WORKDIR /certificates
 RUN dotnet dev-certs https -ep IoT.Simulator.API.DeviceManagement.API.pfx -p password
 RUN dotnet dev-certs https --trust
