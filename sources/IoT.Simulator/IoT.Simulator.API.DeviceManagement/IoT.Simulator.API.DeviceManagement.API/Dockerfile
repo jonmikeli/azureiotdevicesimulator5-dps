@@ -25,4 +25,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
 
+RUN dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p password
+RUN dotnet dev-certs https --trust
+
 LABEL version="v1.0" environment="dev" author="Jon Mikel Inza" copyright="JMI" github="https://github.com/jonmikeli/azureiotdevicesimulator5-dps" name="IoTHub.SDK.API" description="Docker image of a REST API exposing Azure IoTHub SDK features." tags="IoT;Simulator;IoTHub;Azure IoT SDK;net5;chsarp;REST"
