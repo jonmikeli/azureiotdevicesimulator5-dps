@@ -23,7 +23,7 @@ namespace IoT.Simulator.Services
     {
         private readonly ILogger<DeviceSimulationService> _logger;
 
-        private DeviceSettings _deviceSettings;
+        private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;        
         private SimulationSettingsDevice _simulationSettings;
         private DeviceClient _deviceClient;
         private string _deviceId;
@@ -38,21 +38,21 @@ namespace IoT.Simulator.Services
         private string _environmentName;
 
         public DeviceSimulationService(
-            IOptions<DeviceSettings> deviceSettings,
+            IOptionsMonitor<DeviceSettings> deviceSettingsDelegate,
             ITelemetryMessageService telemetryMessagingService,
             IErrorMessageService errorMessagingService,
             ICommissioningMessageService commissioningMessagingService,
             IProvisioningService provisioningService,
             ILoggerFactory loggerFactory)
         {
-            if (deviceSettings == null)
-                throw new ArgumentNullException(nameof(deviceSettings));
+            if (deviceSettingsDelegate == null)
+                throw new ArgumentNullException(nameof(deviceSettingsDelegate));
 
-            if (deviceSettings.Value == null)
-                throw new ArgumentNullException("deviceSettings.Value", "No device configuration has been loaded.");
+            if (deviceSettingsDelegate.CurrentValue == null)
+                throw new ArgumentNullException("deviceSettingsDelegate.SimulationSettings");
 
-            if (deviceSettings.Value.SimulationSettings == null)
-                throw new ArgumentNullException("deviceSettings.Value.SimulationSettings");
+            if (deviceSettingsDelegate.CurrentValue.SimulationSettings == null)
+                throw new ArgumentNullException("deviceSettingsDelegate.CurrentValue.SimulationSettings");
 
             if (telemetryMessagingService == null)
                 throw new ArgumentNullException(nameof(telemetryMessagingService));
@@ -69,11 +69,11 @@ namespace IoT.Simulator.Services
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
 
-            _deviceSettings = deviceSettings.Value;
-            _simulationSettings = deviceSettings.Value.SimulationSettings;
+            _deviceSettingsDelegate = deviceSettingsDelegate;
+            _simulationSettings = _deviceSettingsDelegate.CurrentValue.SimulationSettings;
            
-            _deviceId = _deviceSettings.DeviceId;
-            _iotHub = _deviceSettings.HostName;
+            _deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
+            _iotHub = _deviceSettingsDelegate.CurrentValue.HostName;
 
             _telemetryInterval = _simulationSettings.TelemetryFrecuency;
 
@@ -87,8 +87,8 @@ namespace IoT.Simulator.Services
             _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
 
             string logPrefix = "system".BuildLogPrefix();
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Logger created.");
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator created.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device simulator created.");
         }
 
         ~DeviceSimulationService()
@@ -100,7 +100,7 @@ namespace IoT.Simulator.Services
 
                 string logPrefix = "system".BuildLogPrefix();
 
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device simulator disposed.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device simulator disposed.");
             }
         }
 
@@ -113,32 +113,32 @@ namespace IoT.Simulator.Services
             //Control if a connection string exists (ideally, stored in TPM/HSM or any secured location.
             //If there is no connection string, check if the DPS settings are provided.
             //If so, provision the device and persist the connection string for upcoming boots.
-            if (string.IsNullOrEmpty(_deviceSettings.ConnectionString))
+            if (string.IsNullOrEmpty(_deviceSettingsDelegate.CurrentValue.ConnectionString))
             {
-                _deviceSettings.ConnectionString = await _provisioningService.ProvisionDevice();
+                _deviceSettingsDelegate.CurrentValue.ConnectionString = await _provisioningService.ProvisionDevice();
 
-                if (string.IsNullOrEmpty(_deviceSettings.ConnectionString))
-                    _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::No device connection string has been created.");
+                if (string.IsNullOrEmpty(_deviceSettingsDelegate.CurrentValue.ConnectionString))
+                    _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No device connection string has been created.");
                 else
                 {
-                    _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::Device connection string being persisted.");
-                    await ConfigurationHelpers.WriteDeviceSettings(_deviceSettings, _environmentName);
+                    _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device connection string being persisted.");
+                    await ConfigurationHelpers.WriteDeviceSettings(_deviceSettingsDelegate.CurrentValue, _environmentName);
                 }
             }
             
             //At this stage, the connection string should be set properly and the device client should be able to communicate with the IoT Hub with no issues.
             try
             {
-                IoTTools.CheckDeviceConnectionStringData(_deviceSettings.ConnectionString, _logger);
+                IoTTools.CheckDeviceConnectionStringData(_deviceSettingsDelegate.CurrentValue.ConnectionString, _logger);
 
                 // Connect to the IoT hub using the MQTT protocol
-                _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettings.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device client created.");
+                _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettingsDelegate.CurrentValue.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device client created.");
 
                 if (_simulationSettings.EnableTwinPropertiesDesiredChangesNotifications)
                 {
                     await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertyChange, null);
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Twin Desired Properties update callback handler registered.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Twin Desired Properties update callback handler registered.");
                 }
 
                 //Configuration
@@ -166,13 +166,13 @@ namespace IoT.Simulator.Services
                 if (_simulationSettings.EnableReadingTwinProperties)
                 {
                     //Twins
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::INITIALIZATION::Retrieving twin.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::Retrieving twin.");
                     Twin twin = await _deviceClient.GetTwinAsync();
 
                     if (twin != null)
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::INITIALIZATION::Device twin: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::Device twin: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
                     else
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::INITIALIZATION::No device twin.");
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::No device twin.");
                 }
 
                 if (_simulationSettings.EnableFileUpload)
@@ -184,7 +184,7 @@ namespace IoT.Simulator.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::ERROR::InitiateSimulationAsync:{ex.Message}.");
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::ERROR::InitiateSimulationAsync:{ex.Message}.");
             }
         }
 
@@ -192,7 +192,7 @@ namespace IoT.Simulator.Services
         {
             string logPrefix = "system".BuildLogPrefix();
 
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Connection status changed-New status:{status.ToString()}-Reason:{reason.ToString()}.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Connection status changed-New status:{status.ToString()}-Reason:{reason.ToString()}.");
         }
 
         #region D2C                
@@ -205,7 +205,7 @@ namespace IoT.Simulator.Services
 
             string messageString = string.Empty;
 
-            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::MEASURED DATA"))
+            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::MEASURED DATA"))
             {
                 while (true)
                 {
@@ -225,8 +225,8 @@ namespace IoT.Simulator.Services
                     await _deviceClient.SendEventAsync(message);
                     counter++;
 
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sent message: {messageString}.");
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::COUNTER: {counter}.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Sent message: {messageString}.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::COUNTER: {counter}.");
 
                     if (_stopProcessing)
                     {
@@ -245,7 +245,7 @@ namespace IoT.Simulator.Services
             string messageString = string.Empty;
             string logPrefix = "error".BuildLogPrefix();
 
-            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::ERROR MESSAGE (SENT BY THE DEVICE)."))
+            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::ERROR MESSAGE (SENT BY THE DEVICE)."))
             {
                 while (true)
                 {
@@ -263,12 +263,12 @@ namespace IoT.Simulator.Services
                     await _deviceClient.SendEventAsync(message);
                     counter++;
 
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sent message: {messageString}.");
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::COUNTER: {counter}.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Sent message: {messageString}.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::COUNTER: {counter}.");
 
                     if (_stopProcessing)
                     {
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::STOP PROCESSING.");
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::STOP PROCESSING.");
                         break;
                     }
 
@@ -284,7 +284,7 @@ namespace IoT.Simulator.Services
             string messageString = string.Empty;
             string logPrefix = "commissioning".BuildLogPrefix();
 
-            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettings.ArtifactId}::COMMISSIONING MESSAGE"))
+            using (_logger.BeginScope($"{logPrefix}::{DateTime.Now}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::COMMISSIONING MESSAGE"))
             {
                 while (true)
                 {
@@ -302,8 +302,8 @@ namespace IoT.Simulator.Services
                     await _deviceClient.SendEventAsync(message);
                     counter++;
 
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sent message: {messageString}.");
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::COUNTER: {counter}.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Sent message: {messageString}.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::COUNTER: {counter}.");
 
                     if (_stopProcessing)
                     {
@@ -340,14 +340,14 @@ namespace IoT.Simulator.Services
 
                 // Send the tlemetry message
                 await _deviceClient.SendEventAsync(message);
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::LATENCY TEST::message sent:{messageString}.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::LATENCY TEST::message sent:{messageString}.");
 
                 if (interval <= 0)
                     break;
 
                 if (_stopProcessing)
                 {
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::LATENCY TEST::STOP PROCESSING.");
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::LATENCY TEST::STOP PROCESSING.");
                     break;
                 }
 
@@ -394,7 +394,7 @@ namespace IoT.Simulator.Services
         {
             string logPrefix = "c2dmessages".BuildLogPrefix();
 
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Device listening to cloud to device messages.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device listening to cloud to device messages.");
 
             Message receivedMessage = null;
             while (true)
@@ -404,7 +404,7 @@ namespace IoT.Simulator.Services
                 if (receivedMessage == null) continue;
 
                 await _deviceClient.CompleteAsync(receivedMessage);
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Received message: {Encoding.ASCII.GetString(receivedMessage.GetBytes())}.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Received message: {Encoding.ASCII.GetString(receivedMessage.GetBytes())}.");
 
                 receivedMessage = null;
             }
@@ -421,35 +421,35 @@ namespace IoT.Simulator.Services
                 // Create a handler for the direct method call
 
                 await _deviceClient.SetMethodHandlerAsync("SetTelemetryInterval", SetTelemetryInterval, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD SetTelemetryInterval registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD SetTelemetryInterval registered.");
 
                 await _deviceClient.SetMethodHandlerAsync("LatencyTestCallback", LatencyTestCallback, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD LatencyTestCallback registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD LatencyTestCallback registered.");
 
                 await _deviceClient.SetMethodHandlerAsync("SendLatencyTest", SendLatencyTest, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD SendLatencyTest registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD SendLatencyTest registered.");
 
                 await _deviceClient.SetMethodHandlerAsync("Reboot", Reboot, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD Reboot registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD Reboot registered.");
 
                 await _deviceClient.SetMethodHandlerAsync("OnOff", StartOrStop, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD OnOff registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD OnOff registered.");
 
                 await _deviceClient.SetMethodHandlerAsync("ReadTwins", ReadTwinsAsync, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD ReadTwins registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD ReadTwins registered.");
 
                 await _deviceClient.SetMethodHandlerAsync("GenericJToken", GenericJToken, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD GenericJToken registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD GenericJToken registered.");
 
                 await _deviceClient.SetMethodHandlerAsync("Generic", Generic, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD Generic registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD Generic registered.");
 
                 await _deviceClient.SetMethodDefaultHandlerAsync(DefaultC2DMethodHandler, null);
-                _logger.LogTrace($"{logPrefix}::{_deviceSettings.ArtifactId}::DIRECT METHOD Default handler registered.");
+                _logger.LogTrace($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DIRECT METHOD Default handler registered.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::ERROR::RegisterC2DDirectMethodsHandlersAsync:{ex.Message}.");
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::ERROR::RegisterC2DDirectMethodsHandlersAsync:{ex.Message}.");
             }
         }
 
@@ -464,7 +464,7 @@ namespace IoT.Simulator.Services
             // Check the payload is a single integer value
             if (Int32.TryParse(data, out _telemetryInterval))
             {
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Telemetry interval set to {_telemetryInterval} seconds.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Telemetry interval set to {_telemetryInterval} seconds.");
 
                 // Acknowlege the direct method call with a 200 success message
                 string result = "{\"result\":\"Executed direct method: " + methodRequest.Name + "\"}";
@@ -525,8 +525,8 @@ namespace IoT.Simulator.Services
             // Check the payload is a single integer value
             if (Int64.TryParse(data, out initialtimestamp))
             {
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Received data: {data}.");
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Latency test callback::latency: {callbackTimestamp - initialtimestamp} s.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Received data: {data}.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Latency test callback::latency: {callbackTimestamp - initialtimestamp} s.");
             }
 
             // Acknowledge the direct method call with a 200 success message
@@ -559,14 +559,14 @@ namespace IoT.Simulator.Services
 
             try
             {
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Reboot order received.");
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Stoping processes...");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Reboot order received.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Stoping processes...");
 
                 _stopProcessing = true;
 
 
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Processes stopped.");
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Rebooting...");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Processes stopped.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Rebooting...");
 
                 // Update device twin with reboot time. 
                 TwinCollection reportedProperties, reboot, lastReboot, rebootStatus;
@@ -589,11 +589,11 @@ namespace IoT.Simulator.Services
                 reportedProperties["iothubDM"] = reboot;
 
                 await _deviceClient.UpdateReportedPropertiesAsync(reportedProperties);
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Reboot over and system runing again.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Reboot over and system runing again.");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::ERROR::RebootOrchestration:{ex.Message}.");
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::ERROR::RebootOrchestration:{ex.Message}.");
             }
             finally
             {
@@ -605,7 +605,7 @@ namespace IoT.Simulator.Services
         {
             string logPrefix = "c2ddirectmethods".BuildLogPrefix();
 
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::StartOrStop command has been received and planified.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::StartOrStop command has been received and planified.");
 
             if (methodRequest.Data == null)
                 throw new ArgumentNullException("methodRequest.Data");
@@ -634,7 +634,7 @@ namespace IoT.Simulator.Services
         {
             string logPrefix = "c2ddirectmethods".BuildLogPrefix();
 
-            _logger.LogWarning($"{logPrefix}::{_deviceSettings.ArtifactId}::WARNING::{methodRequest.Name} has been called but there is no registered specific method handler.");
+            _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::WARNING::{methodRequest.Name} has been called but there is no registered specific method handler.");
 
             string message = $"Request direct method: {methodRequest.Name} but no specifif direct method handler.";
 
@@ -670,7 +670,7 @@ namespace IoT.Simulator.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::ERROR::ReportConnectivityAsync:{ex.Message}.");
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::ERROR::ReportConnectivityAsync:{ex.Message}.");
             }
         }
 
@@ -680,7 +680,7 @@ namespace IoT.Simulator.Services
 
             try
             {
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sending generic reported property update:: {propertyName}-{value}.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Sending generic reported property update:: {propertyName}-{value}.");
 
                 TwinCollection reportedProperties, configuration;
                 reportedProperties = new TwinCollection();
@@ -690,7 +690,7 @@ namespace IoT.Simulator.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::ERROR::GenericTwinReportedUpdateAsync:{ex.Message}.");
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::ERROR::GenericTwinReportedUpdateAsync:{ex.Message}.");
             }
         }
 
@@ -700,7 +700,7 @@ namespace IoT.Simulator.Services
 
             try
             {
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sending firmware update notification.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Sending firmware update notification.");
 
                 TwinCollection reportedProperties;
                 reportedProperties = new TwinCollection();
@@ -711,7 +711,7 @@ namespace IoT.Simulator.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError($"{logPrefix}::{_deviceSettings.ArtifactId}::ERROR::ReportFirwmareUpdateAsync:{ex.Message}.");
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::ERROR::ReportFirwmareUpdateAsync:{ex.Message}.");
             }
         }
 
@@ -720,26 +720,26 @@ namespace IoT.Simulator.Services
             string logPrefix = "c2dtwins".BuildLogPrefix();
 
             //Twins
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS::Reading...");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::TWINS::Reading...");
 
             Twin twin = await _deviceClient.GetTwinAsync();
 
             if (twin != null)
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS:: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::TWINS:: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
             else
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS:: No twins available.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::TWINS:: No twins available.");
         }
 
         private async Task OnDesiredPropertyChange(TwinCollection desiredproperties, object usercontext)
         {
             string logPrefix = "c2dtwins".BuildLogPrefix();
 
-            _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED properties changes request notification.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::TWINS-PROPERTIES-DESIRED properties changes request notification.");
 
             if (desiredproperties != null)
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED::{JsonConvert.SerializeObject(desiredproperties, Formatting.Indented)}");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::TWINS-PROPERTIES-DESIRED::{JsonConvert.SerializeObject(desiredproperties, Formatting.Indented)}");
             else
-                _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::TWINS-PROPERTIES-DESIRED properties change is emtpy.");
+                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::TWINS-PROPERTIES-DESIRED properties change is emtpy.");
 
         }
         #endregion
