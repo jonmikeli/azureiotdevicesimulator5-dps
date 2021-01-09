@@ -13,7 +13,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using System;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,7 +85,7 @@ namespace IoT.Simulator.Services
             // the device Id is already chosen. However, for group enrollments the device Id can be requested by
             // the device, as long as the key has been computed using that value.
             // Also, the secondary could could be included, but was left out for the simplicity of this sample.
-            using (var security = new SecurityProviderSymmetricKey(_deviceSettingsDelegate.CurrentValue.DeviceId,_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey,null))
+            using (var security = new SecurityProviderSymmetricKey(_deviceSettingsDelegate.CurrentValue.DeviceId, _dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey, null))
             {
                 using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
                 {
@@ -130,7 +134,7 @@ namespace IoT.Simulator.Services
                         _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No provisioning result has been received.");
                 }
             }
-           
+
             return result;
         }
 
@@ -151,40 +155,70 @@ namespace IoT.Simulator.Services
             string result = string.Empty;
             string logPrefix = "DPSProvisioningService.AddModuleIdentityToDevice".BuildLogPrefix();
 
-            using (var client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri(_appSettings.DeviceManagementServiceSettings.BaseUrl);
 
-                string jsonContent = JsonConvert.SerializeObject(new
+                using (HttpClientHandler handler = new HttpClientHandler())
                 {
-                    deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId,
-                    moduleId = moduleId
-                });
-
-                HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute, content);
-
-                if (response != null)
-                {
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Adding the module entity to the device...");
-
-                    string resultContent = await response.Content.ReadAsStringAsync();                    
-
-                    if (!string.IsNullOrEmpty(resultContent))
+                    if (_appSettings.DeviceManagementServiceSettings.AllowAutosignedSSLCertificates)
                     {
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device management service called.");
+                        //handler.ServerCertificateCustomValidationCallback = CertificateValidation;
+                        handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                    }
 
-                        JObject jData = JObject.Parse(resultContent);                        
-                        string primaryKey = jData.Value<string>("authenticationPrimaryKey");
+                    using (var client = new HttpClient(handler))
+                    {
+                        handler.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
 
-                        result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+                        client.BaseAddress = new Uri(_appSettings.DeviceManagementServiceSettings.BaseUrl);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Module identity added to device.");
+                        string jsonContent = JsonConvert.SerializeObject(new
+                        {
+                            deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId,
+                            moduleId = moduleId
+                        });
+
+                        HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                        var response = await client.PostAsync(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute, content);
+
+                        if (response != null)
+                        {
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Adding the module entity to the device...");
+
+                            string resultContent = await response.Content.ReadAsStringAsync();
+
+                            if (!string.IsNullOrEmpty(resultContent))
+                            {
+                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device management service called.");
+
+                                JObject jData = JObject.Parse(resultContent);
+                                string primaryKey = jData.Value<string>("authenticationPrimaryKey");
+
+                                result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+
+                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Module identity added to device.");
+                            }
+                        }
                     }
                 }
             }
-            
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::{ex.Message}->InnerException::{ex.InnerException?.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::{ex.Message}->InnerException::{ex.InnerException?.Message}");
+            }
+
             return result;
+        }
+
+        private bool CertificateValidation(HttpRequestMessage requestMessage, X509Certificate? certificate, X509Chain? chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
         }
     }
 }

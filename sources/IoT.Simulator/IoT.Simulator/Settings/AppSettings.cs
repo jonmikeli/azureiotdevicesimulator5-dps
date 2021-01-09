@@ -20,5 +20,6 @@ namespace IoT.Simulator.Settings
     {
         public string BaseUrl { get; set; }
         public string AddModulesToDeviceRoute { get; set; }
+        public bool AllowAutosignedSSLCertificates { get; set; }
     }
 }
