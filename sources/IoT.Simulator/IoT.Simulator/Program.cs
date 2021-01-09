@@ -176,12 +176,12 @@ namespace IoT.Simulator
 
                     if (jData != null && jData.ContainsKey(DPSSettings.DPSSettingsSection))
                     {
-                        dpsSettings = jData[DPSSettings.DPSSettingsSection].ToObject<DPSSettings>();                        
+                        dpsSettings = jData[DPSSettings.DPSSettingsSection].ToObject<DPSSettings>();
                     }
                 }
             }
 
-            //The any DPS setting has been found, they are bound as .NET IOptions.
+            //IF any DPS setting is found, it is bound as .NET IOptions.
             if (dpsSettings != null)
             {
                 var dpsSettingsOptions = Options.Create(dpsSettings);
@@ -190,6 +190,23 @@ namespace IoT.Simulator
             }
             else
                 throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");
+
+            //Overwrite the device Id if it is provided by the environment variable
+            var deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
+            if (!string.IsNullOrEmpty(deviceId))
+            {
+                //Get the device settings related Options
+                IServiceProvider serviceProvider = services.BuildServiceProvider();
+                var deviceSettingsOption = serviceProvider.GetService<IOptions<DeviceSettings>>();
+
+                //Update the options
+                if (deviceSettingsOption != null && deviceSettingsOption.Value != null)
+                {
+                    var options = deviceSettingsOption.Value;
+                    options.DeviceId = deviceId;
+                    options.ConnectionString = string.Empty;
+                }
+            }
         }
         #endregion
 
@@ -256,7 +273,7 @@ namespace IoT.Simulator
             var localVariables = Environment.GetEnvironmentVariables();
 
             if (localVariables != null && localVariables.Count >= 2)
-            {             
+            {
                 string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
                 string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
 
@@ -273,9 +290,6 @@ namespace IoT.Simulator
 
                     settings.GroupEnrollment.SymetricKeySettings.IdScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
                     settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
-
-                    //THINK: Overwrite the device Id?
-                    //var deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
                 }
             }
 
