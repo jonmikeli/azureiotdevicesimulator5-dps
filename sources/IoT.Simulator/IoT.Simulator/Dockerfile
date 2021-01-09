@@ -15,7 +15,7 @@ RUN dotnet publish "IoT.Simulator.csproj" -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-#ENTRYPOINT ["dotnet", "IoT.Simulator.dll"]
+ENTRYPOINT ["dotnet", "IoT.Simulator.dll"]
 
 EXPOSE 8883
 EXPOSE 443
