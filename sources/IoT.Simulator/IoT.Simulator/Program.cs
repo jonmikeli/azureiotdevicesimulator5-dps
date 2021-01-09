@@ -89,7 +89,7 @@ namespace IoT.Simulator
                 ConfigureServices(services);
 
                 //DPS and provisioning
-                LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
+                await LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
 
                 //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
@@ -153,7 +153,7 @@ namespace IoT.Simulator
         /// <param name="configuration"></param>
         /// <param name="args"></param>
         /// <param name="_environmentName"></param>
-        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
+        private static async Task LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
         {
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
             DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
@@ -205,6 +205,8 @@ namespace IoT.Simulator
                     var options = deviceSettingsOption.Value;
                     options.DeviceId = deviceId;
                     options.ConnectionString = string.Empty;
+
+                    await ConfigurationHelpers.WriteDeviceSettings(options, _environmentName);
                 }
             }
         }
