@@ -13,4 +13,12 @@ ASPNETCORE_URLS
 dotnet dev-certs https --trust
 ```
 
+## Trust HTTPS certificate on Linux
+See distribution documentation.
 
+## Trust HTTPS certificate from WSL
+
+## HTTPS in Docker container
+[Source](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host)
+
+[Direct link](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0#https_port-1)
