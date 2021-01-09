@@ -202,11 +202,11 @@ namespace IoT.Simulator
                 //Update the options
                 if (deviceSettingsOption != null && deviceSettingsOption.Value != null)
                 {
-                    var options = deviceSettingsOption.Value;
-                    options.DeviceId = deviceId;
-                    options.ConnectionString = string.Empty;
+                    DeviceSettings deviceSettings = deviceSettingsOption.Value;
+                    deviceSettings.DeviceId = deviceId;
+                    deviceSettings.ConnectionString = string.Empty;
 
-                    await ConfigurationHelpers.WriteDeviceSettings(options, _environmentName);
+                    await ConfigurationHelpers.WriteDeviceSettings(deviceSettings, _environmentName);
                 }
             }
         }
