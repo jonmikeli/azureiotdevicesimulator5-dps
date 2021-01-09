@@ -10,6 +10,7 @@ ASPNETCORE_URLS
 
 ### Trust the ASP.NET Core HTTPS development certificate on Windows
 ```bash
+dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p { password here }
 dotnet dev-certs https --trust
 ```
 
