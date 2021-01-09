@@ -2,7 +2,6 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
-EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
@@ -17,15 +16,22 @@ COPY . .
 WORKDIR "/src/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API"
 RUN dotnet build "IoT.Simulator.API.DeviceManagement.API.csproj" -c Release -o /app/build
 
+WORKDIR /certificates
+RUN dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\IoT.Simulator.API.DeviceManagement.API.pfx -p password
+RUN dotnet dev-certs https --trust
+
 FROM build AS publish
+WORKDIR "/src/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API"
 RUN dotnet publish "IoT.Simulator.API.DeviceManagement.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
+WORKDIR /certificates
+COPY --from=build /certificates .
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path /certificates/IoT.Simulator.API.DeviceManagement.API.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password password
 
-RUN dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\aspnetapp.pfx -p password
-RUN dotnet dev-certs https --trust
+ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
 
 LABEL version="v1.0" environment="dev" author="Jon Mikel Inza" copyright="JMI" github="https://github.com/jonmikeli/azureiotdevicesimulator5-dps" name="IoTHub.SDK.API" description="Docker image of a REST API exposing Azure IoTHub SDK features." tags="IoT;Simulator;IoTHub;Azure IoT SDK;net5;chsarp;REST"
