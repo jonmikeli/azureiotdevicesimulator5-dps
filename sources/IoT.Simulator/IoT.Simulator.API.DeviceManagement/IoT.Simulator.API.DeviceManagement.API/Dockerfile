@@ -17,7 +17,7 @@ WORKDIR "/src/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagem
 RUN dotnet build "IoT.Simulator.API.DeviceManagement.API.csproj" -c Release -o /app/build
 
 WORKDIR /certificates
-RUN dotnet dev-certs https -ep %USERPROFILE%\.aspnet\https\IoT.Simulator.API.DeviceManagement.API.pfx -p password
+RUN dotnet dev-certs https -ep IoT.Simulator.API.DeviceManagement.API.pfx -p password
 RUN dotnet dev-certs https --trust
 
 FROM build AS publish
@@ -32,6 +32,6 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path /certificates/IoT.Simulator.API.DeviceManagement.API.pfx
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password password
 
-ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
+#ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
 
 LABEL version="v1.0" environment="dev" author="Jon Mikel Inza" copyright="JMI" github="https://github.com/jonmikeli/azureiotdevicesimulator5-dps" name="IoTHub.SDK.API" description="Docker image of a REST API exposing Azure IoTHub SDK features." tags="IoT;Simulator;IoTHub;Azure IoT SDK;net5;chsarp;REST"
