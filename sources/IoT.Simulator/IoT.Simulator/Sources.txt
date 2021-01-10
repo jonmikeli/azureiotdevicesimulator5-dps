@@ -15,3 +15,21 @@ https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/iot-dps/about-i
 Security
 https://docs.microsoft.com/en-us/azure/iot-dps/concepts-device-oem-security-practices
 https://blogs.getcertifiedgetahead.com/tpm-hsm-hardware-encryption-devices/
+
+
+https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-csharp-csharp-module-twin-getstarted
+
+Multithreading
+https://docs.microsoft.com/en-us/dotnet/api/system.io.file?view=net-5.0
+https://www.codeproject.com/Tips/1190802/File-Locking-in-a-Multi-Threaded-Environment
+
+HTTPS DOcker
+https://docs.microsoft.com/en-us/aspnet/core/security/docker-https?view=aspnetcore-5.0
+
+https://stackoverflow.com/questions/56824859/how-to-run-dockered-asp-net-core-app-generated-by-visual-studio-2019-on-linux-p
+https://github.com/dotnet/runtime/issues/36333
+
+Tests
+https://github.com/dotnet/runtime/issues/36333
+
+docker run -ti --name iothubapi -P -p 5001:443 -e ASPNETCORE_URLS="https://+" -e ASPNETCORE_HTTPS_PORT=5001 -e ASPNETCORE_Kestrel__Certificates__Default__Path [path] -e ASPNETCORE_Kestrel__Certificates__Default__Password [password] iothubsdk-api

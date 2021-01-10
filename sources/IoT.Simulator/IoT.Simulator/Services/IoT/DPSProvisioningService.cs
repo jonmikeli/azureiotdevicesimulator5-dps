@@ -105,7 +105,7 @@ namespace IoT.Simulator.Services
                         _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registration status: {deviceRegistrationResult.Status}.");
                         if (deviceRegistrationResult.Status != ProvisioningRegistrationStatusType.Assigned)
                         {
-                            _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registration status did not assign a hub, so exiting this sample.");
+                            _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device registration process did not assign an IoT Hub.");
                         }
                         else
                         {
