@@ -89,7 +89,7 @@ namespace IoT.Simulator
 
                 //Service provider and DI
                 IServiceCollection services = new ServiceCollection();
-                await ConfigureServices(services);
+                ConfigureServices(services);
 
                 //DPS and provisioning
                 LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
@@ -201,25 +201,74 @@ namespace IoT.Simulator
             string deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
             if (!string.IsNullOrEmpty(deviceId))
             {
-                //Get the device settings related Options
-                string filePath = "devicesettings.json";
-                if (!string.IsNullOrEmpty(environmentName))
-                    filePath = $"devicesettings.{environmentName}.json";
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($"DeviceId set by environment variables: {deviceId}");
 
-                if (!File.Exists(filePath))
-                    throw new Exception("Device settings path not found to update the device id coming from the environment settings.");
 
-                string settingsData = File.ReadAllText(filePath);
-                if (!string.IsNullOrEmpty(settingsData))
+                List<Task> tasks = new List<Task>();
+                tasks.Add(UpdateDeviceIdInDeviceSettings(deviceId, environmentName));
+                tasks.Add(ClearDeviceIdInModulesSettings(environmentName));
+
+                await Task.WhenAll(tasks);
+
+                Console.ResetColor();
+            }
+        }
+
+        private static async Task  UpdateDeviceIdInDeviceSettings(string deviceId, string environmentName)
+        {
+            //Get the device settings related Options
+            string deviceSettingsFilePath = "devicesettings.json";
+            if (!string.IsNullOrEmpty(environmentName))
+                deviceSettingsFilePath = $"devicesettings.{environmentName}.json";
+
+            if (!File.Exists(deviceSettingsFilePath))
+                throw new Exception("Device settings path not found to update the device id coming from the environment settings.");
+
+            string settingsData = File.ReadAllText(deviceSettingsFilePath);
+            if (!string.IsNullOrEmpty(settingsData))
+            {
+                DeviceSettings settings = JsonConvert.DeserializeObject<DeviceSettings>(settingsData);
+
+                if (settings != null)
                 {
-                    DeviceSettings settings = JsonConvert.DeserializeObject<DeviceSettings>(settingsData);
+                    Console.WriteLine($"Updating the settings with the new device id: {deviceId}.");
 
-                    if (settings != null)
+                    settings.DeviceId = deviceId;
+                    settings.ConnectionString = string.Empty;
+                    await ConfigurationHelpers.WriteDeviceSettings(settings, environmentName);
+
+                    Console.WriteLine($"Settings updated with the new device id: {deviceId}.");
+                }
+            }
+        }
+
+        private static async Task ClearDeviceIdInModulesSettings(string environmentName)
+        {
+            //Get the device settings related Options
+            string modulesSettingsFilePath = "modulessettings.json";
+            if (!string.IsNullOrEmpty(environmentName))
+                modulesSettingsFilePath = $"modulessettings.{environmentName}.json";
+
+            if (!File.Exists(modulesSettingsFilePath))
+                throw new Exception("Modules settings path not found to clear the device id related data.");
+
+            string settingsData = File.ReadAllText(modulesSettingsFilePath);
+            if (!string.IsNullOrEmpty(settingsData))
+            {
+                ModulesSettings modulesSettings = JsonConvert.DeserializeObject<ModulesSettings>(settingsData);
+
+                if (modulesSettings != null && modulesSettings.Modules != null && modulesSettings.Modules.Count > 0)
+                {
+                    foreach (var item in modulesSettings.Modules)
                     {
-                        settings.DeviceId = deviceId;
-                        settings.ConnectionString = string.Empty;
-                        await ConfigurationHelpers.WriteDeviceSettings(settings, environmentName);
+                        item.DeviceId = string.Empty;
+                        item.ConnectionString = string.Empty;                        
                     }
+
+                    Console.WriteLine($"Clearing modules settings configuration file.");
+                    await ConfigurationHelpers.WriteModulesSettings(modulesSettings, environmentName);
+                    Console.WriteLine($"Modules settings cleared.");
                 }
             }
         }
@@ -315,7 +364,7 @@ namespace IoT.Simulator
         #region Simulation services
         //logging
         //https://andrewlock.net/using-dependency-injection-in-a-net-core-console-application/
-        static async Task ConfigureServices(IServiceCollection services)
+        static void ConfigureServices(IServiceCollection services)
         {
             if (services != null)
             {
