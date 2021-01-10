@@ -187,18 +187,18 @@ namespace IoT.Simulator.Services
                         {
                             response.EnsureSuccessStatusCode();
 
-                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Adding the module entity to the device...");
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Adding the module entity to the device...");
 
                             string resultContent = await response.Content.ReadAsStringAsync();
 
                             if (!string.IsNullOrEmpty(resultContent))
                             {
-                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device Management service called. Getting the keys...");
+                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Device Management service called. Getting registered module identity keys...");
 
                                 JObject jData = JObject.Parse(resultContent);
                                 string primaryKey = jData.Value<string>("authenticationPrimaryKey");
 
-                                _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Keys provided by the Device Management service.");
+                                _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Keys provided by the Device Management service.");
 
                                 if (!string.IsNullOrEmpty(primaryKey))
                                 {
@@ -207,7 +207,7 @@ namespace IoT.Simulator.Services
                                     result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
                                 }
                                 else
-                                    _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::An error has occurred when getting the keys from the Device Management service.");
+                                    _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::An error has occurred when getting the keys from the Device Management service.");
 
                             }
                         }
