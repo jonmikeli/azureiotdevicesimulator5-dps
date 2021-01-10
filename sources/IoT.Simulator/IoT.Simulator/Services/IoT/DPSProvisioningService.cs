@@ -193,12 +193,17 @@ namespace IoT.Simulator.Services
 
                             if (!string.IsNullOrEmpty(resultContent))
                             {
-                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device management service called.");
+                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device Management service called. Getting the keys...");
 
                                 JObject jData = JObject.Parse(resultContent);
                                 string primaryKey = jData.Value<string>("authenticationPrimaryKey");
 
-                                result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+                                _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Keys provided by the Device Management service.");
+
+                                if (!string.IsNullOrEmpty(primaryKey))
+                                    result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+                                else
+                                    _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::An error has occurred when getting the keys from the Device Management service.");
 
                                 _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Module identity added to device.");
                             }
