@@ -58,7 +58,7 @@ namespace IoT.Simulator
                 
                 if (string.IsNullOrWhiteSpace(_environmentName))
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine("No environment platform has been found. Default setting: Development.");
                     _environmentName = "Development";
                     Console.ResetColor();
