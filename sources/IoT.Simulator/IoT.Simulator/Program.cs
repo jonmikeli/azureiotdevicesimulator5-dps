@@ -41,6 +41,12 @@ namespace IoT.Simulator
 
             try
             {
+                //Loading environment related settings
+                _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
+
+                // Environment device Id check
+                await CheckEnvironmentDeviceId(_environmentName);
+
                 //Configuration
                 var builder = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
@@ -49,10 +55,7 @@ namespace IoT.Simulator
                     .AddJsonFile("modulessettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile("dpssettings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables();
-
-                //Loading environment related settings
-                _environmentName = Environment.GetEnvironmentVariable("ENVIRONMENT");
-
+                
                 if (string.IsNullOrWhiteSpace(_environmentName))
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -192,24 +195,31 @@ namespace IoT.Simulator
                 throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");            
         }
 
-        private static async Task CheckEnvironmentDeviceId(IServiceCollection services)
+        private static async Task CheckEnvironmentDeviceId(string environmentName)
         {
             //Overwrite the device Id if it is provided by the environment variable
             string deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
             if (!string.IsNullOrEmpty(deviceId))
             {
                 //Get the device settings related Options
-                IServiceProvider serviceProvider = services.BuildServiceProvider();
-                var deviceSettingsOption = serviceProvider.GetService<IOptions<DeviceSettings>>();
+                string filePath = "devicesettings.json";
+                if (!string.IsNullOrEmpty(environmentName))
+                    filePath = $"devicesettings.{environmentName}.json";
 
-                //Update the options
-                if (deviceSettingsOption != null && deviceSettingsOption.Value != null)
+                if (!File.Exists(filePath))
+                    throw new Exception("Device settings path not found to update the device id coming from the environment settings.");
+
+                string settingsData = File.ReadAllText(filePath);
+                if (!string.IsNullOrEmpty(settingsData))
                 {
-                    DeviceSettings deviceSettings = deviceSettingsOption.Value;
-                    deviceSettings.DeviceId = deviceId;
-                    deviceSettings.ConnectionString = string.Empty;
+                    DeviceSettings settings = JsonConvert.DeserializeObject<DeviceSettings>(settingsData);
 
-                    await ConfigurationHelpers.WriteDeviceSettings(deviceSettings, _environmentName);
+                    if (settings != null)
+                    {
+                        settings.DeviceId = deviceId;
+                        settings.ConnectionString = string.Empty;
+                        await ConfigurationHelpers.WriteDeviceSettings(settings, environmentName);
+                    }
                 }
             }
         }
@@ -330,11 +340,7 @@ namespace IoT.Simulator
 
                 //services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<AppSettings>(Configuration);
-                services.Configure<DeviceSettings>(Configuration);
-                
-                //Check environment deviceId
-                await CheckEnvironmentDeviceId(services);
-
+                services.Configure<DeviceSettings>(Configuration);               
                 services.Configure<ModulesSettings>(Configuration);
                 services.Configure<DPSSettings>(Configuration.GetSection(DPSSettings.DPSSettingsSection));
             }
