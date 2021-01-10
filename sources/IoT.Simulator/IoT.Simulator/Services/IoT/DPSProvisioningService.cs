@@ -182,9 +182,11 @@ namespace IoT.Simulator.Services
 
                         HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                         var response = await client.PostAsync(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute, content);
-
+                       
                         if (response != null)
                         {
+                            response.EnsureSuccessStatusCode();
+
                             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Adding the module entity to the device...");
 
                             string resultContent = await response.Content.ReadAsStringAsync();
