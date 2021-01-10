@@ -23,7 +23,7 @@ namespace IoT.Simulator.Services
     {
         private readonly ILogger<DeviceSimulationService> _logger;
 
-        private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;        
+        private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
         private SimulationSettingsDevice _simulationSettings;
         private DeviceClient _deviceClient;
         private string _deviceId;
@@ -71,7 +71,7 @@ namespace IoT.Simulator.Services
 
             _deviceSettingsDelegate = deviceSettingsDelegate;
             _simulationSettings = _deviceSettingsDelegate.CurrentValue.SimulationSettings;
-           
+
             _deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
             _iotHub = _deviceSettingsDelegate.CurrentValue.HostName;
 
@@ -115,17 +115,17 @@ namespace IoT.Simulator.Services
             //If so, provision the device and persist the connection string for upcoming boots.
             if (string.IsNullOrEmpty(_deviceSettingsDelegate.CurrentValue.ConnectionString))
             {
-                _deviceSettingsDelegate.CurrentValue.ConnectionString = await _provisioningService.ProvisionDevice();
+                string connectionString = await _provisioningService.ProvisionDevice();
 
-                if (string.IsNullOrEmpty(_deviceSettingsDelegate.CurrentValue.ConnectionString))
-                    _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No device connection string has been created.");
+                if (!string.IsNullOrEmpty(connectionString))
+                    _deviceSettingsDelegate.CurrentValue.ConnectionString = connectionString;
                 else
-                {
-                    _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device connection string being persisted.");
-                    await ConfigurationHelpers.WriteDeviceSettings(_deviceSettingsDelegate.CurrentValue, _environmentName);
-                }
+                    throw new Exception($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::An issue occured during the provisioning process or the connetion string building process.");
+
+                _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device connection string being persisted.");
+                await ConfigurationHelpers.WriteDeviceSettings(_deviceSettingsDelegate.CurrentValue, _environmentName);
             }
-            
+
             //At this stage, the connection string should be set properly and the device client should be able to communicate with the IoT Hub with no issues.
             try
             {
