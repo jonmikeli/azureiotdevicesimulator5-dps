@@ -81,6 +81,15 @@ namespace IoT.Simulator.Tools
             await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
         }
 
+        public static async Task WriteModulesSettings(ModulesSettings content, string environment)
+        {
+            string fileName = $"{MODULES_SETTINGS_FILE_NAME}.json";
+            if (!string.IsNullOrEmpty(environment))
+                fileName = $"{MODULES_SETTINGS_FILE_NAME}.{environment}.json";
+
+            await WriteSettings(JsonConvert.SerializeObject(content, Formatting.Indented), fileName);
+        }
+
         public static async Task WriteModulesSettings(ModuleSettings content, string environment)
         {
             string fileName = $"{MODULES_SETTINGS_FILE_NAME}.json";
