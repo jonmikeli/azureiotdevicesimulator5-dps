@@ -86,10 +86,10 @@ namespace IoT.Simulator
 
                 //Service provider and DI
                 IServiceCollection services = new ServiceCollection();
-                ConfigureServices(services);
+                await ConfigureServices(services);
 
                 //DPS and provisioning
-                await LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
+                LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
 
                 //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
@@ -153,7 +153,7 @@ namespace IoT.Simulator
         /// <param name="configuration"></param>
         /// <param name="args"></param>
         /// <param name="_environmentName"></param>
-        private static async Task LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
+        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
         {
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
             DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
@@ -189,10 +189,13 @@ namespace IoT.Simulator
                 configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
             }
             else
-                throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");
+                throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");            
+        }
 
+        private static async Task CheckEnvironmentDeviceId(IServiceCollection services)
+        {
             //Overwrite the device Id if it is provided by the environment variable
-            var deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
+            string deviceId = Environment.GetEnvironmentVariable("PROVISIONING_REGISTRATION_ID");
             if (!string.IsNullOrEmpty(deviceId))
             {
                 //Get the device settings related Options
@@ -302,7 +305,7 @@ namespace IoT.Simulator
         #region Simulation services
         //logging
         //https://andrewlock.net/using-dependency-injection-in-a-net-core-console-application/
-        static void ConfigureServices(IServiceCollection services)
+        static async Task ConfigureServices(IServiceCollection services)
         {
             if (services != null)
             {
@@ -328,6 +331,10 @@ namespace IoT.Simulator
                 //services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<AppSettings>(Configuration);
                 services.Configure<DeviceSettings>(Configuration);
+                
+                //Check environment deviceId
+                await CheckEnvironmentDeviceId(services);
+
                 services.Configure<ModulesSettings>(Configuration);
                 services.Configure<DPSSettings>(Configuration.GetSection(DPSSettings.DPSSettingsSection));
             }
