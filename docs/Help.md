@@ -305,6 +305,11 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
     "LogLevel": {
       "Default": "Warning"
     }
+  },
+  "DeviceManagementServiceSettings": {
+    "BaseUrl": "[TO BE REPLACED]",
+    "AddModulesToDeviceRoute": "modules/add",
+    "AllowAutosignedSSLCertificates": true
   }
 }
  ```
@@ -346,38 +351,42 @@ Properties are quite self-explanatory.
 {
  "modules":[
     {
-      "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];ModuleId=[MODULE ID];SharedAccessKey=[KEY]",
+      "deviceId": "",
+      "moduleId": "[REQUIRED]",
+      "connectionString": "",      
       "simulationSettings": {
         "enableLatencyTests": false,
         "latencyTestsFrecuency": 10,
-        "enableTelemetryMessages": false,
-        "telemetryFrecuency": 60,
+        "enableTelemetryMessages": true,
+        "telemetryFrecuency": 20,
         "enableErrorMessages": false,
-        "errorFrecuency": 60,
+        "errorFrecuency": 30,
         "enableCommissioningMessages": false,
         "commissioningFrecuency": 60,
         "enableTwinReportedMessages": false,
         "twinReportedMessagesFrecuency": 60,
-        "enableReadingTwinProperties": false,
+        "enableReadingTwinProperties": true,
         "enableC2DDirectMethods": true,
         "enableC2DMessages": true,
         "enableTwinPropertiesDesiredChangesNotifications": true
       }
     },
     {
-      "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];ModuleId=[MODULE ID];SharedAccessKey=[KEY]",
+      "deviceId": "",
+      "moduleId": "[REQUIRED]",
+      "connectionString": "",      
       "simulationSettings": {
         "enableLatencyTests": false,
         "latencyTestsFrecuency": 10,
-        "enableTelemetryMessages": false,
-        "telemetryFrecuency": 60,
+        "enableTelemetryMessages": true,
+        "telemetryFrecuency": 20,
         "enableErrorMessages": false,
-        "errorFrecuency": 60,
+        "errorFrecuency": 30,
         "enableCommissioningMessages": false,
         "commissioningFrecuency": 60,
         "enableTwinReportedMessages": false,
         "twinReportedMessagesFrecuency": 60,
-        "enableReadingTwinProperties": false,
+        "enableReadingTwinProperties": true,
         "enableC2DDirectMethods": true,
         "enableC2DMessages": true,
         "enableTwinPropertiesDesiredChangesNotifications": true
@@ -406,7 +415,7 @@ This being said, if at some point you need to avoid including that information i
 
 > [!NOTE]
 >
-> Microsoft Azure IoT Hub does not require the devices send JSON messages.
+> Microsoft Azure IoT Hub does not require the devices to send JSON messages.
 > If your project requires other formats (ex: very small hexadecimal messages, frequent in IoT small devices), Microsoft Azure IoT Hub has no problem in processing them. Also, you can still use Azure IoT Device Simulator; it will require small code changes in the Message Service but all the remaining implemented features remain valid.
 
 > [!WARNING]
