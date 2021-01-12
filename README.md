@@ -17,8 +17,7 @@ The purpose of the previous simulators were to:
 With those same purposes in mind, this version of the simulator implements mainly the same kind of experience but adapted to DPS oriented provisioning contexts.
 The experience will be the same for one device, a few of them or hundreds / thousands of them.
 
-A bash script is provided in the repository to illustrate how to create as many instances of the simulator (containerized version) as wanted very fast (in a few seconds)
-, provisioned by themselves and interacting with the attributed [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) in a totally autonomous way.
+A script is provided in the repository to showcase how to create as many instances of the simulator (containerized version) as wanted. The whole set of simulated devices may be provisioned and running in a few seconds.....literally. This can be done very fast (in a few seconds), provisioned by themselves and interacting with the attributed [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) in a totally autonomous way.
 The whole D2C/C2D experience is implemented (except file uploads), with devices as well as module identities.
 
 Messages are based on the templates used in the previous simulators.
