@@ -58,10 +58,11 @@ Technical information:
  - device simulation configuration based on JSON files.
  - module simulation configuration based on JSON files.
  - no specific limitation on the number of modules (only limited by Microsoft Azure IoT Hub constraints).
- - simple and lightweight application, containerizable.
+ - containerizable and accepts environment variables.
  - message templates based on JSON (3 message types by default in this first version).
- - implementation of full IoT flows (C2D, D2C, C2M, M2C) - see below for more details.
+ - implementation of full IoT flows (C2D, D2C, C2M, M2C).
 
+See below for more details.
 
 ## Functional features
 
