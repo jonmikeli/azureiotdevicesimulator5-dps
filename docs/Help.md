@@ -246,9 +246,9 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
 {
  "modules":[
     {
-      "deviceId": "[REQUIRED]",
+      "deviceId": "",
       "moduleId": "[REQUIRED]",
-      "connectionString": "[GENERATED]",      
+      "connectionString": "",      
       "simulationSettings": {
         "enableLatencyTests": false,
         "latencyTestsFrecuency": 10,
@@ -267,9 +267,9 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
       }
     },
     {
-      "deviceId": "[REQUIRED]",
+      "deviceId": "",
       "moduleId": "[REQUIRED]",
-      "connectionString": "[GENERATED]",      
+      "connectionString": "",      
       "simulationSettings": {
         "enableLatencyTests": false,
         "latencyTestsFrecuency": 10,
