@@ -70,7 +70,7 @@ See below for more details.
 
 *Provisioning*
 The implemented provisioning relies on [Azure IoT Hub Device Provisioning Service](https://docs.microsoft.com/en-us/azure/iot-dps/).
-The simulator has the capability to call the DPS with the provided configuration and get an IoT Hub connection string according to the policies configured in it.
+The simulated device calls the DPS with the provided configuration and gets an Azure IoT Hub connection string according to the policies configured in the DPS.
 More details [here](docs/Provisioning.md).
 
 The simulator has been designed to work in different provisioning use cases:
