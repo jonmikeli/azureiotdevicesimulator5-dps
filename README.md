@@ -21,6 +21,9 @@ A bash script is provided in the repository to illustrate how to create as many 
 , provisioned by themselves and interacting with the attributed IoT Hub in a totally autonomous way.
 The whole D2C/C2D experience is implemented (except file uploads), with devices as well as module identities.
 
+Messages are based on the templates used in the previous simulators.
+I will consider merging this version with the one using IoT PnP as soon as the tests of the latter will be validated.
+
 ## Description
 The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulator.
 
