@@ -21,10 +21,9 @@ A script is provided in the repository to showcase how to create as many instanc
 
 Temeletry messages are based on the templates used in the previous simulators.
 
-
 <br/>
 
-For more information:
+More information:
  - [*How to (Quickstart)*](docs/HowTo.md)
  - [*Help  and details*](docs/Help.md) 
  
@@ -34,7 +33,7 @@ Example of uses:
  - development tool for developers working in Microsoft Azure IoT solutions (cloud)
  - tester tool in IoT-oriented projects
  - scalable IoT simulation platforms
- - fast and simple development of IoT devices
+ - complete and configurable D2C (data and reported properties) and C2D (direct methods, desired properties, messages, jobs, etc)
  - etc
 
 <br/>
