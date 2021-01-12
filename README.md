@@ -15,7 +15,7 @@ The purpose of the previous simulators were to:
  - help developers, testers, customers or any IoT related worker to facilitate the adoption and the use of device side code / tools / samples.
 
 With those same purposes in mind, this version of the simulator implements mainly the same kind of experience but adapted to DPS oriented provisioning contexts.
-The experience will be the same for one device, a few of them or hundreds / thousands of thems.
+The experience will be the same for one device, a few of them or hundreds / thousands of them.
 
 A bash script is provided in the repository to illustrate how to create as many instances of the simulator (containerized version) as wanted very fast (in a few seconds)
 , provisioned by themselves and interacting with the attributed [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) in a totally autonomous way.
