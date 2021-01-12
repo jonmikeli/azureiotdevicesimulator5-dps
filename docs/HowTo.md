@@ -24,11 +24,12 @@ Finally, you will need enough storage memory to build the Docker image and creat
 
 
 ## Steps to run the simulator
-The Azure IoT Device Simulator needs two basic things before starting:
+The Azure IoT Device Simulator needs three basic things before starting:
  - settings (need to be updated with proper connection settings)
  - message templates (included by default)
+ - deploy the REST API exposing Azure IoT Hub Service SDK (this is required because module identities cannot be created from the Azure IoT Hub Device SDK). The code is provided and it can also be containerized.
 
- Once those items are ready, a single command allows starting the application.
+ Once those items are ready, a single command runs the application.
 
 ### Settings
 Settings are based on 3 files:
