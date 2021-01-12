@@ -3,7 +3,7 @@
 ## New features
 This version of the Azure IoT Device Simulator integrates the use of a DPS (Device Provisioning Service). For now, it implements provisioning based on:
  - group enrollment
- - with symmetric keys
+ - symmetric keys
 
 Upcoming iterations will implement provisioning with X509 devices.
 
