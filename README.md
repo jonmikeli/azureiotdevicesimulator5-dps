@@ -8,7 +8,7 @@ This version of the Azure IoT Device Simulator integrates the use of a DPS (Devi
 Upcoming iterations will implement provisioning with X509 devices.
 
 ## Not just a simple DPS integration
-
+What it could seem a simple feature addition, it implies some work to keep the whole underlying mechanism coherent with full automatic provisioning and create "real life" representative value.
 
 ## Description
 The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulator.
