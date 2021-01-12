@@ -133,9 +133,9 @@ This file allows configuring module(s) simulation settings.
 {
  "modules":[
     {
-      "deviceId": "[REQUIRED]",
+      "deviceId": "",
       "moduleId": "[REQUIRED]",
-      "connectionString": "[IOT HUB NAME].azure-devices.net;DeviceId=[DEVIVE ID];ModuleId=[MODULE ID];SharedAccessKey=[SHARED KEY]",
+      "connectionString": "",
       "simulationSettings": {
         "enableLatencyTests": false,
         "latencyTestsFrecuency": 10,
