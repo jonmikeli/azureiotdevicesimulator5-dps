@@ -246,38 +246,42 @@ Behaviors of modules are configured by the *modulessettings.json* configuration 
 {
  "modules":[
     {
-      "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];ModuleId=[MODULE ID];SharedAccessKey=[KEY]",
+      "deviceId": "[REQUIRED]",
+      "moduleId": "[REQUIRED]",
+      "connectionString": "[GENERATED]",      
       "simulationSettings": {
         "enableLatencyTests": false,
         "latencyTestsFrecuency": 10,
-        "enableTelemetryMessages": false,
-        "telemetryFrecuency": 60,
+        "enableTelemetryMessages": true,
+        "telemetryFrecuency": 20,
         "enableErrorMessages": false,
-        "errorFrecuency": 60,
+        "errorFrecuency": 30,
         "enableCommissioningMessages": false,
         "commissioningFrecuency": 60,
         "enableTwinReportedMessages": false,
         "twinReportedMessagesFrecuency": 60,
-        "enableReadingTwinProperties": false,
+        "enableReadingTwinProperties": true,
         "enableC2DDirectMethods": true,
         "enableC2DMessages": true,
         "enableTwinPropertiesDesiredChangesNotifications": true
       }
     },
     {
-      "connectionString": "HostName=[IOTHUB NAME].azure-devices.net;DeviceId=[DEVICE ID];ModuleId=[MODULE ID];SharedAccessKey=[KEY]",
+      "deviceId": "[REQUIRED]",
+      "moduleId": "[REQUIRED]",
+      "connectionString": "[GENERATED]",      
       "simulationSettings": {
         "enableLatencyTests": false,
         "latencyTestsFrecuency": 10,
-        "enableTelemetryMessages": false,
-        "telemetryFrecuency": 60,
+        "enableTelemetryMessages": true,
+        "telemetryFrecuency": 20,
         "enableErrorMessages": false,
-        "errorFrecuency": 60,
+        "errorFrecuency": 30,
         "enableCommissioningMessages": false,
         "commissioningFrecuency": 60,
         "enableTwinReportedMessages": false,
         "twinReportedMessagesFrecuency": 60,
-        "enableReadingTwinProperties": false,
+        "enableReadingTwinProperties": true,
         "enableC2DDirectMethods": true,
         "enableC2DMessages": true,
         "enableTwinPropertiesDesiredChangesNotifications": true
