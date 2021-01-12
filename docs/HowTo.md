@@ -32,7 +32,13 @@ The Azure IoT Device Simulator needs three basic things before starting:
  Once those items are ready, a single command runs the application.
 
 ### Settings
-Settings are based on 3 files:
+Settings are based on files and environment variables.
+
+Environment variables:
+ - ENVIRONMENT (Development, Release, null....or the environments you need to create)
+ - PROVISIONING_REGISTRATION_ID, device Id to be used for the provisioned. It can be provided in the devicesettings.json file too.
+
+JSON files:
  - [appsettings.json](###appsettings.json)
  - [devicesettings.json](###devicesettings.json)
  - [modulessettings.json](###modulessettings.json)
