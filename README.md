@@ -20,9 +20,6 @@ The experience will be the same for one device, a few of them or hundreds / thou
 A script is provided in the repository to showcase how to create as many instances of the simulator (containerized version) as wanted. The whole set of simulated devices may be provisioned and running in a few seconds.....literally. :oreover, once the initial settings configured (configuration files), everything happens automatically (provisioning, modules, telemetries, D2C/C2D flows, etc).
 
 Temeletry messages are based on the templates used in the previous simulators.
-I will consider merging this version with the one using IoT PnP as soon as the tests of the latter will be validated.
-
-That may seem a logic next step but I am looking forward reading the feedbacks of both of the simulators in order to take into account the community needs.
 
 
 <br/>
