@@ -14,8 +14,8 @@ The solution is an Azure IoT Device simulator that implements different types of
 <br/>
 
 For more information:
- - [*How to (Quickstart)*](sources/IoT.Simulator/IoT.Simulator/docs/HowTo.md)
- - [*Help  and details*](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) 
+ - [*How to (Quickstart)*](docs/HowTo.md)
+ - [*Help  and details*](docs/Help.md) 
  
  <br/>
 
@@ -38,7 +38,7 @@ _* Device modules do not refer to IoT Edge modules but to IoT Device modules._
 
 *Azure IoT Device Simulator logs*
 
-![Azure IoT Device Simulator Logs](sources/IoT.Simulator/IoT.Simulator/docs/images/AzureIoTDeviceSimulatorLos.gif)
+![Azure IoT Device Simulator Logs](docs/images/AzureIoTDeviceSimulatorLos.gif)
 
 <br/>
 
@@ -61,11 +61,11 @@ _* Device modules do not refer to IoT Edge modules but to IoT Device modules._
 *Provisioning*
 The implemented provisioning relies on [Azure IoT Hub Device Provisioning Service](https://docs.microsoft.com/en-us/azure/iot-dps/).
 The simulator has the capability to call the DPS with the provided configuration and get an IoT Hub connection string according to the policies configured in it.
-More details [here](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md).
+More details [here](docs/Provisioning.md).
 
 The simulator has been designed to work in different provisioning use cases:
  1-If the simulator has no connection string, a provisioning process is initiated.
-   This process requires a DPS configuration to be set (details [here](sources/IoT.Simulator/IoT.Simulator/docs/Provisioning.md)).
+   This process requires a DPS configuration to be set (details [here](docs/Provisioning.md)).
    The DPS configuration can be provided by:
      - environment variables (recommended and useful for containerized targets. It does not compromise security levels.).
      - command line parameters, that will overwrite the environment variables (recommended for not containerized targets. Similarly to the previous point,it keeps the level of the security rules.).
@@ -96,7 +96,7 @@ The simulator has been designed to work in different provisioning use cases:
 The features at the module level are the identical to the device features except for the latency tests.
 
 
-[details](sources/IoT.Simulator/IoT.Simulator/docs/Help.md).
+[details](docs/Help.md).
 
   
 ## Global technical features
@@ -146,5 +146,5 @@ Functional features are based on these generic technical features:
 
 ## More information
 
-- Details about **HOW the solution WORKS** are provided in the [help](sources/IoT.Simulator/IoT.Simulator/docs/Help.md) section.
-- Details about **HOW the solution can be USED** are provided in the [how to](sources/IoT.Simulator/IoT.Simulator/docs/HowTo.md) section.
+- Details about **HOW the solution WORKS** are provided in the [help](docs/Help.md) section.
+- Details about **HOW the solution can be USED** are provided in the [how to](docs/HowTo.md) section.
