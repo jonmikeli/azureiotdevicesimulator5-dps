@@ -6,7 +6,7 @@
 You can use the source code to compile the application and use it as a regular .NET 5 Console application.
 
 If you need detailed documentation about what Azure IoT Device Simulator is, you can find additional information at:
- - [Readme](../../../../Readme.md)
+ - [Readme](../Readme.md)
  - [Help](Help.md)
 
 You can also containerize the simulator to take the advantage of all that containers offer.
