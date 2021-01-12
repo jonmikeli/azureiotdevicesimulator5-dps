@@ -8,13 +8,13 @@ This version of the Azure IoT Device Simulator integrates the use of a DPS (Devi
 _*Upcoming versions will include provisioning with X509 devices._
 
 ## Description - Not just a simple DPS integration
-What it could seem a simple feature addition, it implies some work to keep the whole underlying mechanism coherent with full automatic provisioning and create "real life" representative value.
+What could seem a simple feature addition, it has involved some deep work to keep the whole underlying mechanism coherent with full automatic provisioning and create "real life" representative value.
 
 The purpose of the previous simulators were to:
  - cover a maximum set of features in the SDK, in a realistc way.
  - help developers, testers, customers or any IoT related worker to facilitate the adoption and the use of device side code / tools / samples.
 
-With those same purposes in mind, this version of the simulator implements mainly the same kind of experience but adapted to DPS oriented provsioning contexts.
+With those same purposes in mind, this version of the simulator implements mainly the same kind of experience but adapted to DPS oriented provisioning contexts.
 The experience will be the same for one device, a few of them or hundreds / thousands of thems.
 
 A bash script is provided in the repository to illustrate how to create as many instances of the simulator (containerized version) as wanted very fast (in a few seconds)
