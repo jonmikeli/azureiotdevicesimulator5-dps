@@ -24,6 +24,8 @@ The whole D2C/C2D experience is implemented (except file uploads), with devices 
 Messages are based on the templates used in the previous simulators.
 I will consider merging this version with the one using IoT PnP as soon as the tests of the latter will be validated.
 
+That may seem a logic next step but I am looking forward reading the feedbacks of both of the simulators in order to take into account the community needs.
+
 ## Description
 The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulator.
 
