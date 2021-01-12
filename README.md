@@ -18,7 +18,7 @@ With those same purposes in mind, this version of the simulator implements mainl
 The experience will be the same for one device, a few of them or hundreds / thousands of thems.
 
 A bash script is provided in the repository to illustrate how to create as many instances of the simulator (containerized version) as wanted very fast (in a few seconds)
-, provisioned by themselves and interacting with the attributed IoT Hub in a totally autonomous way.
+, provisioned by themselves and interacting with the attributed [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) in a totally autonomous way.
 The whole D2C/C2D experience is implemented (except file uploads), with devices as well as module identities.
 
 Messages are based on the templates used in the previous simulators.
