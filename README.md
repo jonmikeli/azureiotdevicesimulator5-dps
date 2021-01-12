@@ -10,6 +10,10 @@ Upcoming iterations will implement provisioning with X509 devices.
 ## Not just a simple DPS integration
 What it could seem a simple feature addition, it implies some work to keep the whole underlying mechanism coherent with full automatic provisioning and create "real life" representative value.
 
+The purpose of the previous simulators were to:
+ - cover a maximum set of features in the SDK, in a realistc way.
+ - help developers, testers, customers or any IoT related worker to facilitate the adoption and the use of device side code / tools / samples.
+
 ## Description
 The solution is an Azure IoT Device simulator that implements different types of Cloud To Device (C2D) / Device To Cloud (D2C) flows between [Microsoft Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub/) and the simulator.
 
