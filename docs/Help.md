@@ -135,25 +135,11 @@ The features of the application rely on two main components:
  > 
  > See [Docker](https://www.docker.com) and container oriented development for those who are not familiar with.
  
- Whatever the alternative will be, check that the **3 configuration** files are set properly.
+ Whatever the alternative will be, check that all the **configuration** files are set properly.
 
  > ![IMPORTANT]
  > 
- > The 3 configurations files have be present and contain the proper Microsoft Azure IoT Hub connection strings, IDs or keys.
-
- 
- #### Runing .NET Core application
- Run the command below:
- ```dotnet
- dotnet IoT.Simulator.dll
- ```
-
- #### Runing Docker container
- ```cmd
- docker run -ti --name [containername] [imagename]
- ```
-
- You can get ready to use Docker images of the Azure IoT Device Simulator [here](https://hub.docker.com/r/jonmikeli/azureiotdevicesimulator).
+ > The 4 configurations files have be present and contain the proper Microsoft Azure IoT Hub connection strings, IDs or keys.
 
 
  ### Configurations
@@ -167,6 +153,11 @@ The features of the application rely on two main components:
     "LogLevel": {
       "Default": "Warning"
     }
+  },
+  "DeviceManagementServiceSettings": {
+    "BaseUrl": "[TO BE REPLACED]",
+    "AddModulesToDeviceRoute": "modules/add",
+    "AllowAutosignedSSLCertificates": true
   }
 }
  ```
@@ -197,6 +188,11 @@ The features of the application rely on two main components:
       "System": "Trace",
       "Microsoft": "Trace"
     }
+  },
+   "DeviceManagementServiceSettings": {
+    "BaseUrl": "[TO BE REPLACED]",
+    "AddModulesToDeviceRoute": "modules/add",
+    "AllowAutosignedSSLCertificates": true
   }
 }
  ```
@@ -237,6 +233,7 @@ Properties are quite self-explanatory.
 > [!NOTE]
 > 
 > Emission intervals are set in seconds.
+> The device Id may be set through an environment variable too (PROVISIONING_REGISTRATION_ID) and it overwrites the settings in the json file.
 
 
 #### Modules
