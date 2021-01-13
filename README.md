@@ -155,6 +155,7 @@ Functional features are based on these generic technical features:
  - Messages
 
 ## Upcoming features
+- Add X509 devices
 - IoT Plug and Play integration. An especial version totally IoT Plug and Play-oriented has been released [here](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp).
 - "fileupload" feature implementation.
 
