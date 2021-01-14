@@ -19,14 +19,18 @@ The simulator has been designed to work with different provisioning use cases:
      - if none of the previous settings are found, a `dpssettings.json` file will be loaded (recommended only for development platforms, unless the JSON is encrypted or stored in safe location.).
  1. If the simulator finds a connection string, the provisioning process is skipped and the found connection string is used.
 
+> NOTE
+>
+> Besides the DPS settings, the environment variables allow to configure the device Id. The environment value will overwrite the value in the configuration file `devicesettings.json`.
+
 ## Simulator connection string (device)
 If the provisioning process succeeds, it will create a device identity in the associated Azure IoT Hub.
-The DPS will send back to the device requesting the provisioning, the data allowing the device to identify and connect to the IoT Hub.
+The DPS will send back to the device the keys and the connection string.
 
 That connection settings may be stored at the device level to avoid having to reprovision the device.
-They should be stored in a secured manner.
+They should be stored in a secured way.
 
-The simulator stores the connection string in the `devicesettings.json` file.
+The simulator saves the connection string in the `devicesettings.json` file.
 It is persisted in clear for develoment purposes but keep in mind this data should be protected more securely in production environments.
 
 ```json
@@ -55,7 +59,7 @@ It is persisted in clear for develoment purposes but keep in mind this data shou
 
 ```
 
-## Passing DPS parameters
+## DPS parameters
 ### Different possibilities
 The simulator accepts different ways to use the DPS settings:
  - envionment variables
@@ -68,10 +72,10 @@ The simulator accepts different ways to use the DPS settings:
 
 ### Priorities
 The first settings to be checked are environment variables.
-Command line settings overwrite any environment variables settings.
+Command line settings overwrite any setting provided by the environment variables.
 If no environment setting or command line parameters are provided, a configuration file is searched. 
 
-### Environment variables
+### DPS Settings - environment variables
 The list of the environment variables to set are:
  - DPS_IDSCOPE, the Id Scope of the DPS
  - PRIMARY_SYMMETRIC_KEY, the primary pey of the DPS
@@ -94,7 +98,7 @@ dotnet IoT.Simulator.dll
 >
 > If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
 
-### Command line parameters
+### DPS Settings - Command line parameters
 The previous variables may be set through command variables too.
 The required parameters are the same:
  - -s, the Id Scope of the DPS
@@ -135,14 +139,14 @@ It looks like this:
 Parameters like `enrollmentType`, `securityType`, `globalDeviceEndpoint` and `transportType` cannot be changed for now.
 Upcoming versions should allow more possibilities.
 
-## Device modules
+## Device modules (a.k.a. module identities)
 At the time this post has been written, it did not seem to be a way to create device modules (a.k.a. module identities) during the provisioning process.
 
 This can be implemented by code but it requires one of the steps below:
- - reference the Azure IoT Hub Service SDK (which requires in turn a SAS connection string to the IoT Hub with specific rights....not really matching the security constraints we are looking for in the implemented scenario with DPS).
- - reference a REST API taking in charge the creation of device modules. The provisioned device could call that REST API once the DPS would have finished his job and that the device was provisioned.
+ - reference the Azure IoT Hub Service SDK (which requires in turn a SAS connection string to the IoT Hub with specific rights....not really matching the security standards we are looking for in the implemented scenario with DPS).
+ - reference a REST API taking in charge the creation of the device modules. The provisioned device could call that REST API once the DPS would have finished its job and that the device was provisioned.
  
- A version of a [REST endpoint implementing](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/sources/IoT.Simulator/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/Controllers/IoT/V1/DevicesControllerV1.cs) this has been included in the solution [here](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/sources/IoT.Simulator/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/Controllers/IoT/V1/DevicesControllerV1.cs).
+ A version of a [REST endpoint implementing](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/sources/IoT.Simulator/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/Controllers/IoT/V1/DevicesControllerV1.cs) this has been included in the repository [here](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/sources/IoT.Simulator/IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/Controllers/IoT/V1/DevicesControllerV1.cs).
 
 
 ```csharp
