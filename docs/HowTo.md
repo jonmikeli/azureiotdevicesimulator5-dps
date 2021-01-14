@@ -5,10 +5,6 @@
 
 You can use the source code to compile the application and use it as a regular C# .NET 5 Console application.
 
-If you need detailed documentation about what the Azure IoT Device Simulator is, you can find additional information at:
- - [Readme](../Readme.md)
- - [Help](Help.md)
-
 You can also containerize the simulator. This may be particularly interesting if you want to create a set of simulated devices.
 [This folder](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers) contains same examples about how to do that.
 
@@ -133,7 +129,7 @@ This file allows configuring device simulation settings.
 
 ```
 
-The device Id is required to feed the provisioning.
+The device Id is required to feed the provisioning. **It has to be provided either by the environment variable or the configuration file.**
 
 ### modulessettings.json
 This file allows configuring module(s) simulation settings.
