@@ -237,8 +237,8 @@ Properties are quite self-explanatory.
 
 
 #### Modules
-IoT Simulator's device can contain **zero, one or more modules but no module is mandatory**.
-Behaviors of modules are configured by the *modulessettings.json* configuration file.
+A simulated device may contain **zero, one or more modules but no module is mandatory**.
+Behaviors of the modules are configured by the *modulessettings.json* configuration file.
 
 
 > Example of a configuration file of two modules:
