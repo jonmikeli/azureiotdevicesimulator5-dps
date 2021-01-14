@@ -51,8 +51,9 @@ For details and explanations, see [help](Help.md).
 > The solution looks for settings files following the pattern *file.ENVIRONMENT.json* (similar to transformation files).
 > Default setting files will be loaded first in case no environment file is found.
 
+
 ### appsettings.json
-This file allows configuring system related items (logs, etc).
+This file allows to configure system related items (logs, etc, API urls, etc).
 
 **Release**
 
@@ -63,6 +64,11 @@ Minimal logs settings.
     "LogLevel": {
       "Default": "Warning"
     }
+  },
+  "DeviceManagementServiceSettings": {
+    "BaseUrl": "[TO BE REPLACED]",
+    "AddModulesToDeviceRoute": "modules/add",
+    "AllowAutosignedSSLCertificates": true
   }
 }
 ```
@@ -89,6 +95,11 @@ Detailed logs settings.
       "System": "Trace",
       "Microsoft": "Trace"
     }
+  },
+  "DeviceManagementServiceSettings": {
+    "BaseUrl": "[TO BE REPLACED]",
+    "AddModulesToDeviceRoute": "modules/add",
+    "AllowAutosignedSSLCertificates": true
   }
 }
 ```
@@ -131,7 +142,7 @@ This file allows configuring module(s) simulation settings.
 {
  "modules":[
     {
-      "deviceId": "",
+      "deviceId": "[FED BY THE PROCESS]",
       "moduleId": "[REQUIRED]",
       "connectionString": "",
       "simulationSettings": {
@@ -156,13 +167,8 @@ This file allows configuring module(s) simulation settings.
 
 ```
 
-
-> [!IMPORTANT]
->
-> Do not forget to set your own values for `connectionString`. 
-
 ### dpssettings.json
-This file allows configuring the DPS settings.
+This file allows to configure the DPS settings.
 
 ```json
 {
@@ -183,11 +189,10 @@ This file allows configuring the DPS settings.
 
 ```
 
-This settings corresponds to the current implementation.
-Iteration after iteration, more possibilities will be added.
 
 > NOTE
 >
+> The implemented code covers group enrollments, with symetric keys and MQTT. Feel free to adapt the code to your own needs. Upcoming iterations will add other options.
 > In very secured environments, the primaryKey should not be stored in such a configuration file.
 
 
