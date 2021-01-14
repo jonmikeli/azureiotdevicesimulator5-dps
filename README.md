@@ -10,7 +10,7 @@ _*Upcoming versions will include provisioning with X509 devices._
 ## Description - Not just a simple DPS integration
 What could seem a simple feature addition, it has involved some deep work to keep the whole underlying mechanism coherent with full automatic provisioning and create "real life" representative value.
 
-The purpose of the previous simulators were to:
+The purposes of the previous simulators were to:
  - cover a maximum set of features in the SDK, in a realistc way.
  - help developers, testers, customers or any IoT related worker to facilitate the adoption and the use of device side code / tools / samples.
 
