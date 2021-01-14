@@ -10,6 +10,7 @@ If you need detailed documentation about what the Azure IoT Device Simulator is,
  - [Help](Help.md)
 
 You can also containerize the simulator. This may be particularly interesting if you want to create a set of simulated devices.
+[This folder](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers) contains same examples about how to do that.
 
 ## Docker prerequisites
 In order to use a Docker container, you need to check [Docker](https://www.docker.com/) prerequisites.
@@ -20,19 +21,16 @@ Do not forget you will need an internet connection with specific open ports:
  - 443
 [Ports](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-protocols) required to communicate with Microsoft Azure IoT Hub.
 
-Finally, you will need enough storage memory to build the Docker image and create your containers.
-
 
 ## Steps to run the simulator
 The Azure IoT Device Simulator needs three basic things before starting:
- - settings (need to be updated with proper connection settings)
+ - settings (need to be updated with proper values)
  - message templates (included by default)
- - deploy the REST API exposing Azure IoT Hub Service SDK (this is required because module identities cannot be created from the Azure IoT Hub Device SDK). The code is provided and it can also be containerized.
+ - deploy the REST API exposing the Azure IoT Hub Service SDK (this is required because module identities cannot be created from the Azure IoT Hub Device SDK). The code is provided. It can also be [containerized](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
 
- Once those items are ready, a single command runs the application.
 
 ### Settings
-Settings are based on files and environment variables.
+Settings are based on environment variables and on files (JSON).
 
 Environment variables:
  - ENVIRONMENT (Development, Release, null....or the environments you need to create)
