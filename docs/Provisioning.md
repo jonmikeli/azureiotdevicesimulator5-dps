@@ -58,6 +58,13 @@ It is persisted in clear for develoment purposes but keep in mind this data shou
 }
 
 ```
+## Simulator connection string (module identities)
+If module identities are created, they will have their own connection string too.
+It will be generated dynamically by the process (device simulator and IoT Hub REST API).
+
+If you need module identities to be created, do not forget to set the `moduleId` field in the `modulesettings.json` file.
+The `deviceId` has to be set too (either by the environment variable or the `devicesettings.json` file).
+
 
 ## DPS parameters
 ### Different possibilities
