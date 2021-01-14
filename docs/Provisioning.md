@@ -167,8 +167,10 @@ The easiest way to achieve this would be:
  - create a Docker image with the IoT Hub REST API
  - create a Docker image with the simulator
  - create a container based on the image of the IoT Hub REST API
-  - create a script that iterates to create containers based on the image of the simulator (the device Id may be provided by an environment variable)
+ - create a script that iterates to create containers based on the image of the simulator (the device Id may be provided by an environment variable)
 
 > NOTE
 > 
 > Be sure the simulator containers can reach the IoT Hub REST API if you need to create module identities dynamically.
+
+Simple script samples to create all this are provided [here](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
