@@ -3,7 +3,7 @@
 This section describes the different artifacts of the solution and how they work.
 
 ## Application
-The application consist of:
+The application consists of:
  - an application console (.NET 5, C#)
  - configuration files:
    - [appsettings.json](####appsettings.json) (described below)
