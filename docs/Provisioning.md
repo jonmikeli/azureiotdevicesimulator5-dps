@@ -11,13 +11,13 @@ The Azure IoT Hub is assigned according to the rules set in the DPS.
 ## Simulator DPS settings
 
 The simulator has been designed to work with different provisioning use cases:
- 1-If the simulator has no connection string, a provisioning process is initiated.
+ 1. If the simulator has no connection string, a provisioning process is initiated.
    This process requires a DPS configuration to be set.
    The DPS configuration can be provided by:
      - environment variables (might be useful in containerized platforms. Pay attention though to the processes allowed to read the environment variables.).
      - command line parameters, that will overwrite any existing environment variables setting (recommended for not containerized targets. This is probably the safest alternative among the three, in terms of security.).
      - if none of the previous settings are found, a `dpssettings.json` file will be loaded (recommended only for development platforms, unless the JSON is encrypted or stored in safe location.).
- 2-If the simulator finds a connection string, the provisioning process is skipped and the found connection string is used.
+ 1. If the simulator finds a connection string, the provisioning process is skipped and the found connection string is used.
 
 ## Simulator connection string (device)
 If the provisioning process succeeds, it will create a device identity in the associated Azure IoT Hub.
