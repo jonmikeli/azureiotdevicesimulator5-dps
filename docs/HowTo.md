@@ -34,7 +34,7 @@ Settings are based on environment variables and on files (JSON).
 
 Environment variables:
  - ENVIRONMENT (Development, Release, null....or the environments you need to create)
- - PROVISIONING_REGISTRATION_ID, device Id to be used for the provisioned. It can be provided in the devicesettings.json file too.
+ - PROVISIONING_REGISTRATION_ID, cooresponding to the device Id to be used for the provisioning. It can be provided in the devicesettings.json file too. The PROVISIONING_REGISTRATION_ID value overwrites the settings in the JSON file.
 
 JSON files:
  - [appsettings.json](###appsettings.json)
