@@ -3,13 +3,13 @@
 
 ## How to use the Azure IoT Device Simulator?
 
-You can use the source code to compile the application and use it as a regular .NET 5 Console application.
+You can use the source code to compile the application and use it as a regular C# .NET 5 Console application.
 
-If you need detailed documentation about what Azure IoT Device Simulator is, you can find additional information at:
+If you need detailed documentation about what the Azure IoT Device Simulator is, you can find additional information at:
  - [Readme](../Readme.md)
  - [Help](Help.md)
 
-You can also containerize the simulator to take the advantage of all that containers offer.
+You can also containerize the simulator. This may be particularly interesting if you want to create a set of simulated devices.
 
 ## Docker prerequisites
 In order to use a Docker container, you need to check [Docker](https://www.docker.com/) prerequisites.
