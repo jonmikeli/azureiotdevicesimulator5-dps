@@ -132,7 +132,7 @@ This file allows configuring device simulation settings.
 The device Id is required to feed the provisioning. **It has to be provided either by the environment variable or the configuration file.**
 
 ### modulessettings.json
-This file allows configuring module(s) simulation settings.
+This file allows to configure the module(s) simulation settings.
 
 ```json
 {
