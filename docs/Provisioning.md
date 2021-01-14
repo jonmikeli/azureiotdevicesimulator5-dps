@@ -66,7 +66,7 @@ If you need module identities to be created, do not forget to set the `moduleId`
 The `deviceId` has to be set too (either by the environment variable or in the `devicesettings.json` file).
 
 
-## DPS parameters
+## DPS settings
 ### Different possibilities
 The simulator accepts different ways to use the DPS settings:
  - envionment variables
