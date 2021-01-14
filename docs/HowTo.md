@@ -192,8 +192,8 @@ This file allows to configure the DPS settings.
 
 > NOTE
 >
-> The implemented code covers group enrollments, with symetric keys and MQTT. Feel free to adapt the code to your own needs. Upcoming iterations will add other options.
-> In very secured environments, the primaryKey should not be stored in such a configuration file.
+> The implemented code covers group enrollments with symetric keys and MQTT. Feel free to adapt the code to your own needs. Upcoming iterations will add other options.
+> In production environments, pay attention to how the primary is stored and managed.
 
 
 ## Message templates
