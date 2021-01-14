@@ -197,13 +197,13 @@ This file allows to configure the DPS settings.
 
 
 ## Message templates
-You will find in this section the default templates of the messages sent by the simulator.
-You are totally free to change and adapt them to your needs.
+In this section, you will find the default templates of the messages sent by the simulator.
 
 > [!WARNING]
 > 
-> This first version includes a dependency between message templates and message service implementation (randomized values and ID properties).
+> This version includes a dependency between message templates and message service implementation (randomized values and ID properties).
 > For that reason, if the message template is completely reviewed and new randomized properties are added, you will need to either update the existing message service or create yours and update the IoC/DI settings.
+> If you need dynamic content generation, this [version of the simulator based on IoT Plug and Play](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) may help you.
 
 ### Measured data / telemetry message
 ```json
