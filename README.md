@@ -19,7 +19,7 @@ The experience will be the same for one device, a few of them or hundreds / thou
 
 A script is provided in the repository to showcase how to create as many instances of the simulator (containerized version) as wanted. The whole set of simulated devices may be provisioned and running in a few seconds.....literally. Moreover, once the initial settings configured (configuration files), everything happens automatically (provisioning, modules, telemetries, D2C/C2D flows, etc).
 
-Temeletry messages are based on the templates used in the previous simulators.
+Telemetry messages are based on the templates used in the previous simulators.
 
 <br/>
 
@@ -30,10 +30,10 @@ More information:
  <br/>
 
 Example of uses:
- - development tool for developers working in Microsoft Azure IoT solutions (cloud)
- - tester tool in IoT-oriented projects
- - scalable IoT simulation platforms
- - complete and configurable D2C (data and reported properties) and C2D (direct methods, desired properties, messages, jobs, etc)
+ - development tool for developers working in Microsoft Azure IoT solutions (cloud).
+ - tester tool in IoT-oriented projects.
+ - scalable IoT simulation platforms.
+ - complete and configurable D2C (data and reported properties) and C2D (direct methods, desired properties, messages, jobs, etc).
  - etc
 
 <br/>
