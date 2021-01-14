@@ -80,8 +80,8 @@ The simulator has been designed to work in different provisioning use cases:
    This process requires a DPS configuration to be set (details [here](docs/Provisioning.md)).
    The DPS configuration can be provided by:
     - environment variables (recommended and useful for containerized targets. It is less prone to compromise security.).
-    - command line parameters, that will overwrite the environment variables (recommended for not containerized targets. Similarly to the previous point,it keeps the level of security rules.).
-    - if none of the previous settings are found, a dpssettings.json file will be loaded (not recommended unless the JSON file is persisted in a secured location).
+    - command line parameters, that will overwrite the environment variables (recommended for not containerized targets. Similarly to the previous point, it keeps the level of security rules.).
+    - if none of the previous settings are found, a `dpssettings.json` file will be loaded (not recommended unless the JSON file is persisted in a secured location).
  1. If the simulator finds a connection string, it uses and it skips the provisioning process.
  
 > NOTE
@@ -96,13 +96,19 @@ The simulator has been designed to work in different provisioning use cases:
  - generic command (with JSON payload)
  - generic command
  - update telemetry interval
+
  
  *Messages*
+
+
  D2C: The device can send messages of different types (telemetry, error, commissioning).
  
  C2D: Microsoft Azure IoT Hub can send messages to a given device.
+
  
  *Twin*
+
+
  Any change in the Desired properties is notified and handled by the device.
 
  The device reports changes in different types of information to the Microsoft Azure IoT Hub.
@@ -112,7 +118,7 @@ The simulator has been designed to work in different provisioning use cases:
 The features at the module level are the identical to the device features except for the latency tests.
 
 
-[details](docs/Help.md).
+[Details](docs/Help.md).
 
   
 ## Global technical features
