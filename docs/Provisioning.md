@@ -158,3 +158,17 @@ This can be implemented by code but it requires one of the steps below:
 The used REST API structure is based on a REST API Template for .NET:
    - [Visual Studio 2019 version](https://marketplace.visualstudio.com/items?itemName=JonMikelInza.IoTHubDotNet5RESTAPITemplate)
    - [CLI version](https://www.nuget.org/packages/JMI.DotNet5.IoTHub.REST.API.Template.CSharp/)
+
+
+## Dynamic creation of device simulators
+
+One of the straightforward use cases of this simulator would be to create a set of devices dynamically.
+The easiest way to achieve this would be:
+ - create a Docker image with the IoT Hub REST API
+ - create a Docker image with the simulator
+ - create a container based on the image of the IoT Hub REST API
+  - create a script that iterates to create containers based on the image of the simulator (the device Id may be provided by an environment variable)
+
+> NOTE
+> 
+> Be sure the simulator containers can reach the IoT Hub REST API if you need to create module identities dynamically.
