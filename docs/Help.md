@@ -139,7 +139,7 @@ The features of the application rely on two main components:
 
  > ![IMPORTANT]
  > 
- > The 4 configurations files have be present and contain the proper Microsoft Azure IoT Hub connection strings, IDs or keys.
+ > The configurations files have to be present and contain the proper Microsoft Azure IoT Hub connection strings, IDs or keys.
 
 
  ### Configurations
@@ -296,109 +296,26 @@ Behaviors of the modules are configured by the *modulessettings.json* configurat
 > Emission intervals are set in seconds.
 
 
+#### DPS Settings
 
-### Configuration files reminder
-#### appsettings.json
- ```json
- {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Warning"
-    }
-  },
-  "DeviceManagementServiceSettings": {
-    "BaseUrl": "[TO BE REPLACED]",
-    "AddModulesToDeviceRoute": "modules/add",
-    "AllowAutosignedSSLCertificates": true
-  }
-}
- ```
-
-#### devicesettings.json
-
+Example
 ```json
 {
-  "deviceId":"",
-  "connectionString": "",
-  "simulationSettings": {
-    "enableLatencyTests": false,
-    "latencyTestsFrecuency": 10,
-    "enableDevice": true,
-    "enableModules": true,
-    "enableTelemetryMessages": false,
-    "telemetryFrecuency": 60,
-    "enableErrorMessages": false,
-    "errorFrecuency": 60,
-    "enableCommissioningMessages": false,
-    "commissioningFrecuency": 60,
-    "enableTwinReportedMessages": false,
-    "twinReportedMessagesFrecuency": 60,
-    "enableReadingTwinProperties": false,
-    "enableC2DDirectMethods": true,
-    "enableC2DMessages": true,
-    "enableTwinPropertiesDesiredChangesNotifications": true
+  "dpsSettings": {
+    "enrollmentType": "Group",
+    "groupEnrollmentSettings": {
+      "securityType": "SymetricKey",
+      "symetricKeySettings": {
+        "idScope": "",
+        "primaryKey": "",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
+      }
+    }
   }
 }
 ```
-Properties are quite self-explanatory.
-
-> [!NOTE]
-> 
-> Emission intervals are set in seconds.
-
-#### modulessettings.json
-```json
-{
- "modules":[
-    {
-      "deviceId": "",
-      "moduleId": "[REQUIRED]",
-      "connectionString": "",      
-      "simulationSettings": {
-        "enableLatencyTests": false,
-        "latencyTestsFrecuency": 10,
-        "enableTelemetryMessages": true,
-        "telemetryFrecuency": 20,
-        "enableErrorMessages": false,
-        "errorFrecuency": 30,
-        "enableCommissioningMessages": false,
-        "commissioningFrecuency": 60,
-        "enableTwinReportedMessages": false,
-        "twinReportedMessagesFrecuency": 60,
-        "enableReadingTwinProperties": true,
-        "enableC2DDirectMethods": true,
-        "enableC2DMessages": true,
-        "enableTwinPropertiesDesiredChangesNotifications": true
-      }
-    },
-    {
-      "deviceId": "",
-      "moduleId": "[REQUIRED]",
-      "connectionString": "",      
-      "simulationSettings": {
-        "enableLatencyTests": false,
-        "latencyTestsFrecuency": 10,
-        "enableTelemetryMessages": true,
-        "telemetryFrecuency": 20,
-        "enableErrorMessages": false,
-        "errorFrecuency": 30,
-        "enableCommissioningMessages": false,
-        "commissioningFrecuency": 60,
-        "enableTwinReportedMessages": false,
-        "twinReportedMessagesFrecuency": 60,
-        "enableReadingTwinProperties": true,
-        "enableC2DDirectMethods": true,
-        "enableC2DMessages": true,
-        "enableTwinPropertiesDesiredChangesNotifications": true
-      }
-    }
-  ]
-}
-```
-
-> [!NOTE]
-> 
-> Emission intervals are set in seconds.
 
 
 ### Messages
