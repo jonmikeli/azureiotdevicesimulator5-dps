@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using CommandLine.Text;
 
 using IoT.Simulator.Exceptions;
 using IoT.Simulator.Services;
@@ -55,7 +56,7 @@ namespace IoT.Simulator
                     .AddJsonFile("modulessettings.json", optional: true, reloadOnChange: true)
                     .AddJsonFile("dpssettings.json", optional: true, reloadOnChange: true)
                     .AddEnvironmentVariables();
-                
+
                 if (string.IsNullOrWhiteSpace(_environmentName))
                 {
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -192,7 +193,7 @@ namespace IoT.Simulator
                 configuration.Bind(DPSSettings.DPSSettingsSection, dpsSettingsOptions);
             }
             else
-                throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");            
+                throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");
         }
 
         private static async Task CheckEnvironmentDeviceId(string environmentName)
@@ -215,7 +216,7 @@ namespace IoT.Simulator
             }
         }
 
-        private static async Task  UpdateDeviceIdInDeviceSettings(string deviceId, string environmentName)
+        private static async Task UpdateDeviceIdInDeviceSettings(string deviceId, string environmentName)
         {
             //Get the device settings related Options
             string deviceSettingsFilePath = "devicesettings.json";
@@ -263,7 +264,7 @@ namespace IoT.Simulator
                     foreach (var item in modulesSettings.Modules)
                     {
                         item.DeviceId = string.Empty;
-                        item.ConnectionString = string.Empty;                        
+                        item.ConnectionString = string.Empty;
                     }
 
                     Console.WriteLine($"Clearing modules settings configuration file.");
@@ -284,17 +285,20 @@ namespace IoT.Simulator
             // Parse application parameters
             DPSCommandParametersBase parameters = null;
 
-            if (args != null && args.Length > 4)
+            if (args != null)
             {
+
                 ParserResult<DPSCommandParametersBase> result = Parser.Default.ParseArguments<DPSCommandParametersBase>(args)
                     .WithParsed(parsedParams =>
                     {
                         parameters = parsedParams;
-                    })
-                    .WithNotParsed(errors =>
-                    {
-                        Environment.Exit(1);
                     });
+
+                if (result.Tag == ParserResultType.NotParsed)
+                {
+                    Console.WriteLine(HelpText.AutoBuild(result));
+                    Environment.Exit(1);
+                }
             }
 
             return parameters;
@@ -389,7 +393,7 @@ namespace IoT.Simulator
 
                 //services.Configure<AppSettings>(Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<AppSettings>(Configuration);
-                services.Configure<DeviceSettings>(Configuration);               
+                services.Configure<DeviceSettings>(Configuration);
                 services.Configure<ModulesSettings>(Configuration);
                 services.Configure<DPSSettings>(Configuration.GetSection(DPSSettings.DPSSettingsSection));
             }

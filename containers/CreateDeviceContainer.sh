@@ -1,2 +1,2 @@
-docker build -t iotsimulator-dps -f .\Dockerfile ..
+docker build -t iotsimulator-dps -f ..\sources\IoT.Simulator\IoT.Simulator\Dockerfile ..\sources\IoT.Simulator
 docker run -ti --rm --name device10 -e PROVISIONING_REGISTRATION_ID=device10 -e ENVIRONMENT=Development --network="host" iotsimulator-dps
