@@ -234,6 +234,8 @@ Properties are quite self-explanatory.
 > 
 > Emission intervals are set in seconds.
 > The device Id may be set through an environment variable too (PROVISIONING_REGISTRATION_ID) and it overwrites the settings in the json file.
+>
+> The device Id is mandatory (either through the environment variable or the devicesettings.json file).
 
 
 #### Modules
