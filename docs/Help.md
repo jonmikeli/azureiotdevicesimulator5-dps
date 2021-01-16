@@ -296,6 +296,8 @@ Behaviors of the modules are configured by the *modulessettings.json* configurat
 > [!NOTE]
 > 
 > Emission intervals are set in seconds.
+>
+> The module Id is mandatory.
 
 
 #### DPS Settings
