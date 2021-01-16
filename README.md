@@ -29,7 +29,7 @@ More information:
  
  <br/>
 
-Example of uses:
+Examples of uses:
  - development tool for developers working in Microsoft Azure IoT solutions (cloud).
  - tester tool in IoT-oriented projects.
  - scalable IoT simulation platforms.
