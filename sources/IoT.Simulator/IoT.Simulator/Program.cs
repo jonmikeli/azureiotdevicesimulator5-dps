@@ -285,7 +285,7 @@ namespace IoT.Simulator
             // Parse application parameters
             DPSCommandParametersBase parameters = null;
 
-            if (args != null)
+            if (args != null && args.Length > 1)
             {
 
                 ParserResult<DPSCommandParametersBase> result = Parser.Default.ParseArguments<DPSCommandParametersBase>(args)
