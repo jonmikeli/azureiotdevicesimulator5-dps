@@ -26,6 +26,7 @@ Telemetry messages are based on the templates used in the previous simulators.
 More information:
  - [*How to (Quickstart)*](docs/HowTo.md)
  - [*Help  and details*](docs/Help.md) 
+ - [*Provisioning*](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/docs/Provisioning.md)
  
  <br/>
 
