@@ -296,7 +296,6 @@ namespace IoT.Simulator
 
                 if (result.Tag == ParserResultType.NotParsed)
                 {
-                    Console.WriteLine(HelpText.AutoBuild(result));
                     Environment.Exit(1);
                 }
             }
