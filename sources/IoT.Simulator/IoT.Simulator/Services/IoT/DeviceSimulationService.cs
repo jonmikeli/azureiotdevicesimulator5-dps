@@ -25,7 +25,7 @@ namespace IoT.Simulator.Services
         private readonly ILogger<DeviceSimulationService> _logger;
 
         private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
-        private IOptionsMonitor<DPSSettings> _dpsSettingsDelegate;
+        private DPSSettings _dpsSettings;
         private SimulationSettingsDevice _simulationSettings;
         private DeviceClient _deviceClient;
         private string _deviceId;
@@ -41,7 +41,7 @@ namespace IoT.Simulator.Services
 
         public DeviceSimulationService(
             IOptionsMonitor<DeviceSettings> deviceSettingsDelegate,
-            IOptionsMonitor<DPSSettings> dpsSettingsDelegate,
+            IOptions<DPSSettings> dpsSettings,
             ITelemetryMessageService telemetryMessagingService,
             IErrorMessageService errorMessagingService,
             ICommissioningMessageService commissioningMessagingService,
@@ -57,11 +57,11 @@ namespace IoT.Simulator.Services
             if (deviceSettingsDelegate.CurrentValue.SimulationSettings == null)
                 throw new ArgumentNullException("deviceSettingsDelegate.CurrentValue.SimulationSettings");
 
-            if (dpsSettingsDelegate == null)
-                throw new ArgumentNullException(nameof(dpsSettingsDelegate));
+            if (dpsSettings == null)
+                throw new ArgumentNullException(nameof(dpsSettings));
 
-            if (dpsSettingsDelegate.CurrentValue == null)
-                throw new ArgumentNullException("dpsSettingsDelegate.CurrentValue");
+            if (dpsSettings.Value == null)
+                throw new ArgumentNullException("dpsSettings.Value");
 
             if (telemetryMessagingService == null)
                 throw new ArgumentNullException(nameof(telemetryMessagingService));
@@ -78,9 +78,9 @@ namespace IoT.Simulator.Services
             if (loggerFactory == null)
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
 
-            _deviceSettingsDelegate = deviceSettingsDelegate;
-            _dpsSettingsDelegate = dpsSettingsDelegate;
+            _deviceSettingsDelegate = deviceSettingsDelegate;            
             _simulationSettings = _deviceSettingsDelegate.CurrentValue.SimulationSettings;
+            _dpsSettings = dpsSettings.Value;
 
             _deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
             _iotHub = _deviceSettingsDelegate.CurrentValue.HostName;
@@ -142,21 +142,21 @@ namespace IoT.Simulator.Services
                 IoTTools.CheckDeviceConnectionStringData(_deviceSettingsDelegate.CurrentValue.ConnectionString, _logger);
 
                 // Connect to the IoT hub using the MQTT protocol
-                if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment != null)
+                if (_dpsSettings.GroupEnrollment != null)
                 {
-                    if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
+                    if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
                         _deviceClient = DeviceClient.CreateFromConnectionString(
                             _deviceSettingsDelegate.CurrentValue.ConnectionString,
-                            _dpsSettingsDelegate.CurrentValue.GroupEnrollment.SymetricKeySettings.TransportType);
-                    else if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment.SecurityType == SecurityType.X509CA)
+                            _dpsSettings.GroupEnrollment.SymmetricKeySettings.TransportType);
+                    else if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.X509CA)
                     {
-                        X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(_dpsSettingsDelegate.CurrentValue.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettingsDelegate.CurrentValue.GroupEnrollment.CAX509Settings.Password);
+                        X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(_dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
 
-                        string iotHubName = _deviceSettingsDelegate.CurrentValue.ConnectionString.ExtractValue("HostName");
+                        string iotHubName = _deviceSettingsDelegate.CurrentValue.HostName;
                         if (string.IsNullOrEmpty(iotHubName))
                             throw new ArgumentNullException(nameof(iotHubName));
 
-                        string deviceId = _deviceSettingsDelegate.CurrentValue.ConnectionString.ExtractValue("DeviceId");
+                        string deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
                         if (string.IsNullOrEmpty(deviceId))
                             throw new ArgumentNullException(nameof(deviceId));
 

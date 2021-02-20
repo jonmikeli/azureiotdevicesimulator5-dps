@@ -321,12 +321,12 @@ namespace IoT.Simulator
                 settings.GroupEnrollment = new GroupEnrollmentSettings();
                 settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
-                settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
-                settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
-                settings.GroupEnrollment.SymetricKeySettings.EnrollmentType = EnrollmentType.Group;
+                settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+                settings.GroupEnrollment.SymmetricKeySettings.TransportType = TransportType.Mqtt;
+                settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
 
-                settings.GroupEnrollment.SymetricKeySettings.IdScope = parameters.IdScope;
-                settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = parameters.PrimaryKey;
+                settings.GroupEnrollment.SymmetricKeySettings.IdScope = parameters.IdScope;
+                settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = parameters.PrimaryKey;
             }
 
             return settings;
@@ -353,12 +353,12 @@ namespace IoT.Simulator
                     settings.GroupEnrollment = new GroupEnrollmentSettings();
                     settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
-                    settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
-                    settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
-                    settings.GroupEnrollment.SymetricKeySettings.EnrollmentType = EnrollmentType.Group;
+                    settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+                    settings.GroupEnrollment.SymmetricKeySettings.TransportType = TransportType.Mqtt;
+                    settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
 
-                    settings.GroupEnrollment.SymetricKeySettings.IdScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
-                    settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+                    settings.GroupEnrollment.SymmetricKeySettings.IdScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
+                    settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
                 }
             }
 
@@ -419,7 +419,7 @@ namespace IoT.Simulator
                 }
                 else if (dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
                 {
-                    if (dpsSettings.GroupEnrollment.SymetricKeySettings != null)
+                    if (dpsSettings.GroupEnrollment.SymmetricKeySettings != null)
                         services.AddSingleton<IProvisioningService, DPSProvisioningServiceSymmetricKey>();
                     else
                         throw new Exception("RegisterDeviceSimulators::Missing Symmetric Key Settings");
