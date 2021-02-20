@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -75,12 +76,13 @@ namespace IoT.Simulator.Services
                 if (_dpsSettings.GroupEnrollment == null)
                     throw new ArgumentNullException("_dpsSettings.GroupEnrollment", "No group enrollment settings have been found.");
 
-                if (_dpsSettings.GroupEnrollment.CAX509Settings != null)
+                if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.X509CA && _dpsSettings.GroupEnrollment.CAX509Settings != null)
                 {
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");
-
                     // X509 device leaf certificate
                     X509Certificate2 deviceLeafCertificate = new X509Certificate2(_dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
+                    _deviceSettingsDelegate.CurrentValue.DeviceId = deviceLeafCertificate.Subject.Remove(0, 3); //delete the 'CN='
+
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");                    
 
                     using (var security = new SecurityProviderX509Certificate(deviceLeafCertificate))
                     {
@@ -108,6 +110,8 @@ namespace IoT.Simulator.Services
                                 {
                                     var deviceAuthentificationCertificate = security.GetAuthenticationCertificate();
                                     var deviceAuthenticationCertificateChain = security.GetAuthenticationCertificateChain();
+
+                                    await PersistAndStoreCertificate(deviceAuthentificationCertificate);
 
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Creating X509 leaf authentication for IoT Hub...");
@@ -140,6 +144,18 @@ namespace IoT.Simulator.Services
             }
 
             return result;
+        }
+
+        //NOTE: in this simulator, the certificate is stored locally with no strong security.
+        //In production environments, the certificate should be stored in highly secured locations (KeyVaults, HSM, certificate store, etc)
+        private async Task PersistAndStoreCertificate(X509Certificate2 certificate)
+        {
+            if (certificate == null)
+                throw new ArgumentNullException(nameof(certificate));
+
+            string name = certificate.Subject.Remove(0, 3);
+
+            await File.WriteAllTextAsync($"{name}", certificate.GetRawCertDataString());
         }
 
         public async Task<string> AddModuleIdentityToDevice(string moduleId)
