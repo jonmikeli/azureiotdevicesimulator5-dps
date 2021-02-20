@@ -75,66 +75,68 @@ namespace IoT.Simulator.Services
                 if (_dpsSettings.GroupEnrollment == null)
                     throw new ArgumentNullException("_dpsSettings.GroupEnrollment", "No group enrollment settings have been found.");
 
-                if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
-                    _dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey = ProvisioningTools.ComputeDerivedSymmetricKey(_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey, _deviceSettingsDelegate.CurrentValue.DeviceId);
-            }
-
-            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");
-
-            // X509 device leaf certificate
-            X509Certificate2 deviceLeafCertificate = new X509Certificate2(@"./X509/new-device.cert.pfx", "1234");
-
-            using (var security = new SecurityProviderX509Certificate(deviceLeafCertificate))
-            {
-                using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                if (_dpsSettings.GroupEnrollment.CAX509Settings != null)
                 {
-                    ProvisioningDeviceClient provClient = ProvisioningDeviceClient.Create(
-                        _dpsSettings.GroupEnrollment.SymetricKeySettings.GlobalDeviceEndpoint,
-                        _dpsSettings.GroupEnrollment.SymetricKeySettings.IdScope,
-                        security,
-                        transportHandler);
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");
 
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initialized for registration Id {security.GetRegistrationID()}.");
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registering with the device provisioning service...");
+                    // X509 device leaf certificate
+                    X509Certificate2 deviceLeafCertificate = new X509Certificate2(_dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
 
-                    DeviceRegistrationResult deviceRegistrationResult = await provClient.RegisterAsync();
-
-                    if (deviceRegistrationResult != null)
+                    using (var security = new SecurityProviderX509Certificate(deviceLeafCertificate))
                     {
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registration status: {deviceRegistrationResult.Status}.");
-                        if (deviceRegistrationResult.Status != ProvisioningRegistrationStatusType.Assigned)
+                        using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
                         {
-                            _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device registration process did not assign an IoT Hub.");
-                        }
-                        else
-                        {
-                            var deviceAuthentificationCertificate = security.GetAuthenticationCertificate();
-                            var deviceAuthenticationCertificateChain = security.GetAuthenticationCertificateChain();
+                            ProvisioningDeviceClient provClient = ProvisioningDeviceClient.Create(
+                                _dpsSettings.GroupEnrollment.SymetricKeySettings.GlobalDeviceEndpoint,
+                                _dpsSettings.GroupEnrollment.SymetricKeySettings.IdScope,
+                                security,
+                                transportHandler);
 
-                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
-                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Creating X509 leaf authentication for IoT Hub...");                         
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initialized for registration Id {security.GetRegistrationID()}.");
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registering with the device provisioning service...");
 
-                            IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(deviceRegistrationResult.DeviceId, deviceAuthentificationCertificate);
+                            DeviceRegistrationResult deviceRegistrationResult = await provClient.RegisterAsync();
 
-                            _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Testing the provisioned device with IoT Hub...");
-
-                            using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                            if (deviceRegistrationResult != null)
                             {
-                                _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Sending a telemetry message after provisioning to test the process...");
+                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Registration status: {deviceRegistrationResult.Status}.");
+                                if (deviceRegistrationResult.Status != ProvisioningRegistrationStatusType.Assigned)
+                                {
+                                    _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device registration process did not assign an IoT Hub.");
+                                }
+                                else
+                                {
+                                    var deviceAuthentificationCertificate = security.GetAuthenticationCertificate();
+                                    var deviceAuthenticationCertificateChain = security.GetAuthenticationCertificateChain();
 
-                                using var message = new Message(Encoding.UTF8.GetBytes("TestMessage"));
-                                await iotClient.SendEventAsync(message);
+                                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
+                                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Creating X509 leaf authentication for IoT Hub...");
 
-                                _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Finished.");
+                                    IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(deviceRegistrationResult.DeviceId, deviceAuthentificationCertificate);
+
+                                    _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Testing the provisioned device with IoT Hub...");
+
+                                    using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                                    {
+                                        _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Sending a telemetry message after provisioning to test the process...");
+
+                                        using var message = new Message(Encoding.UTF8.GetBytes("TestMessage"));
+                                        await iotClient.SendEventAsync(message);
+
+                                        _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Finished.");
+                                    }
+
+                                    //HostName =< host_name >; DeviceId =< device_id >; x509 = true
+                                    result = $"HostName={deviceRegistrationResult.AssignedHub};DeviceId={deviceRegistrationResult.DeviceId};x509=true";
+                                }
                             }
-
-                            //HostName =< host_name >; DeviceId =< device_id >; x509 = true
-                            result = $"HostName={deviceRegistrationResult.AssignedHub};DeviceId={deviceRegistrationResult.DeviceId};x509=true";
+                            else
+                                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No provisioning result has been received.");
                         }
-                    }
-                    else
-                        _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No provisioning result has been received.");
+                    }                    
                 }
+                else
+                    _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No X509 settings have been found.");
             }
 
             return result;
@@ -184,7 +186,7 @@ namespace IoT.Simulator.Services
 
                         HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                         var response = await client.PostAsync(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute, content);
-                       
+
                         if (response != null)
                         {
                             response.EnsureSuccessStatusCode();
