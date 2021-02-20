@@ -2,7 +2,7 @@
   "dpsSettings": {
     "enrollmentType": "Group",
     "groupEnrollmentSettings": {
-      "securityType": "SymetricKey",
+      "securityType": "SymmetricKey", //SymmetricKey, X509SelfSigned, X509CA, TPM
       "symetricKeySettings": {
         "idScope": "",
         "primaryKey": "",
