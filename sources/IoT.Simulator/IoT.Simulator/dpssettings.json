@@ -9,6 +9,14 @@
         "enrollmentType": "Group",
         "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
         "transportType": "Mqtt"
+      },
+      "CAX509Settings": {
+        "idScope": "",
+        "deviceX509Path": "",
+        "password": "",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
       }
     }
   }
