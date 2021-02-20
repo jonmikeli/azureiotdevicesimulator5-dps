@@ -31,7 +31,7 @@ namespace IoT.Simulator.Settings.DPS
     {
         [JsonProperty("securityType")]
         [JsonConverter(typeof(StringEnumConverter))]
-        [DefaultValue(SecurityType.SymetricKey)]
+        [DefaultValue(SecurityType.SymmetricKey)]
         public SecurityType SecurityType { get; set; }
 
         [JsonProperty("symetricKeySettings")]
