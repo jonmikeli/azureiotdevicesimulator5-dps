@@ -34,7 +34,7 @@ namespace IoT.Simulator.Settings.DPS
         [DefaultValue(SecurityType.SymmetricKey)]
         public SecurityType SecurityType { get; set; }
 
-        [JsonProperty("symetricKeySettings")]
+        [JsonProperty("symmetricKeySettings")]
         public DPSSymmetricKeySettings SymetricKeySettings { get; set; }
 
         [JsonProperty("CAX509Settings")]

@@ -3,7 +3,7 @@
     "enrollmentType": "Group",
     "groupEnrollmentSettings": {
       "securityType": "SymmetricKey", //SymmetricKey, X509SelfSigned, X509CA, TPM
-      "symetricKeySettings": {
+      "symmetricKeySettings": {
         "idScope": "",
         "primaryKey": "",
         "enrollmentType": "Group",
