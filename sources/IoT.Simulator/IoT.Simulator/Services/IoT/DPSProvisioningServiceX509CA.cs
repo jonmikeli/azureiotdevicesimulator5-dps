@@ -108,15 +108,10 @@ namespace IoT.Simulator.Services
                                 }
                                 else
                                 {
-                                    var deviceAuthentificationCertificate = security.GetAuthenticationCertificate();
-                                    var deviceAuthenticationCertificateChain = security.GetAuthenticationCertificateChain();
-
-                                    await PersistAndStoreCertificate(deviceAuthentificationCertificate);
-
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Creating X509 leaf authentication for IoT Hub...");
 
-                                    IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(deviceRegistrationResult.DeviceId, deviceAuthentificationCertificate);
+                                    IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(deviceRegistrationResult.DeviceId, deviceLeafProvisioningCertificate);
 
                                     _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Testing the provisioned device with IoT Hub...");
 
