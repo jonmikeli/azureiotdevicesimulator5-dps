@@ -356,6 +356,15 @@ namespace IoT.Simulator
                 {
                     case SecurityType.SymmetricKey:
                         string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+                        string transportType = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
+
+                        if (string.IsNullOrEmpty(transportType))
+                            throw new ArgumentNullException(nameof(transportType));
+
+                        if (transportType.Trim().ToLower() != "mqtt")
+                            throw new NotImplementedException();
+                        
+                        TransportType typedTransportType = Enum.Parse<TransportType>(transportType);
 
                         if (!string.IsNullOrEmpty(primarySymmetricKey))
                         {
@@ -365,7 +374,7 @@ namespace IoT.Simulator
                             settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
                             settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
-                            settings.GroupEnrollment.SymmetricKeySettings.TransportType = TransportType.Mqtt;
+                            settings.GroupEnrollment.SymmetricKeySettings.TransportType = typedTransportType;
                             settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
 
                             settings.GroupEnrollment.SymmetricKeySettings.IdScope = idScope;
@@ -384,7 +393,7 @@ namespace IoT.Simulator
                             settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
 
                             settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
-                            settings.GroupEnrollment.CAX509Settings.TransportType = TransportType.Mqtt;
+                            settings.GroupEnrollment.CAX509Settings.TransportType = typedTransportType;
                             settings.GroupEnrollment.CAX509Settings.EnrollmentType = EnrollmentType.Group;
 
                             settings.GroupEnrollment.CAX509Settings.IdScope = idScope;
