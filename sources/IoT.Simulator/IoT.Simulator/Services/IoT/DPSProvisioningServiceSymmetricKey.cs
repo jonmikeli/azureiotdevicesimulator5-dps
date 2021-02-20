@@ -23,14 +23,14 @@ using System.Threading.Tasks;
 
 namespace IoT.Simulator.Services
 {
-    public class DPSProvisioningService : IProvisioningService
+    public class DPSProvisioningServiceSymmetricKey : IProvisioningService
     {
         private AppSettings _appSettings;
         private DPSSettings _dpsSettings;
         private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
-        private readonly ILogger<DPSProvisioningService> _logger;
+        private readonly ILogger<DPSProvisioningServiceSymmetricKey> _logger;
 
-        public DPSProvisioningService(
+        public DPSProvisioningServiceSymmetricKey(
             IOptions<AppSettings> appSettings,
             IOptions<DPSSettings> dpsSettings,
             IOptionsMonitor<DeviceSettings> deviceSettingsDelegate,
@@ -55,7 +55,7 @@ namespace IoT.Simulator.Services
             _dpsSettings = dpsSettings.Value;
             _deviceSettingsDelegate = deviceSettingsDelegate;
 
-            _logger = loggerFactory.CreateLogger<DPSProvisioningService>();
+            _logger = loggerFactory.CreateLogger<DPSProvisioningServiceSymmetricKey>();
 
             string logPrefix = "system.dps.provisioning".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");

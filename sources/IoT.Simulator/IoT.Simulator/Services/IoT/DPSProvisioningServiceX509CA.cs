@@ -28,7 +28,7 @@ namespace IoT.Simulator.Services
         private AppSettings _appSettings;
         private DPSSettings _dpsSettings;
         private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
-        private readonly ILogger<DPSProvisioningService> _logger;
+        private readonly ILogger<DPSProvisioningServiceSymmetricKey> _logger;
 
         public DPSProvisioningServiceX509CA(
             IOptions<AppSettings> appSettings,
@@ -55,7 +55,7 @@ namespace IoT.Simulator.Services
             _dpsSettings = dpsSettings.Value;
             _deviceSettingsDelegate = deviceSettingsDelegate;
 
-            _logger = loggerFactory.CreateLogger<DPSProvisioningService>();
+            _logger = loggerFactory.CreateLogger<DPSProvisioningServiceSymmetricKey>();
 
             string logPrefix = "system.dps.provisioning".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
@@ -198,11 +198,11 @@ namespace IoT.Simulator.Services
                                 _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Device Management service called. Getting registered module identity certificates...");
 
                                 JObject jData = JObject.Parse(resultContent);
-                                string primaryKey = jData.Value<string>("authenticationPrimaryKey");
+                                string x509DeviceCertificate = jData.Value<string>("x509DeviceCertificate");
 
                                 _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Keys provided by the Device Management service.");
 
-                                if (!string.IsNullOrEmpty(primaryKey))
+                                if (!string.IsNullOrEmpty(x509DeviceCertificate))
                                 {
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Module identity added to device.");
 
@@ -210,7 +210,7 @@ namespace IoT.Simulator.Services
                                     result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};x509=true";
                                 }
                                 else
-                                    _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::An error has occurred when getting the keys from the Device Management service.");
+                                    _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::An error has occurred when getting the certificates from the Device Management service.");
 
                             }
                         }
