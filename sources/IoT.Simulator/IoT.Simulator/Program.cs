@@ -93,7 +93,7 @@ namespace IoT.Simulator
                 ConfigureServices(services);
 
                 //DPS and provisioning
-                LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
+                DPSSettings dpsSettings = LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
 
                 //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
@@ -111,10 +111,10 @@ namespace IoT.Simulator
                     RegisterMessagingServices(services);
 
                 if (deviceSettings.SimulationSettings.EnableDevice)
-                    RegisterDeviceSimulators(services);
+                    RegisterDeviceSimulators(services, dpsSettings);
 
                 if (deviceSettings.SimulationSettings.EnableModules)
-                    RegisterModuleSimulators(deviceSettings, services);
+                    RegisterModuleSimulators(deviceSettings, services, dpsSettings);
 
                 IServiceProvider serviceProvider = services.BuildServiceProvider();
 
@@ -157,7 +157,7 @@ namespace IoT.Simulator
         /// <param name="configuration"></param>
         /// <param name="args"></param>
         /// <param name="_environmentName"></param>
-        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
+        private static DPSSettings LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
         {
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
             DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
@@ -194,6 +194,8 @@ namespace IoT.Simulator
             }
             else
                 throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");
+
+            return dpsSettings;
         }
 
         private static async Task CheckEnvironmentDeviceId(string environmentName)
@@ -398,12 +400,32 @@ namespace IoT.Simulator
             }
         }
 
-        static void RegisterDeviceSimulators(IServiceCollection services)
+        static void RegisterDeviceSimulators(IServiceCollection services, DPSSettings dpsSettings)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.AddSingleton<IProvisioningService, DPSProvisioningService>();
+            if (dpsSettings == null)
+                throw new ArgumentNullException(nameof(dpsSettings));
+
+            if (dpsSettings.GroupEnrollment != null)
+            {
+                if (dpsSettings.GroupEnrollment.SecurityType == SecurityType.X509CA)
+                {
+                    if (dpsSettings.GroupEnrollment.CAX509Settings != null)
+                        services.AddSingleton<IProvisioningService, DPSProvisioningServiceX509CA>();
+                    else
+                        throw new Exception("RegisterDeviceSimulators::Missing CA X509 Settings");
+                }
+                else if (dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
+                {
+                    if (dpsSettings.GroupEnrollment.SymetricKeySettings != null)
+                        services.AddSingleton<IProvisioningService, DPSProvisioningServiceSymmetricKey>();
+                    else
+                        throw new Exception("RegisterDeviceSimulators::Missing Symmetric Key Settings");
+                }
+            }
+
             services.AddSingleton<ISimulationService, DeviceSimulationService>();
         }
 
