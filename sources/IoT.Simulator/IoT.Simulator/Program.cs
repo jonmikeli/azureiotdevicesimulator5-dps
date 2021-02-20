@@ -343,23 +343,62 @@ namespace IoT.Simulator
 
             if (localVariables != null && localVariables.Count >= 2)
             {
+                string securityType = Environment.GetEnvironmentVariable("DPS_SECURITY_TYPE");
+
+                if (string.IsNullOrEmpty(securityType))
+                    throw new ArgumentNullException(nameof(securityType));
+
                 string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
-                string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+                if (string.IsNullOrEmpty(idScope))
+                    throw new ArgumentNullException(nameof(idScope));                
 
-                if (!string.IsNullOrEmpty(idScope) && !string.IsNullOrEmpty(primarySymmetricKey))
+                switch (Enum.Parse<SecurityType>(securityType))
                 {
-                    settings = new DPSSettings();
-                    settings.EnrollmentType = EnrollmentType.Group;
-                    settings.GroupEnrollment = new GroupEnrollmentSettings();
-                    settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
+                    case SecurityType.SymmetricKey:
+                        string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
 
-                    settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
-                    settings.GroupEnrollment.SymmetricKeySettings.TransportType = TransportType.Mqtt;
-                    settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
+                        if (!string.IsNullOrEmpty(primarySymmetricKey))
+                        {
+                            settings = new DPSSettings();
+                            settings.EnrollmentType = EnrollmentType.Group;
+                            settings.GroupEnrollment = new GroupEnrollmentSettings();
+                            settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
-                    settings.GroupEnrollment.SymmetricKeySettings.IdScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
-                    settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+                            settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+                            settings.GroupEnrollment.SymmetricKeySettings.TransportType = TransportType.Mqtt;
+                            settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
+
+                            settings.GroupEnrollment.SymmetricKeySettings.IdScope = idScope;
+                            settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = primarySymmetricKey;
+                        }
+
+                        break;
+                    case SecurityType.X509CA:
+                        string certificatePath = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PATH");
+
+                        if (!string.IsNullOrEmpty(certificatePath))
+                        {
+                            settings = new DPSSettings();
+                            settings.EnrollmentType = EnrollmentType.Group;
+                            settings.GroupEnrollment = new GroupEnrollmentSettings();
+                            settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
+
+                            settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
+                            settings.GroupEnrollment.CAX509Settings.TransportType = TransportType.Mqtt;
+                            settings.GroupEnrollment.CAX509Settings.EnrollmentType = EnrollmentType.Group;
+
+                            settings.GroupEnrollment.CAX509Settings.IdScope = idScope;
+                            settings.GroupEnrollment.CAX509Settings.DeviceX509Path = certificatePath;
+
+                            settings.GroupEnrollment.CAX509Settings.Password = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PASSWORD");
+                        }
+
+                        break;
+                    default:
+                        break;
                 }
+
+                
             }
 
             return settings;
