@@ -331,3 +331,4 @@ ASALocalRun/
 
 # Custom - Development configuration files
 **/*.Development.json
+*.pem

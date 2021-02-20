@@ -108,6 +108,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="X509\" />
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties simulationsettings-device_1json__JSONSchema="Settings\JSONSchemas\simulationsettings-device-schema.json" devicesettings_1json__JSONSchema="Settings\JSONSchemas\devicesettings-schema.json" /></VisualStudio></ProjectExtensions>
 
 </Project>
