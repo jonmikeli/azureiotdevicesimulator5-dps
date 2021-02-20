@@ -113,19 +113,19 @@ namespace IoT.Simulator.Services
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Creating X509 leaf authentication for IoT Hub...");
 
-                                    IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(deviceRegistrationResult.DeviceId, deviceLeafProvisioningCertificate);
+                                    //IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(deviceRegistrationResult.DeviceId, deviceLeafProvisioningCertificate);
 
-                                    _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Testing the provisioned device with IoT Hub...");
+                                    //_logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Testing the provisioned device with IoT Hub...");
 
-                                    using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.CAX509Settings.TransportType))
-                                    {
-                                        _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Sending a telemetry message after provisioning to test the process...");
+                                    //using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.CAX509Settings.TransportType))
+                                    //{
+                                    //    _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Sending a telemetry message after provisioning to test the process...");
 
-                                        using var message = new Message(Encoding.UTF8.GetBytes("TestMessage"));
-                                        await iotClient.SendEventAsync(message);
+                                    //    using var message = new Message(Encoding.UTF8.GetBytes("TestMessage"));
+                                    //    await iotClient.SendEventAsync(message);
 
-                                        _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Finished.");
-                                    }
+                                    //    _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Finished.");
+                                    //}
 
                                     //HostName =< host_name >; DeviceId =< device_id >; x509 = true
                                     result = $"HostName={deviceRegistrationResult.AssignedHub};DeviceId={deviceRegistrationResult.DeviceId};x509=true";
