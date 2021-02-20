@@ -439,6 +439,7 @@ namespace IoT.Simulator
             services.AddTransient<ICommissioningMessageService, SimpleCommissioningMessageService>();
         }
 
+        //TODO: take into account the CA X509 settings
         static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services, DPSSettings dpsSettings)
         {
             if (deviceSettings == null)
