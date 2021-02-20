@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -144,13 +145,24 @@ namespace IoT.Simulator.Services
                 if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment != null)
                 {
                     if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
-                        _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettingsDelegate.CurrentValue.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
+                        _deviceClient = DeviceClient.CreateFromConnectionString(
+                            _deviceSettingsDelegate.CurrentValue.ConnectionString,
+                            _dpsSettingsDelegate.CurrentValue.GroupEnrollment.SymetricKeySettings.TransportType);
                     else if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment.SecurityType == SecurityType.X509CA)
                     {
-                        _deviceClient = DeviceClient.Create(
-                            "",
-                            "",
-                            null);
+                        X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(_dpsSettingsDelegate.CurrentValue.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettingsDelegate.CurrentValue.GroupEnrollment.CAX509Settings.Password);
+
+                        string iotHubName = _deviceSettingsDelegate.CurrentValue.ConnectionString.ExtractValue("HostName");
+                        if (string.IsNullOrEmpty(iotHubName))
+                            throw new ArgumentNullException(nameof(iotHubName));
+
+                        string deviceId = _deviceSettingsDelegate.CurrentValue.ConnectionString.ExtractValue("DeviceId");
+                        if (string.IsNullOrEmpty(deviceId))
+                            throw new ArgumentNullException(nameof(deviceId));
+
+                        IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(_deviceSettingsDelegate.CurrentValue.DeviceId, deviceLeafProvisioningCertificate);
+
+                        _deviceClient = DeviceClient.Create(iotHubName,deviceId,auth);
                     }
                     else
                         _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Feature not implemented.");
