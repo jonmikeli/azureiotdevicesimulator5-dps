@@ -155,7 +155,7 @@ namespace IoT.Simulator.Services
 
                         IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(_deviceSettingsDelegate.CurrentValue.DeviceId, deviceLeafProvisioningCertificate);
 
-                        _deviceClient = DeviceClient.Create(_deviceSettingsDelegate.CurrentValue.HostName, _deviceSettingsDelegate.CurrentValue.DeviceId, auth);
+                        _deviceClient = DeviceClient.Create(_deviceSettingsDelegate.CurrentValue.HostName, auth, _dpsSettings.GroupEnrollment.CAX509Settings.TransportType);
                     }
                     else
                         _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Feature not implemented.");
