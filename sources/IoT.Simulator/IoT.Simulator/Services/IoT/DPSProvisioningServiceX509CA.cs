@@ -60,7 +60,7 @@ namespace IoT.Simulator.Services
 
             string logPrefix = "system.dps.provisioning".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
-            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DPS Provisioning service created.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::DPS Provisioning service created.");            
         }
 
         public async Task<string> ProvisionDevice()
@@ -78,8 +78,10 @@ namespace IoT.Simulator.Services
 
                 if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.X509CA && _dpsSettings.GroupEnrollment.CAX509Settings != null)
                 {
+                    string deviceCertificateFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path);
+
                     // X509 device leaf certificate
-                    X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(_dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
+                    X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(deviceCertificateFullPath, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
                     _deviceSettingsDelegate.CurrentValue.DeviceId = deviceLeafProvisioningCertificate.Subject.Remove(0, 3); //delete the 'CN='
 
                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");                    

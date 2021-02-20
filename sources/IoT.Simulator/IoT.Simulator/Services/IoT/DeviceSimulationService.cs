@@ -98,7 +98,7 @@ namespace IoT.Simulator.Services
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
-            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device simulator created.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device simulator created.");            
         }
 
         ~DeviceSimulationService()
@@ -150,19 +150,12 @@ namespace IoT.Simulator.Services
                             _dpsSettings.GroupEnrollment.SymmetricKeySettings.TransportType);
                     else if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.X509CA)
                     {
-                        X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(_dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
-
-                        string iotHubName = _deviceSettingsDelegate.CurrentValue.HostName;
-                        if (string.IsNullOrEmpty(iotHubName))
-                            throw new ArgumentNullException(nameof(iotHubName));
-
-                        string deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
-                        if (string.IsNullOrEmpty(deviceId))
-                            throw new ArgumentNullException(nameof(deviceId));
+                        string deviceCertificateFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path);
+                        X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(deviceCertificateFullPath, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
 
                         IAuthenticationMethod auth = new DeviceAuthenticationWithX509Certificate(_deviceSettingsDelegate.CurrentValue.DeviceId, deviceLeafProvisioningCertificate);
 
-                        _deviceClient = DeviceClient.Create(iotHubName,deviceId,auth);
+                        _deviceClient = DeviceClient.Create(_deviceSettingsDelegate.CurrentValue.HostName, _deviceSettingsDelegate.CurrentValue.DeviceId, auth);
                     }
                     else
                         _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Feature not implemented.");
