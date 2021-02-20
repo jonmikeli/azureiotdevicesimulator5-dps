@@ -128,7 +128,8 @@ namespace IoT.Simulator.Services
                                 _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Finished.");
                             }
 
-                            result = $"HostName={deviceRegistrationResult.AssignedHub};DeviceId={deviceRegistrationResult.DeviceId};SharedAccessKey={devicePrimaryKey}";
+                            //HostName =< host_name >; DeviceId =< device_id >; x509 = true
+                            result = $"HostName={deviceRegistrationResult.AssignedHub};DeviceId={deviceRegistrationResult.DeviceId};x509=true";
                         }
                     }
                     else
@@ -194,7 +195,7 @@ namespace IoT.Simulator.Services
 
                             if (!string.IsNullOrEmpty(resultContent))
                             {
-                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Device Management service called. Getting registered module identity keys...");
+                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Device Management service called. Getting registered module identity certificates...");
 
                                 JObject jData = JObject.Parse(resultContent);
                                 string primaryKey = jData.Value<string>("authenticationPrimaryKey");
@@ -205,7 +206,8 @@ namespace IoT.Simulator.Services
                                 {
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Module identity added to device.");
 
-                                    result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+                                    //HostName=<host_name>;DeviceId=<device_id>;x509=true
+                                    result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};x509=true";
                                 }
                                 else
                                     _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::An error has occurred when getting the keys from the Device Management service.");
