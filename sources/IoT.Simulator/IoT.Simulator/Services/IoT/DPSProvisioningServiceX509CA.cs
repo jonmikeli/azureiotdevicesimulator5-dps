@@ -79,18 +79,18 @@ namespace IoT.Simulator.Services
                 if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.X509CA && _dpsSettings.GroupEnrollment.CAX509Settings != null)
                 {
                     // X509 device leaf certificate
-                    X509Certificate2 deviceLeafCertificate = new X509Certificate2(_dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
-                    _deviceSettingsDelegate.CurrentValue.DeviceId = deviceLeafCertificate.Subject.Remove(0, 3); //delete the 'CN='
+                    X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(_dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
+                    _deviceSettingsDelegate.CurrentValue.DeviceId = deviceLeafProvisioningCertificate.Subject.Remove(0, 3); //delete the 'CN='
 
                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");                    
 
-                    using (var security = new SecurityProviderX509Certificate(deviceLeafCertificate))
+                    using (var security = new SecurityProviderX509Certificate(deviceLeafProvisioningCertificate))
                     {
-                        using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                        using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.CAX509Settings.TransportType))
                         {
                             ProvisioningDeviceClient provClient = ProvisioningDeviceClient.Create(
-                                _dpsSettings.GroupEnrollment.SymetricKeySettings.GlobalDeviceEndpoint,
-                                _dpsSettings.GroupEnrollment.SymetricKeySettings.IdScope,
+                                _dpsSettings.GroupEnrollment.CAX509Settings.GlobalDeviceEndpoint,
+                                _dpsSettings.GroupEnrollment.CAX509Settings.IdScope,
                                 security,
                                 transportHandler);
 
@@ -120,7 +120,7 @@ namespace IoT.Simulator.Services
 
                                     _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Testing the provisioned device with IoT Hub...");
 
-                                    using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                                    using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.CAX509Settings.TransportType))
                                     {
                                         _logger.LogDebug($"{logPrefix}::{deviceRegistrationResult.DeviceId}::Sending a telemetry message after provisioning to test the process...");
 
