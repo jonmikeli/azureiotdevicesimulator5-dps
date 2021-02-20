@@ -74,10 +74,10 @@
       <IsTransformFile>true</IsTransformFile>
     </None>
     <None Update="dpssettings.Development.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="dpssettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Messages\commissioning.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -106,16 +106,12 @@
       <DependentUpon>devicesettings.json</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="X509\new-device.cert.pem">
+    <None Update="X509\new-device.devx5092.cert.pem">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="X509\new-device.cert.pfx">
+    <None Update="X509\new-device.devx5092.cert.pfx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="X509\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties simulationsettings-device_1json__JSONSchema="Settings\JSONSchemas\simulationsettings-device-schema.json" devicesettings_1json__JSONSchema="Settings\JSONSchemas\devicesettings-schema.json" /></VisualStudio></ProjectExtensions>
