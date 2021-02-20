@@ -21,14 +21,7 @@ namespace IoT.Simulator.Settings.DPS
         //    "Id",
         //    Required = false,
         //    HelpText = "The registration Id when using individual enrollment, or the desired device Id when using group enrollment.")]
-        //public string Id { get; set; }
-
-        [Option(
-            'p',
-            "PrimaryKey",
-            Required = true,
-            HelpText = "The primary key of the individual or group enrollment.")]
-        public string PrimaryKey { get; set; }
+        //public string Id { get; set; }       
 
         [Option(
             'e',
