@@ -24,6 +24,7 @@ namespace IoT.Simulator.Services
         private readonly ILogger<DeviceSimulationService> _logger;
 
         private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
+        private IOptionsMonitor<DPSSettings> _dpsSettingsDelegate;
         private SimulationSettingsDevice _simulationSettings;
         private DeviceClient _deviceClient;
         private string _deviceId;
@@ -39,6 +40,7 @@ namespace IoT.Simulator.Services
 
         public DeviceSimulationService(
             IOptionsMonitor<DeviceSettings> deviceSettingsDelegate,
+            IOptionsMonitor<DPSSettings> dpsSettingsDelegate,
             ITelemetryMessageService telemetryMessagingService,
             IErrorMessageService errorMessagingService,
             ICommissioningMessageService commissioningMessagingService,
@@ -49,10 +51,16 @@ namespace IoT.Simulator.Services
                 throw new ArgumentNullException(nameof(deviceSettingsDelegate));
 
             if (deviceSettingsDelegate.CurrentValue == null)
-                throw new ArgumentNullException("deviceSettingsDelegate.SimulationSettings");
+                throw new ArgumentNullException("deviceSettingsDelegate.CurrentValue");
 
             if (deviceSettingsDelegate.CurrentValue.SimulationSettings == null)
                 throw new ArgumentNullException("deviceSettingsDelegate.CurrentValue.SimulationSettings");
+
+            if (dpsSettingsDelegate == null)
+                throw new ArgumentNullException(nameof(dpsSettingsDelegate));
+
+            if (dpsSettingsDelegate.CurrentValue == null)
+                throw new ArgumentNullException("dpsSettingsDelegate.CurrentValue");
 
             if (telemetryMessagingService == null)
                 throw new ArgumentNullException(nameof(telemetryMessagingService));
@@ -70,6 +78,7 @@ namespace IoT.Simulator.Services
                 throw new ArgumentNullException(nameof(loggerFactory), "No logger factory has been provided.");
 
             _deviceSettingsDelegate = deviceSettingsDelegate;
+            _dpsSettingsDelegate = dpsSettingsDelegate;
             _simulationSettings = _deviceSettingsDelegate.CurrentValue.SimulationSettings;
 
             _deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
@@ -132,55 +141,71 @@ namespace IoT.Simulator.Services
                 IoTTools.CheckDeviceConnectionStringData(_deviceSettingsDelegate.CurrentValue.ConnectionString, _logger);
 
                 // Connect to the IoT hub using the MQTT protocol
-                _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettingsDelegate.CurrentValue.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
-                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device client created.");
-
-                if (_simulationSettings.EnableTwinPropertiesDesiredChangesNotifications)
+                if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment != null)
                 {
-                    await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertyChange, null);
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Twin Desired Properties update callback handler registered.");
-                }
-
-                //Configuration
-                if (_simulationSettings.EnableC2DDirectMethods)
-                    //Register C2D Direct methods handlers            
-                    await RegisterC2DDirectMethodsHandlersAsync();
-
-                if (_simulationSettings.EnableC2DMessages)
-                    //Start receiving C2D messages
-                    ReceiveC2DMessagesAsync();
-
-                //Messages
-                if (_simulationSettings.EnableLatencyTests)
-                    SendDeviceToCloudLatencyTestAsync(_deviceId, _simulationSettings.LatencyTestsFrecuency);
-
-                if (_simulationSettings.EnableTelemetryMessages)
-                    SendDeviceToCloudMessagesAsync(_deviceId); //interval is a global variable changed by processes
-
-                if (_simulationSettings.EnableErrorMessages)
-                    SendDeviceToCloudErrorAsync(_deviceId, _simulationSettings.ErrorFrecuency);
-
-                if (_simulationSettings.EnableCommissioningMessages)
-                    SendDeviceToCloudCommissioningAsync(_deviceId, _simulationSettings.CommissioningFrecuency);
-
-                if (_simulationSettings.EnableReadingTwinProperties)
-                {
-                    //Twins
-                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::Retrieving twin.");
-                    Twin twin = await _deviceClient.GetTwinAsync();
-
-                    if (twin != null)
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::Device twin: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
+                    if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
+                        _deviceClient = DeviceClient.CreateFromConnectionString(_deviceSettingsDelegate.CurrentValue.ConnectionString, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
+                    else if (_dpsSettingsDelegate.CurrentValue.GroupEnrollment.SecurityType == SecurityType.X509CA)
+                    {
+                        _deviceClient = DeviceClient.Create(
+                            "",
+                            "",
+                            null);
+                    }
                     else
-                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::No device twin.");
-                }
+                        _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Feature not implemented.");
 
-                if (_simulationSettings.EnableFileUpload)
-                {
-                    throw new NotImplementedException("File upload feature has not been implemented yet.");
-                }
+                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device client created.");
 
-                _deviceClient.SetConnectionStatusChangesHandler(new ConnectionStatusChangesHandler(ConnectionStatusChanged));
+                    if (_simulationSettings.EnableTwinPropertiesDesiredChangesNotifications)
+                    {
+                        await _deviceClient.SetDesiredPropertyUpdateCallbackAsync(OnDesiredPropertyChange, null);
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Twin Desired Properties update callback handler registered.");
+                    }
+
+                    //Configuration
+                    if (_simulationSettings.EnableC2DDirectMethods)
+                        //Register C2D Direct methods handlers            
+                        await RegisterC2DDirectMethodsHandlersAsync();
+
+                    if (_simulationSettings.EnableC2DMessages)
+                        //Start receiving C2D messages
+                        ReceiveC2DMessagesAsync();
+
+                    //Messages
+                    if (_simulationSettings.EnableLatencyTests)
+                        SendDeviceToCloudLatencyTestAsync(_deviceId, _simulationSettings.LatencyTestsFrecuency);
+
+                    if (_simulationSettings.EnableTelemetryMessages)
+                        SendDeviceToCloudMessagesAsync(_deviceId); //interval is a global variable changed by processes
+
+                    if (_simulationSettings.EnableErrorMessages)
+                        SendDeviceToCloudErrorAsync(_deviceId, _simulationSettings.ErrorFrecuency);
+
+                    if (_simulationSettings.EnableCommissioningMessages)
+                        SendDeviceToCloudCommissioningAsync(_deviceId, _simulationSettings.CommissioningFrecuency);
+
+                    if (_simulationSettings.EnableReadingTwinProperties)
+                    {
+                        //Twins
+                        _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::Retrieving twin.");
+                        Twin twin = await _deviceClient.GetTwinAsync();
+
+                        if (twin != null)
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::Device twin: {JsonConvert.SerializeObject(twin, Formatting.Indented)}.");
+                        else
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::INITIALIZATION::No device twin.");
+                    }
+
+                    if (_simulationSettings.EnableFileUpload)
+                    {
+                        throw new NotImplementedException("File upload feature has not been implemented yet.");
+                    }
+
+                    _deviceClient.SetConnectionStatusChangesHandler(new ConnectionStatusChangesHandler(ConnectionStatusChanged));
+                }
+                else
+                    _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::No enrollment group has been found.");
             }
             catch (Exception ex)
             {
