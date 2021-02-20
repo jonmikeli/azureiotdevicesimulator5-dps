@@ -319,7 +319,7 @@ namespace IoT.Simulator
                 settings = new DPSSettings();
                 settings.EnrollmentType = EnrollmentType.Group;
                 settings.GroupEnrollment = new GroupEnrollmentSettings();
-                settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
+                settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
                 settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
                 settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
@@ -351,7 +351,7 @@ namespace IoT.Simulator
                     settings = new DPSSettings();
                     settings.EnrollmentType = EnrollmentType.Group;
                     settings.GroupEnrollment = new GroupEnrollmentSettings();
-                    settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
+                    settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
                     settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
                     settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
@@ -439,7 +439,7 @@ namespace IoT.Simulator
             services.AddTransient<ICommissioningMessageService, SimpleCommissioningMessageService>();
         }
 
-        static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services)
+        static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services, DPSSettings dpsSettings)
         {
             if (deviceSettings == null)
                 throw new ArgumentNullException(nameof(deviceSettings));
@@ -449,6 +449,9 @@ namespace IoT.Simulator
 
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
+
+            if (dpsSettings == null)
+                throw new ArgumentNullException(nameof(dpsSettings));
 
             if (deviceSettings.SimulationSettings.EnableModules)
             {

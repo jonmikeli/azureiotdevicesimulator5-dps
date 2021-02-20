@@ -75,7 +75,7 @@ namespace IoT.Simulator.Services
                 if (_dpsSettings.GroupEnrollment == null)
                     throw new ArgumentNullException("_dpsSettings.GroupEnrollment", "No group enrollment settings have been found.");
 
-                if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymetricKey)
+                if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
                     _dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey = ProvisioningTools.ComputeDerivedSymmetricKey(_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey, _deviceSettingsDelegate.CurrentValue.DeviceId);
             }
 
