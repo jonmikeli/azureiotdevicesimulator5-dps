@@ -37,8 +37,8 @@ namespace IoT.Simulator.Settings.DPS
         [JsonProperty("symetricKeySettings")]
         public DPSSymmetricKeySettings SymetricKeySettings { get; set; }
 
-        //[JsonProperty("X509Settings")]
-        //public DPSX509Settings X509Settings { get; set; }
+        [JsonProperty("CAX509Settings")]
+        public DPSCAX509Settings CAX509Settings { get; set; }
 
         //[JsonProperty("tpmSettings")]
         //public DPSTPMSettings TMPSettings { get; set; }
