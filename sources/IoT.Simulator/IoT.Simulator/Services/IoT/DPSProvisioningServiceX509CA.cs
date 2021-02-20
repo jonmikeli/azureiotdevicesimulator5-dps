@@ -29,7 +29,7 @@ namespace IoT.Simulator.Services
         private AppSettings _appSettings;
         private DPSSettings _dpsSettings;
         private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
-        private readonly ILogger<DPSProvisioningServiceSymmetricKey> _logger;
+        private readonly ILogger<DPSProvisioningServiceX509CA> _logger;
 
         public DPSProvisioningServiceX509CA(
             IOptions<AppSettings> appSettings,
@@ -56,7 +56,7 @@ namespace IoT.Simulator.Services
             _dpsSettings = dpsSettings.Value;
             _deviceSettingsDelegate = deviceSettingsDelegate;
 
-            _logger = loggerFactory.CreateLogger<DPSProvisioningServiceSymmetricKey>();
+            _logger = loggerFactory.CreateLogger<DPSProvisioningServiceX509CA>();
 
             string logPrefix = "system.dps.provisioning".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
