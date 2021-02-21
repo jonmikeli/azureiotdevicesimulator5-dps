@@ -15,7 +15,7 @@ namespace IoT.Simulator.Settings.DPS
            "PrimaryKey",
             SetName = "symmetrickey",
             Required = true,
-           HelpText = "The primary key of the individual or group enrollment. Required for SymmetricKey security type.")]
+           HelpText = "The primary key of the individual or group enrollment.")]
         public string PrimaryKey { get; set; }
     }
 }
