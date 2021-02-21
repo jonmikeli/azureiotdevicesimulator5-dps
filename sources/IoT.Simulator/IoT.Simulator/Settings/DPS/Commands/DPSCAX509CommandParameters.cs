@@ -15,5 +15,12 @@ namespace IoT.Simulator.Settings.DPS
            Required = true,
            HelpText = "The device X509 certificate relative path (leaf) for DPS group enrollment.")]
         public string DeviceCertificatePath { get; set; }
+
+        [Option(
+           'p',
+           "CertificatePassword",
+           Required = true,
+           HelpText = "The device X509 certificate password.")]
+        public string DeviceCertificatePassword { get; set; }
     }
 }
