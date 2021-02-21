@@ -7,7 +7,7 @@ namespace IoT.Simulator.Settings.DPS
     /// <summary>
     /// Parameters for the application
     /// </summary>
-    internal class DPSSymetricKeyCommandParameters : DPSCommandParametersBase
+    internal class DPSSymmetricKeyCommandParameters : DPSCommandParametersBase
     {
         [Option(
            'p',

@@ -281,16 +281,17 @@ namespace IoT.Simulator
         /// <summary>
         /// Parses console/command parameters.
         /// </summary>
-        static DPSCommandParametersBase ParseCommandParameters(string[] args)
+        static T ParseCommandParameters<T>(string[] args)
+            where T: DPSCommandParametersBase
         {
             //Load the parameters and put them as environment variables (environment variables will always be of higher priority
             // Parse application parameters
-            DPSCommandParametersBase parameters = null;
+            T parameters = null;
 
             if (args != null && args.Length > 1)
             {
 
-                ParserResult<DPSCommandParametersBase> result = Parser.Default.ParseArguments<DPSCommandParametersBase>(args)
+                ParserResult<T> result = Parser.Default.ParseArguments<T>(args)
                     .WithParsed(parsedParams =>
                     {
                         parameters = parsedParams;
@@ -313,7 +314,7 @@ namespace IoT.Simulator
         {
             DPSSettings settings = null;
 
-            DPSCommandParametersBase parameters = ParseCommandParameters(Environment.GetCommandLineArgs());
+            DPSCommandParametersBase parameters = ParseCommandParameters<DPSCommandParametersBase>(Environment.GetCommandLineArgs());
             if (parameters != null && !string.IsNullOrEmpty(parameters.IdScope))
             {
                 settings = new DPSSettings();
@@ -330,7 +331,9 @@ namespace IoT.Simulator
                         settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = settings.EnrollmentType;
 
                         settings.GroupEnrollment.SymmetricKeySettings.IdScope = parameters.IdScope;
-                        settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = "";
+
+                        DPSSymmetricKeyCommandParameters specificParameters = ParseCommandParameters<DPSSymmetricKeyCommandParameters>(Environment.GetCommandLineArgs());
+                        settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = specificParameters.PrimaryKey;
                         break;
                     case SecurityType.X509CA:
                         settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
@@ -338,8 +341,8 @@ namespace IoT.Simulator
                         settings.GroupEnrollment.CAX509Settings.EnrollmentType = settings.EnrollmentType;
 
                         settings.GroupEnrollment.CAX509Settings.IdScope = parameters.IdScope;
-                        settings.GroupEnrollment.CAX509Settings.DeviceX509Path = "";
-                        settings.GroupEnrollment.CAX509Settings.Password = "";
+                        settings.GroupEnrollment.CAX509Settings.DeviceX509Path = ""; //TODO: to complete
+                        settings.GroupEnrollment.CAX509Settings.Password = ""; //TODO: to complete
                         break;
                     default:
                         break;
