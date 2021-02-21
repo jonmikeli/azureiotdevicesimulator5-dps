@@ -18,6 +18,7 @@ The first version was based on symmetric keys and a new version adds CA X509 key
     <Version>0.3.0.0</Version>
     <PackageId>IoT.Simulator.DPS</PackageId>
     <SignAssembly>false</SignAssembly>
+    <AssemblyName>IoT.Simulator.DPS</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
