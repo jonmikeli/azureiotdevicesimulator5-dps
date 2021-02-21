@@ -7,13 +7,15 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <Authors>Jon Mikel Inza</Authors>
     <Company>JMI</Company>
-    <Product>IoTSimulator</Product>
-    <Description>IoT simulator covering most of common functional scenarios included in the Azure IoT Device SDK.</Description>
+    <Product>IoTSimulator.DPS</Product>
+    <Description>IoT simulator covering most of common functional scenarios included in the Azure IoT Device SDK.
+This particular version takes in charge DPS capabilities.
+The first version was based on symmetric keys and a new version adds CA X509 keys.</Description>
     <Copyright>Jon Mikel Inza</Copyright>
-    <PackageTags>iot, simulator, Azure IoT, IoT Hub, docker, device, modules, net5</PackageTags>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
-    <Version>0.1.0.0</Version>
+    <PackageTags>iot, simulator, Azure IoT, IoT Hub, docker, device, modules, net5, DPS, symmetric keys, X509, CA, PKI</PackageTags>
+    <AssemblyVersion>0.3.0.0</AssemblyVersion>
+    <FileVersion>0.3.0.0</FileVersion>
+    <Version>0.3.0.0</Version>
     <PackageId>IoT.Simulator</PackageId>
   </PropertyGroup>
 
