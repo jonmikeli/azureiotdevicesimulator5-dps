@@ -82,7 +82,7 @@ namespace IoT.Simulator.Services
             _simulationSettings = _deviceSettingsDelegate.CurrentValue.SimulationSettings;
             _dpsSettings = dpsSettings.Value;
 
-            _deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
+            //_deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId;
             _iotHub = _deviceSettingsDelegate.CurrentValue.HostName;
 
             _telemetryInterval = _simulationSettings.TelemetryFrecuency;
@@ -179,16 +179,16 @@ namespace IoT.Simulator.Services
 
                     //Messages
                     if (_simulationSettings.EnableLatencyTests)
-                        SendDeviceToCloudLatencyTestAsync(_deviceId, _simulationSettings.LatencyTestsFrecuency);
+                        SendDeviceToCloudLatencyTestAsync(_deviceSettingsDelegate.CurrentValue.DeviceId, _simulationSettings.LatencyTestsFrecuency);
 
                     if (_simulationSettings.EnableTelemetryMessages)
-                        SendDeviceToCloudMessagesAsync(_deviceId); //interval is a global variable changed by processes
+                        SendDeviceToCloudMessagesAsync(_deviceSettingsDelegate.CurrentValue.DeviceId); //interval is a global variable changed by processes
 
                     if (_simulationSettings.EnableErrorMessages)
-                        SendDeviceToCloudErrorAsync(_deviceId, _simulationSettings.ErrorFrecuency);
+                        SendDeviceToCloudErrorAsync(_deviceSettingsDelegate.CurrentValue.DeviceId, _simulationSettings.ErrorFrecuency);
 
                     if (_simulationSettings.EnableCommissioningMessages)
-                        SendDeviceToCloudCommissioningAsync(_deviceId, _simulationSettings.CommissioningFrecuency);
+                        SendDeviceToCloudCommissioningAsync(_deviceSettingsDelegate.CurrentValue.DeviceId, _simulationSettings.CommissioningFrecuency);
 
                     if (_simulationSettings.EnableReadingTwinProperties)
                     {
