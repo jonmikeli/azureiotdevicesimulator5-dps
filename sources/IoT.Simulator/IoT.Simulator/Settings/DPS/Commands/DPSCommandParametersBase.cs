@@ -48,7 +48,7 @@ namespace IoT.Simulator.Settings.DPS
         public TransportType TransportType { get; set; }
 
         [Option(
-            's',
+            'u',
             "SecurityType",
             Default = SecurityType.SymmetricKey,
             Required = true,
