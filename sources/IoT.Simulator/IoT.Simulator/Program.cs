@@ -290,11 +290,11 @@ namespace IoT.Simulator
             T parameters = null;
 
             if (args != null && args.Length > 1)
-            {                
+            {
                 ParserResult<T> result = Parser.Default.ParseArguments<T>(args)
                     .WithParsed(parsedParams =>
                     {
-                        parameters = parsedParams;                        
+                        parameters = parsedParams;
                     });
 
                 if (result.Tag == ParserResultType.NotParsed)
@@ -308,16 +308,21 @@ namespace IoT.Simulator
 
         static DPSSettings ParseCommandParameters(string[] args)
         {
-            DPSSettings result = null;               
+            DPSSettings result = null;
 
-            if (args != null && args.Length > 1)
+            if (args != null && args.Length > 0)
             {
-                result = Parser.Default.ParseArguments<DPSSymmetricKeyCommandParameters, DPSCAX509CommandParameters>(args)
+                var parsingResult = Parser.Default.ParseArguments<DPSSymmetricKeyCommandParameters, DPSCAX509CommandParameters>(args);
+
+                if (parsingResult != null && parsingResult.Tag == ParserResultType.Parsed)
+                    result = parsingResult
                     .MapResult<DPSSymmetricKeyCommandParameters, DPSCAX509CommandParameters, DPSSettings>(
                     (DPSSymmetricKeyCommandParameters options) => ProcessSymmetricKeyOptions(options),
                     (DPSCAX509CommandParameters options) => ProcessCAX509Options(options),
                     errors => ProcessErrors(errors)
                     );
+                else
+                    Environment.Exit(1);
             }
 
             return result;
@@ -353,7 +358,7 @@ namespace IoT.Simulator
             settings.GroupEnrollment.CAX509Settings.EnrollmentType = settings.EnrollmentType;
 
             settings.GroupEnrollment.CAX509Settings.IdScope = parameters.IdScope;
-            
+
             settings.GroupEnrollment.CAX509Settings.DeviceX509Path = parameters.DeviceCertificatePath;
             settings.GroupEnrollment.CAX509Settings.Password = parameters.DeviceCertificatePassword;
 
@@ -401,7 +406,7 @@ namespace IoT.Simulator
             var localVariables = Environment.GetEnvironmentVariables();
 
             if (localVariables != null && localVariables.Count >= 2)
-            {                               
+            {
                 //Transport type
                 string transportType = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
 
