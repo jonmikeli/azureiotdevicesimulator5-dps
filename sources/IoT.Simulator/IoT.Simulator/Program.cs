@@ -306,6 +306,65 @@ namespace IoT.Simulator
             return parameters;
         }
 
+        static DPSSettings ParseCommandParameters(string[] args)
+        {
+            DPSSettings result = null;               
+
+            if (args != null && args.Length > 1)
+            {
+                result = Parser.Default.ParseArguments<DPSSymmetricKeyCommandParameters, DPSCAX509CommandParameters>(args)
+                    .MapResult<DPSSymmetricKeyCommandParameters, DPSCAX509CommandParameters, DPSSettings>(
+                    (DPSSymmetricKeyCommandParameters options) => ProcessSymmetricKeyOptions(options),
+                    (DPSCAX509CommandParameters options) => ProcessCAX509Options(options),
+                    errors => ProcessErrors(errors)
+                    );
+            }
+
+            return result;
+        }
+
+        static DPSSettings ProcessSymmetricKeyOptions(DPSSymmetricKeyCommandParameters parameters)
+        {
+            DPSSettings settings = new DPSSettings();
+            settings.EnrollmentType = EnrollmentType.Group;
+            settings.GroupEnrollment = new GroupEnrollmentSettings();
+            settings.GroupEnrollment.SecurityType = parameters.SecurityType;
+
+            settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+            settings.GroupEnrollment.SymmetricKeySettings.TransportType = parameters.TransportType;
+            settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = settings.EnrollmentType;
+
+            settings.GroupEnrollment.SymmetricKeySettings.IdScope = parameters.IdScope;
+
+            settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = parameters.PrimaryKey;
+
+            return settings;
+        }
+
+        static DPSSettings ProcessCAX509Options(DPSCAX509CommandParameters parameters)
+        {
+            DPSSettings settings = new DPSSettings();
+            settings.EnrollmentType = EnrollmentType.Group;
+            settings.GroupEnrollment = new GroupEnrollmentSettings();
+            settings.GroupEnrollment.SecurityType = parameters.SecurityType;
+
+            settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
+            settings.GroupEnrollment.CAX509Settings.TransportType = parameters.TransportType;
+            settings.GroupEnrollment.CAX509Settings.EnrollmentType = settings.EnrollmentType;
+
+            settings.GroupEnrollment.CAX509Settings.IdScope = parameters.IdScope;
+            
+            settings.GroupEnrollment.CAX509Settings.DeviceX509Path = parameters.DeviceCertificatePath;
+            settings.GroupEnrollment.CAX509Settings.Password = parameters.DeviceCertificatePassword;
+
+            return settings;
+        }
+
+        static DPSSettings ProcessErrors(IEnumerable<Error> errors)
+        {         
+            return null;
+        }
+
         public static IEnumerable<Type> FindDerivedTypes(Assembly assembly, Type baseType)
         {
             return assembly.GetTypes().Where(t => t != baseType &&
@@ -324,42 +383,8 @@ namespace IoT.Simulator
 
             if (args != null && args.Length > 1)
             {
-                DPSCommandParametersBase parameters = ParseCommandParameters<DPSCommandParametersBase>(args);
-                if (parameters != null && !string.IsNullOrEmpty(parameters.IdScope))
-                {
-                    settings = new DPSSettings();
-                    settings.EnrollmentType = EnrollmentType.Group;
-                    settings.GroupEnrollment = new GroupEnrollmentSettings();
-                    settings.GroupEnrollment.SecurityType = parameters.SecurityType;
-
-                    switch (parameters.SecurityType)
-                    {
-                        case SecurityType.SymmetricKey:
-
-                            settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
-                            settings.GroupEnrollment.SymmetricKeySettings.TransportType = parameters.TransportType;
-                            settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = settings.EnrollmentType;
-
-                            settings.GroupEnrollment.SymmetricKeySettings.IdScope = parameters.IdScope;
-
-                            DPSSymmetricKeyCommandParameters specificParameters = ParseCommandParameters<DPSSymmetricKeyCommandParameters>(Environment.GetCommandLineArgs());
-                            settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = specificParameters.PrimaryKey;
-                            break;
-                        case SecurityType.X509CA:
-                            settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
-                            settings.GroupEnrollment.CAX509Settings.TransportType = parameters.TransportType;
-                            settings.GroupEnrollment.CAX509Settings.EnrollmentType = settings.EnrollmentType;
-
-                            settings.GroupEnrollment.CAX509Settings.IdScope = parameters.IdScope;
-                            DPSCAX509CommandParameters specificParameters2 = ParseCommandParameters<DPSCAX509CommandParameters>(Environment.GetCommandLineArgs());
-                            settings.GroupEnrollment.CAX509Settings.DeviceX509Path = specificParameters2.DeviceCertificatePath;
-                            settings.GroupEnrollment.CAX509Settings.Password = specificParameters2.DeviceCertificatePassword;
-                            break;
-                        default:
-                            break;
-                    }
-
-                }
+                if (args.First().Contains(".dll"))
+                    settings = ParseCommandParameters(args.Skip(1).ToArray());
             }
 
             return settings;
