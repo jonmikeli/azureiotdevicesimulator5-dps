@@ -171,7 +171,7 @@ This file allows to configure the DPS settings.
   "dpsSettings": {
     "enrollmentType": "Group",
     "groupEnrollmentSettings": {
-      "securityType": "SymetricKey",
+      "securityType": "SymmetricKey",
       "symetricKeySettings": {
         "idScope": "[TO BE REPLACED]",
         "primaryKey": "[TO BE REPLACED]",
