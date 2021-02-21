@@ -371,21 +371,12 @@ namespace IoT.Simulator
             if (localVariables != null && localVariables.Count >= 2)
             {
                 string securityType = Environment.GetEnvironmentVariable("DPS_SECURITY_TYPE");
-
-                if (string.IsNullOrEmpty(securityType))
-                    throw new ArgumentNullException(nameof(securityType));
-
                 string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
-                if (string.IsNullOrEmpty(idScope))
-                    throw new ArgumentNullException(nameof(idScope));
 
                 //Transport type
                 string transportType = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
 
-                if (string.IsNullOrEmpty(transportType))
-                    throw new ArgumentNullException(nameof(transportType));
-
-                if (transportType.Trim().ToLower() != "mqtt")
+                if (!string.IsNullOrEmpty(transportType) && transportType.Trim().ToLower() != "mqtt")
                     throw new NotImplementedException();                
 
                 settings = new DPSSettings();
@@ -432,9 +423,7 @@ namespace IoT.Simulator
                         break;
                     default:
                         break;
-                }
-
-                
+                }                
             }
 
             return settings;
