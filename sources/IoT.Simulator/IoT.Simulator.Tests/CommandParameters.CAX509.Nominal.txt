@@ -1,1 +1,0 @@
-﻿x509ca -s "scopeId" -e "Group" -g "global.azure-devices-provisioning.net" -t "Mqtt" -c "certificatepath" -p "password"
