@@ -282,7 +282,7 @@ namespace IoT.Simulator
         /// Parses console/command parameters.
         /// </summary>
         static T ParseCommandParameters<T>(string[] args)
-            where T: DPSCommandParametersBase
+            where T : DPSCommandParametersBase
         {
             //Load the parameters and put them as environment variables (environment variables will always be of higher priority
             // Parse application parameters
@@ -369,61 +369,64 @@ namespace IoT.Simulator
             var localVariables = Environment.GetEnvironmentVariables();
 
             if (localVariables != null && localVariables.Count >= 2)
-            {
-                string securityType = Environment.GetEnvironmentVariable("DPS_SECURITY_TYPE");
-                string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
-
+            {                               
                 //Transport type
                 string transportType = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
 
-                if (!string.IsNullOrEmpty(transportType) && transportType.Trim().ToLower() != "mqtt")
-                    throw new NotImplementedException();                
-
-                settings = new DPSSettings();
-                settings.EnrollmentType = EnrollmentType.Group;
-                settings.GroupEnrollment = new GroupEnrollmentSettings();
-
-                TransportType typedTransportType = Enum.Parse<TransportType>(transportType);
-
-                switch (Enum.Parse<SecurityType>(securityType))
+                if (!string.IsNullOrEmpty(transportType))
                 {
-                    case SecurityType.SymmetricKey:
-                        string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");                        
+                    if (transportType.Trim().ToLower() != "mqtt")
+                        throw new NotImplementedException();
 
-                        if (!string.IsNullOrEmpty(primarySymmetricKey))
-                        {
-                            settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
+                    string securityType = Environment.GetEnvironmentVariable("DPS_SECURITY_TYPE");
+                    string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
 
-                            settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
-                            settings.GroupEnrollment.SymmetricKeySettings.TransportType = typedTransportType;
-                            settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
+                    settings = new DPSSettings();
+                    settings.EnrollmentType = EnrollmentType.Group;
+                    settings.GroupEnrollment = new GroupEnrollmentSettings();
 
-                            settings.GroupEnrollment.SymmetricKeySettings.IdScope = idScope;
-                            settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = primarySymmetricKey;
-                        }
+                    TransportType typedTransportType = Enum.Parse<TransportType>(transportType);
 
-                        break;
-                    case SecurityType.X509CA:
-                        string certificatePath = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PATH");
+                    switch (Enum.Parse<SecurityType>(securityType))
+                    {
+                        case SecurityType.SymmetricKey:
+                            string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
 
-                        if (!string.IsNullOrEmpty(certificatePath))
-                        {
-                            settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
+                            if (!string.IsNullOrEmpty(primarySymmetricKey))
+                            {
+                                settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
-                            settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
-                            settings.GroupEnrollment.CAX509Settings.TransportType = typedTransportType;
-                            settings.GroupEnrollment.CAX509Settings.EnrollmentType = EnrollmentType.Group;
+                                settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+                                settings.GroupEnrollment.SymmetricKeySettings.TransportType = typedTransportType;
+                                settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
 
-                            settings.GroupEnrollment.CAX509Settings.IdScope = idScope;
-                            settings.GroupEnrollment.CAX509Settings.DeviceX509Path = certificatePath;
+                                settings.GroupEnrollment.SymmetricKeySettings.IdScope = idScope;
+                                settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = primarySymmetricKey;
+                            }
 
-                            settings.GroupEnrollment.CAX509Settings.Password = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PASSWORD");
-                        }
+                            break;
+                        case SecurityType.X509CA:
+                            string certificatePath = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PATH");
 
-                        break;
-                    default:
-                        break;
-                }                
+                            if (!string.IsNullOrEmpty(certificatePath))
+                            {
+                                settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
+
+                                settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
+                                settings.GroupEnrollment.CAX509Settings.TransportType = typedTransportType;
+                                settings.GroupEnrollment.CAX509Settings.EnrollmentType = EnrollmentType.Group;
+
+                                settings.GroupEnrollment.CAX509Settings.IdScope = idScope;
+                                settings.GroupEnrollment.CAX509Settings.DeviceX509Path = certificatePath;
+
+                                settings.GroupEnrollment.CAX509Settings.Password = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PASSWORD");
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
 
             return settings;
