@@ -361,7 +361,8 @@ namespace IoT.Simulator
         }
 
         static DPSSettings ProcessErrors(IEnumerable<Error> errors)
-        {         
+        {
+            Environment.Exit(1);
             return null;
         }
 
