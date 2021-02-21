@@ -17,6 +17,7 @@ The first version was based on symmetric keys and a new version adds CA X509 key
     <FileVersion>0.3.0.0</FileVersion>
     <Version>0.3.0.0</Version>
     <PackageId>IoT.Simulator</PackageId>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

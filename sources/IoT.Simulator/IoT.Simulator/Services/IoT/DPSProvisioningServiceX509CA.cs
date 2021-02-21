@@ -113,6 +113,8 @@ namespace IoT.Simulator.Services
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device {deviceRegistrationResult.DeviceId} registered to {deviceRegistrationResult.AssignedHub}.");
                                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Creating X509 leaf authentication for IoT Hub...");
 
+                                    _deviceSettingsDelegate.CurrentValue.DeviceId = deviceRegistrationResult.DeviceId;
+
                                     //HostName =< host_name >; DeviceId =< device_id >; x509 = true
                                     result = $"HostName={deviceRegistrationResult.AssignedHub};DeviceId={deviceRegistrationResult.DeviceId};x509=true";
                                 }
