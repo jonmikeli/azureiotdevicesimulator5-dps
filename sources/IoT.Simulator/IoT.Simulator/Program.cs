@@ -314,19 +314,37 @@ namespace IoT.Simulator
             DPSSettings settings = null;
 
             DPSCommandParametersBase parameters = ParseCommandParameters(Environment.GetCommandLineArgs());
-            if (parameters != null && !string.IsNullOrEmpty(parameters.IdScope) && !string.IsNullOrEmpty(parameters.PrimaryKey))
+            if (parameters != null && !string.IsNullOrEmpty(parameters.IdScope))
             {
                 settings = new DPSSettings();
                 settings.EnrollmentType = EnrollmentType.Group;
                 settings.GroupEnrollment = new GroupEnrollmentSettings();
-                settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
+                settings.GroupEnrollment.SecurityType = parameters.SecurityType;
 
-                settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
-                settings.GroupEnrollment.SymmetricKeySettings.TransportType = TransportType.Mqtt;
-                settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
+                switch (parameters.SecurityType)
+                {
+                    case SecurityType.SymmetricKey:
+                                                                        
+                        settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+                        settings.GroupEnrollment.SymmetricKeySettings.TransportType = parameters.TransportType;
+                        settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = settings.EnrollmentType;
 
-                settings.GroupEnrollment.SymmetricKeySettings.IdScope = parameters.IdScope;
-                settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = parameters.PrimaryKey;
+                        settings.GroupEnrollment.SymmetricKeySettings.IdScope = parameters.IdScope;
+                        settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = "";
+                        break;
+                    case SecurityType.X509CA:
+                        settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
+                        settings.GroupEnrollment.CAX509Settings.TransportType = parameters.TransportType;
+                        settings.GroupEnrollment.CAX509Settings.EnrollmentType = settings.EnrollmentType;
+
+                        settings.GroupEnrollment.CAX509Settings.IdScope = parameters.IdScope;
+                        settings.GroupEnrollment.CAX509Settings.DeviceX509Path = "";
+                        settings.GroupEnrollment.CAX509Settings.Password = "";
+                        break;
+                    default:
+                        break;
+                }
+                
             }
 
             return settings;
@@ -359,7 +377,11 @@ namespace IoT.Simulator
                     throw new ArgumentNullException(nameof(transportType));
 
                 if (transportType.Trim().ToLower() != "mqtt")
-                    throw new NotImplementedException();
+                    throw new NotImplementedException();                
+
+                settings = new DPSSettings();
+                settings.EnrollmentType = EnrollmentType.Group;
+                settings.GroupEnrollment = new GroupEnrollmentSettings();
 
                 TransportType typedTransportType = Enum.Parse<TransportType>(transportType);
 
@@ -370,9 +392,6 @@ namespace IoT.Simulator
 
                         if (!string.IsNullOrEmpty(primarySymmetricKey))
                         {
-                            settings = new DPSSettings();
-                            settings.EnrollmentType = EnrollmentType.Group;
-                            settings.GroupEnrollment = new GroupEnrollmentSettings();
                             settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
                             settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
@@ -389,9 +408,6 @@ namespace IoT.Simulator
 
                         if (!string.IsNullOrEmpty(certificatePath))
                         {
-                            settings = new DPSSettings();
-                            settings.EnrollmentType = EnrollmentType.Group;
-                            settings.GroupEnrollment = new GroupEnrollmentSettings();
                             settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
 
                             settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
