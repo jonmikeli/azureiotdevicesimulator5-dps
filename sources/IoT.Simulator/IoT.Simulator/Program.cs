@@ -350,21 +350,23 @@ namespace IoT.Simulator
 
                 string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
                 if (string.IsNullOrEmpty(idScope))
-                    throw new ArgumentNullException(nameof(idScope));                
+                    throw new ArgumentNullException(nameof(idScope));
+
+                //Transport type
+                string transportType = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
+
+                if (string.IsNullOrEmpty(transportType))
+                    throw new ArgumentNullException(nameof(transportType));
+
+                if (transportType.Trim().ToLower() != "mqtt")
+                    throw new NotImplementedException();
+
+                TransportType typedTransportType = Enum.Parse<TransportType>(transportType);
 
                 switch (Enum.Parse<SecurityType>(securityType))
                 {
                     case SecurityType.SymmetricKey:
-                        string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
-                        string transportType = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
-
-                        if (string.IsNullOrEmpty(transportType))
-                            throw new ArgumentNullException(nameof(transportType));
-
-                        if (transportType.Trim().ToLower() != "mqtt")
-                            throw new NotImplementedException();
-                        
-                        TransportType typedTransportType = Enum.Parse<TransportType>(transportType);
+                        string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");                        
 
                         if (!string.IsNullOrEmpty(primarySymmetricKey))
                         {
