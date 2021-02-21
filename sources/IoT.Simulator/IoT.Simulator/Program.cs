@@ -341,8 +341,9 @@ namespace IoT.Simulator
                         settings.GroupEnrollment.CAX509Settings.EnrollmentType = settings.EnrollmentType;
 
                         settings.GroupEnrollment.CAX509Settings.IdScope = parameters.IdScope;
-                        settings.GroupEnrollment.CAX509Settings.DeviceX509Path = ""; //TODO: to complete
-                        settings.GroupEnrollment.CAX509Settings.Password = ""; //TODO: to complete
+                        DPSCAX509CommandParameters specificParameters2 = ParseCommandParameters<DPSCAX509CommandParameters>(Environment.GetCommandLineArgs());
+                        settings.GroupEnrollment.CAX509Settings.DeviceX509Path = specificParameters2.DeviceCertificatePath;
+                        settings.GroupEnrollment.CAX509Settings.Password = specificParameters2.DeviceCertificatePassword;
                         break;
                     default:
                         break;
