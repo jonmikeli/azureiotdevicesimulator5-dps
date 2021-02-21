@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace IoT.Simulator
@@ -289,12 +290,11 @@ namespace IoT.Simulator
             T parameters = null;
 
             if (args != null && args.Length > 1)
-            {
-
+            {                
                 ParserResult<T> result = Parser.Default.ParseArguments<T>(args)
                     .WithParsed(parsedParams =>
                     {
-                        parameters = parsedParams;
+                        parameters = parsedParams;                        
                     });
 
                 if (result.Tag == ParserResultType.NotParsed)
@@ -304,6 +304,12 @@ namespace IoT.Simulator
             }
 
             return parameters;
+        }
+
+        public static IEnumerable<Type> FindDerivedTypes(Assembly assembly, Type baseType)
+        {
+            return assembly.GetTypes().Where(t => t != baseType &&
+                                                  baseType.IsAssignableFrom(t));
         }
 
         /// <summary>

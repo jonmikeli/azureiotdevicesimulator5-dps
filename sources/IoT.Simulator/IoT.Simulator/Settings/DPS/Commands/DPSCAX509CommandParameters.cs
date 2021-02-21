@@ -7,6 +7,7 @@ namespace IoT.Simulator.Settings.DPS
     /// <summary>
     /// Parameters for the application
     /// </summary>
+    [Verb("x509ca", HelpText ="Define settings for DPS CA X509.")]
     internal class DPSCAX509CommandParameters : DPSCommandParametersBase
     {
         [Option(
