@@ -13,7 +13,7 @@ namespace IoT.Simulator.Settings.DPS
            'p',
            "PrimaryKey",
            Required = true,
-           HelpText = "The primary key of the individual or group enrollment.")]
+           HelpText = "The primary key of the individual or group enrollment. Required for SymmetricKey security type.")]
         public string PrimaryKey { get; set; }
     }
 }
