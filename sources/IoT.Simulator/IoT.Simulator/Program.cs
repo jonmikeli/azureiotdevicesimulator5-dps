@@ -328,7 +328,7 @@ namespace IoT.Simulator
             DPSSettings settings = new DPSSettings();
             settings.EnrollmentType = EnrollmentType.Group;
             settings.GroupEnrollment = new GroupEnrollmentSettings();
-            settings.GroupEnrollment.SecurityType = parameters.SecurityType;
+            settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
 
             settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
             settings.GroupEnrollment.SymmetricKeySettings.TransportType = parameters.TransportType;
@@ -346,7 +346,7 @@ namespace IoT.Simulator
             DPSSettings settings = new DPSSettings();
             settings.EnrollmentType = EnrollmentType.Group;
             settings.GroupEnrollment = new GroupEnrollmentSettings();
-            settings.GroupEnrollment.SecurityType = parameters.SecurityType;
+            settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
 
             settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
             settings.GroupEnrollment.CAX509Settings.TransportType = parameters.TransportType;
