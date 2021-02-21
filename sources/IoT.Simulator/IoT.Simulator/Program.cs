@@ -158,7 +158,7 @@ namespace IoT.Simulator
         /// <param name="configuration"></param>
         /// <param name="args"></param>
         /// <param name="_environmentName"></param>
-        private static DPSSettings LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
+        private static DPSSettings LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string environmentName)
         {
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
             DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
@@ -172,8 +172,8 @@ namespace IoT.Simulator
             {
                 //WARNING: it seems that IOptions do not work properly with default deserializers
                 string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
-                if (File.Exists($"dpssettings.{_environmentName}.json"))
-                    dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+                if (File.Exists($"dpssettings.{environmentName}.json"))
+                    dpsSettingsJson = File.ReadAllText($"dpssettings.{ environmentName}.json");
 
                 if (!string.IsNullOrEmpty(dpsSettingsJson))
                 {
