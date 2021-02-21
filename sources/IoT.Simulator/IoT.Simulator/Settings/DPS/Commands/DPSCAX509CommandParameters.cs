@@ -14,6 +14,7 @@ namespace IoT.Simulator.Settings.DPS
            'c',
            "DeviceCertificate",
             SetName = "x509ca",
+            Required = true,
            HelpText = "The device X509 certificate relative path (leaf) for DPS group enrollment. Required for X509CA security type.")]
         public string DeviceCertificatePath { get; set; }
 
@@ -21,6 +22,7 @@ namespace IoT.Simulator.Settings.DPS
            'p',
            "CertificatePassword",
             SetName = "x509ca",
+            Required = true,
            HelpText = "The device X509 certificate password. Required for X509CA security type.")]
         public string DeviceCertificatePassword { get; set; }
     }
