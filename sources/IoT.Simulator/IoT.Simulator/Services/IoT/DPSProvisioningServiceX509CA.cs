@@ -198,6 +198,95 @@ namespace IoT.Simulator.Services
 
                             if (!string.IsNullOrEmpty(resultContent))
                             {
+                                _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Device Management service called. Getting registered module identity keys...");
+
+                                JObject jData = JObject.Parse(resultContent);
+                                string primaryKey = jData.Value<string>("authenticationPrimaryKey");
+
+                                _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Keys provided by the Device Management service.");
+
+                                if (!string.IsNullOrEmpty(primaryKey))
+                                {
+                                    _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Module identity added to device.");
+
+                                    result = $"HostName={_deviceSettingsDelegate.CurrentValue.HostName};DeviceId={_deviceSettingsDelegate.CurrentValue.DeviceId};ModuleId={moduleId};SharedAccessKey={primaryKey}";
+                                }
+                                else
+                                    _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::An error has occurred when getting the keys from the Device Management service.");
+
+                            }
+                        }
+                    }
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::{ex.Message}->InnerException::{ex.InnerException?.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::{ex.Message}->InnerException::{ex.InnerException?.Message}");
+            }
+
+            return result;
+        }
+
+        //TODO: think of using different security methods for modules too
+        public async Task<string> AddModuleIdentityToDeviceCAX509(string moduleId)
+        {
+            if (_appSettings.DeviceManagementServiceSettings == null)
+                throw new ArgumentNullException("_appSettings.DeviceManagementServiceSettings");
+
+            if (string.IsNullOrEmpty(_appSettings.DeviceManagementServiceSettings.BaseUrl))
+                throw new ArgumentNullException("_appSettings.DeviceManagementServiceSettings.BaseUrl");
+
+            if (string.IsNullOrEmpty(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute))
+                throw new ArgumentNullException("_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute");
+
+            if (string.IsNullOrEmpty(moduleId))
+                throw new ArgumentNullException(nameof(moduleId));
+
+            string result = string.Empty;
+            string logPrefix = "DPSProvisioningService.AddModuleIdentityToDevice".BuildLogPrefix();
+
+            try
+            {
+
+                using (HttpClientHandler handler = new HttpClientHandler())
+                {
+                    if (_appSettings.DeviceManagementServiceSettings.AllowAutosignedSSLCertificates)
+                    {
+                        //handler.ServerCertificateCustomValidationCallback = CertificateValidation;
+                        handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+                    }
+
+                    using (var client = new HttpClient(handler))
+                    {
+                        handler.SslProtocols = System.Security.Authentication.SslProtocols.Tls12;
+
+                        client.BaseAddress = new Uri(_appSettings.DeviceManagementServiceSettings.BaseUrl);
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                        string jsonContent = JsonConvert.SerializeObject(new
+                        {
+                            deviceId = _deviceSettingsDelegate.CurrentValue.DeviceId,
+                            moduleId = moduleId
+                        });
+
+                        HttpContent content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                        var response = await client.PostAsync(_appSettings.DeviceManagementServiceSettings.AddModulesToDeviceRoute, content);
+
+                        if (response != null)
+                        {
+                            response.EnsureSuccessStatusCode();
+
+                            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Adding the module entity to the device...");
+
+                            string resultContent = await response.Content.ReadAsStringAsync();
+
+                            if (!string.IsNullOrEmpty(resultContent))
+                            {
                                 _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::{moduleId}::Device Management service called. Getting registered module identity certificates...");
 
                                 JObject jData = JObject.Parse(resultContent);
