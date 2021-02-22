@@ -399,7 +399,14 @@ namespace IoT.Simulator.API.DeviceManagement.Services
             Module module;
             try
             {
-                module = await _registryManager.AddModuleAsync(new Module(deviceId, moduleId));
+                module = await _registryManager.AddModuleAsync(
+                    new Module(deviceId, moduleId)
+                    {
+                        Authentication = new AuthenticationMechanism()
+                        {
+                            Type = AuthenticationType.SelfSigned
+                        }
+                    });
             }
             catch (ModuleAlreadyExistsException ex)
             {
