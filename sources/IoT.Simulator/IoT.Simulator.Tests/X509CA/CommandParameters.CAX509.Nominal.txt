@@ -1,0 +1,1 @@
+﻿x509ca -s "0ne000E3ED3" -e "Group" -g "global.azure-devices-provisioning.net" -t "Mqtt" -c "X509\new-device.devx5092.cert.pfx" -p "1234"

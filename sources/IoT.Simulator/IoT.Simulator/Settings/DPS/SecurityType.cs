@@ -7,10 +7,12 @@ namespace IoT.Simulator.Settings.DPS
     /// </summary>
     public enum SecurityType
     {
-        [EnumMember(Value ="SymetricKey")]
-        SymetricKey,
-        [EnumMember(Value = "X509")]
-        X509,
+        [EnumMember(Value ="SymmetricKey")]
+        SymmetricKey,
+        [EnumMember(Value = "X509SelfSigned")]
+        X509SelfSigned,
+        [EnumMember(Value = "X509CA")]
+        X509CA,
         [EnumMember(Value = "TPM")]
         TPM
     }

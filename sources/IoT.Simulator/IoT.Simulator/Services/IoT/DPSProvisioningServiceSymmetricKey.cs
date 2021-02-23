@@ -23,14 +23,14 @@ using System.Threading.Tasks;
 
 namespace IoT.Simulator.Services
 {
-    public class DPSProvisioningService : IProvisioningService
+    public class DPSProvisioningServiceSymmetricKey : IProvisioningService
     {
         private AppSettings _appSettings;
         private DPSSettings _dpsSettings;
         private IOptionsMonitor<DeviceSettings> _deviceSettingsDelegate;
-        private readonly ILogger<DPSProvisioningService> _logger;
+        private readonly ILogger<DPSProvisioningServiceSymmetricKey> _logger;
 
-        public DPSProvisioningService(
+        public DPSProvisioningServiceSymmetricKey(
             IOptions<AppSettings> appSettings,
             IOptions<DPSSettings> dpsSettings,
             IOptionsMonitor<DeviceSettings> deviceSettingsDelegate,
@@ -55,7 +55,7 @@ namespace IoT.Simulator.Services
             _dpsSettings = dpsSettings.Value;
             _deviceSettingsDelegate = deviceSettingsDelegate;
 
-            _logger = loggerFactory.CreateLogger<DPSProvisioningService>();
+            _logger = loggerFactory.CreateLogger<DPSProvisioningServiceSymmetricKey>();
 
             string logPrefix = "system.dps.provisioning".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
@@ -75,8 +75,8 @@ namespace IoT.Simulator.Services
                 if (_dpsSettings.GroupEnrollment == null)
                     throw new ArgumentNullException("_dpsSettings.GroupEnrollment", "No group enrollment settings have been found.");
 
-                if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymetricKey)
-                    _dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey = ProvisioningTools.ComputeDerivedSymmetricKey(_dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey, _deviceSettingsDelegate.CurrentValue.DeviceId);
+                if (_dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
+                    _dpsSettings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = ProvisioningTools.ComputeDerivedSymmetricKey(_dpsSettings.GroupEnrollment.SymmetricKeySettings.PrimaryKey, _deviceSettingsDelegate.CurrentValue.DeviceId);
             }
 
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");
@@ -85,13 +85,13 @@ namespace IoT.Simulator.Services
             // the device Id is already chosen. However, for group enrollments the device Id can be requested by
             // the device, as long as the key has been computed using that value.
             // Also, the secondary could could be included, but was left out for the simplicity of this sample.
-            using (var security = new SecurityProviderSymmetricKey(_deviceSettingsDelegate.CurrentValue.DeviceId, _dpsSettings.GroupEnrollment.SymetricKeySettings.PrimaryKey, null))
+            using (var security = new SecurityProviderSymmetricKey(_deviceSettingsDelegate.CurrentValue.DeviceId, _dpsSettings.GroupEnrollment.SymmetricKeySettings.PrimaryKey, null))
             {
-                using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                using (var transportHandler = ProvisioningTools.GetTransportHandler(_dpsSettings.GroupEnrollment.SymmetricKeySettings.TransportType))
                 {
                     ProvisioningDeviceClient provClient = ProvisioningDeviceClient.Create(
-                        _dpsSettings.GroupEnrollment.SymetricKeySettings.GlobalDeviceEndpoint,
-                        _dpsSettings.GroupEnrollment.SymetricKeySettings.IdScope,
+                        _dpsSettings.GroupEnrollment.SymmetricKeySettings.GlobalDeviceEndpoint,
+                        _dpsSettings.GroupEnrollment.SymmetricKeySettings.IdScope,
                         security,
                         transportHandler);
 
@@ -117,7 +117,7 @@ namespace IoT.Simulator.Services
 
                             //_logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Testing the provisioned device with IoT Hub...");
 
-                            //using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.SymetricKeySettings.TransportType))
+                            //using (DeviceClient iotClient = DeviceClient.Create(deviceRegistrationResult.AssignedHub, auth, _dpsSettings.GroupEnrollment.SymmetricKeySettings.TransportType))
                             //{
                             //    _logger.LogDebug($"{logPrefix}::{_deviceSettings.ArtifactId}::Sending a telemetry message after provisioning to test the process...");
 

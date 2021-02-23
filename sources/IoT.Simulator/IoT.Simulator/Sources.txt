@@ -33,3 +33,9 @@ Tests
 https://github.com/dotnet/runtime/issues/36333
 
 docker run -ti --name iothubapi -P -p 5001:443 -e ASPNETCORE_URLS="https://+" -e ASPNETCORE_HTTPS_PORT=5001 -e ASPNETCORE_Kestrel__Certificates__Default__Path [path] -e ASPNETCORE_Kestrel__Certificates__Default__Password [password] iothubsdk-api
+
+Command options
+https://github.com/commandlineparser/commandline/wiki/HelpText-Configuration#Custom-Help-for-verbs
+https://github.com/commandlineparser/commandline/wiki/Verbs
+https://github.com/commandlineparser/commandline/wiki/Option-Groups
+https://github.com/commandlineparser/commandline/wiki/Mutually-Exclusive-Options

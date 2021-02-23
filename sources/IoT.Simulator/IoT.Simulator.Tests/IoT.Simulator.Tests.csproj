@@ -16,4 +16,8 @@
     <ProjectReference Include="..\IoT.Simulator\IoT.Simulator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SymmetrciKey\" />
+  </ItemGroup>
+
 </Project>

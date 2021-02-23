@@ -2,10 +2,18 @@
   "dpsSettings": {
     "enrollmentType": "Group",
     "groupEnrollmentSettings": {
-      "securityType": "SymetricKey",
-      "symetricKeySettings": {
+      "securityType": "SymmetricKey", //SymmetricKey, X509SelfSigned, X509CA, TPM
+      "symmetricKeySettings": {
         "idScope": "",
         "primaryKey": "",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
+      },
+      "CAX509Settings": {
+        "idScope": "",
+        "deviceX509Path": "",
+        "password": "",
         "enrollmentType": "Group",
         "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
         "transportType": "Mqtt"

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace IoT.Simulator
@@ -93,7 +94,7 @@ namespace IoT.Simulator
                 ConfigureServices(services);
 
                 //DPS and provisioning
-                LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
+                DPSSettings dpsSettings = LoadDPSandProvisioningSettings(services, Configuration, _environmentName);
 
                 //Device  related settings
                 var deviceSettings = Configuration.Get<DeviceSettings>();
@@ -111,10 +112,10 @@ namespace IoT.Simulator
                     RegisterMessagingServices(services);
 
                 if (deviceSettings.SimulationSettings.EnableDevice)
-                    RegisterDeviceSimulators(services);
+                    RegisterDeviceSimulators(services, dpsSettings);
 
                 if (deviceSettings.SimulationSettings.EnableModules)
-                    RegisterModuleSimulators(deviceSettings, services);
+                    RegisterModuleSimulators(deviceSettings, services, dpsSettings);
 
                 IServiceProvider serviceProvider = services.BuildServiceProvider();
 
@@ -157,7 +158,7 @@ namespace IoT.Simulator
         /// <param name="configuration"></param>
         /// <param name="args"></param>
         /// <param name="_environmentName"></param>
-        private static void LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string _environmentName)
+        private static DPSSettings LoadDPSandProvisioningSettings(IServiceCollection services, IConfiguration configuration, string environmentName)
         {
             DPSSettings dpsEnvironmentSettings = LoadDPSOptionsFromEnvironmentVariables();
             DPSSettings dpsCommandSettings = LoadDPSOptionsFromCommandParameters();
@@ -171,8 +172,8 @@ namespace IoT.Simulator
             {
                 //WARNING: it seems that IOptions do not work properly with default deserializers
                 string dpsSettingsJson = File.ReadAllText($"dpssettings.json");
-                if (File.Exists($"dpssettings.{_environmentName}.json"))
-                    dpsSettingsJson = File.ReadAllText($"dpssettings.{ _environmentName}.json");
+                if (File.Exists($"dpssettings.{environmentName}.json"))
+                    dpsSettingsJson = File.ReadAllText($"dpssettings.{ environmentName}.json");
 
                 if (!string.IsNullOrEmpty(dpsSettingsJson))
                 {
@@ -194,6 +195,8 @@ namespace IoT.Simulator
             }
             else
                 throw new Exception("No DPS settings have been provided (Environment variables, command parameters or settings files).");
+
+            return dpsSettings;
         }
 
         private static async Task CheckEnvironmentDeviceId(string environmentName)
@@ -279,16 +282,16 @@ namespace IoT.Simulator
         /// <summary>
         /// Parses console/command parameters.
         /// </summary>
-        static DPSCommandParametersBase ParseCommandParameters(string[] args)
+        static T ParseCommandParameters<T>(string[] args)
+            where T : DPSCommandParametersBase
         {
             //Load the parameters and put them as environment variables (environment variables will always be of higher priority
             // Parse application parameters
-            DPSCommandParametersBase parameters = null;
+            T parameters = null;
 
             if (args != null && args.Length > 1)
             {
-
-                ParserResult<DPSCommandParametersBase> result = Parser.Default.ParseArguments<DPSCommandParametersBase>(args)
+                ParserResult<T> result = Parser.Default.ParseArguments<T>(args)
                     .WithParsed(parsedParams =>
                     {
                         parameters = parsedParams;
@@ -303,6 +306,77 @@ namespace IoT.Simulator
             return parameters;
         }
 
+        static DPSSettings ParseCommandParameters(string[] args)
+        {
+            DPSSettings result = null;
+
+            if (args != null && args.Length > 0)
+            {
+                var parsingResult = Parser.Default.ParseArguments<DPSSymmetricKeyCommandParameters, DPSCAX509CommandParameters>(args);
+
+                if (parsingResult != null && parsingResult.Tag == ParserResultType.Parsed)
+                    result = parsingResult
+                    .MapResult<DPSSymmetricKeyCommandParameters, DPSCAX509CommandParameters, DPSSettings>(
+                    (DPSSymmetricKeyCommandParameters options) => ProcessSymmetricKeyOptions(options),
+                    (DPSCAX509CommandParameters options) => ProcessCAX509Options(options),
+                    errors => ProcessErrors(errors)
+                    );
+                else
+                    Environment.Exit(1);
+            }
+
+            return result;
+        }
+
+        static DPSSettings ProcessSymmetricKeyOptions(DPSSymmetricKeyCommandParameters parameters)
+        {
+            DPSSettings settings = new DPSSettings();
+            settings.EnrollmentType = EnrollmentType.Group;
+            settings.GroupEnrollment = new GroupEnrollmentSettings();
+            settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
+
+            settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+            settings.GroupEnrollment.SymmetricKeySettings.TransportType = parameters.TransportType;
+            settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = settings.EnrollmentType;
+
+            settings.GroupEnrollment.SymmetricKeySettings.IdScope = parameters.IdScope;
+
+            settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = parameters.PrimaryKey;
+
+            return settings;
+        }
+
+        static DPSSettings ProcessCAX509Options(DPSCAX509CommandParameters parameters)
+        {
+            DPSSettings settings = new DPSSettings();
+            settings.EnrollmentType = EnrollmentType.Group;
+            settings.GroupEnrollment = new GroupEnrollmentSettings();
+            settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
+
+            settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
+            settings.GroupEnrollment.CAX509Settings.TransportType = parameters.TransportType;
+            settings.GroupEnrollment.CAX509Settings.EnrollmentType = settings.EnrollmentType;
+
+            settings.GroupEnrollment.CAX509Settings.IdScope = parameters.IdScope;
+
+            settings.GroupEnrollment.CAX509Settings.DeviceX509Path = parameters.DeviceCertificatePath;
+            settings.GroupEnrollment.CAX509Settings.Password = parameters.DeviceCertificatePassword;
+
+            return settings;
+        }
+
+        static DPSSettings ProcessErrors(IEnumerable<Error> errors)
+        {
+            Environment.Exit(1);
+            return null;
+        }
+
+        public static IEnumerable<Type> FindDerivedTypes(Assembly assembly, Type baseType)
+        {
+            return assembly.GetTypes().Where(t => t != baseType &&
+                                                  baseType.IsAssignableFrom(t));
+        }
+
         /// <summary>
         /// Parses and types command parameters.
         /// </summary>
@@ -311,20 +385,12 @@ namespace IoT.Simulator
         {
             DPSSettings settings = null;
 
-            DPSCommandParametersBase parameters = ParseCommandParameters(Environment.GetCommandLineArgs());
-            if (parameters != null && !string.IsNullOrEmpty(parameters.IdScope) && !string.IsNullOrEmpty(parameters.PrimaryKey))
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args != null && args.Length > 1)
             {
-                settings = new DPSSettings();
-                settings.EnrollmentType = EnrollmentType.Group;
-                settings.GroupEnrollment = new GroupEnrollmentSettings();
-                settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
-
-                settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
-                settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
-                settings.GroupEnrollment.SymetricKeySettings.EnrollmentType = EnrollmentType.Group;
-
-                settings.GroupEnrollment.SymetricKeySettings.IdScope = parameters.IdScope;
-                settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = parameters.PrimaryKey;
+                if (args.First().Contains(".dll"))
+                    settings = ParseCommandParameters(args.Skip(1).ToArray());
             }
 
             return settings;
@@ -341,22 +407,62 @@ namespace IoT.Simulator
 
             if (localVariables != null && localVariables.Count >= 2)
             {
-                string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
-                string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+                //Transport type
+                string transportType = Environment.GetEnvironmentVariable("TRANSPORT_TYPE");
 
-                if (!string.IsNullOrEmpty(idScope) && !string.IsNullOrEmpty(primarySymmetricKey))
+                if (!string.IsNullOrEmpty(transportType))
                 {
+                    if (transportType.Trim().ToLower() != "mqtt")
+                        throw new NotImplementedException();
+
+                    string securityType = Environment.GetEnvironmentVariable("DPS_SECURITY_TYPE");
+                    string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
+
                     settings = new DPSSettings();
                     settings.EnrollmentType = EnrollmentType.Group;
                     settings.GroupEnrollment = new GroupEnrollmentSettings();
-                    settings.GroupEnrollment.SecurityType = SecurityType.SymetricKey;
 
-                    settings.GroupEnrollment.SymetricKeySettings = new DPSSymmetricKeySettings();
-                    settings.GroupEnrollment.SymetricKeySettings.TransportType = TransportType.Mqtt;
-                    settings.GroupEnrollment.SymetricKeySettings.EnrollmentType = EnrollmentType.Group;
+                    TransportType typedTransportType = Enum.Parse<TransportType>(transportType);
 
-                    settings.GroupEnrollment.SymetricKeySettings.IdScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
-                    settings.GroupEnrollment.SymetricKeySettings.PrimaryKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+                    switch (Enum.Parse<SecurityType>(securityType))
+                    {
+                        case SecurityType.SymmetricKey:
+                            string primarySymmetricKey = Environment.GetEnvironmentVariable("PRIMARY_SYMMETRIC_KEY");
+
+                            if (!string.IsNullOrEmpty(primarySymmetricKey))
+                            {
+                                settings.GroupEnrollment.SecurityType = SecurityType.SymmetricKey;
+
+                                settings.GroupEnrollment.SymmetricKeySettings = new DPSSymmetricKeySettings();
+                                settings.GroupEnrollment.SymmetricKeySettings.TransportType = typedTransportType;
+                                settings.GroupEnrollment.SymmetricKeySettings.EnrollmentType = EnrollmentType.Group;
+
+                                settings.GroupEnrollment.SymmetricKeySettings.IdScope = idScope;
+                                settings.GroupEnrollment.SymmetricKeySettings.PrimaryKey = primarySymmetricKey;
+                            }
+
+                            break;
+                        case SecurityType.X509CA:
+                            string certificatePath = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PATH");
+
+                            if (!string.IsNullOrEmpty(certificatePath))
+                            {
+                                settings.GroupEnrollment.SecurityType = SecurityType.X509CA;
+
+                                settings.GroupEnrollment.CAX509Settings = new DPSCAX509Settings();
+                                settings.GroupEnrollment.CAX509Settings.TransportType = typedTransportType;
+                                settings.GroupEnrollment.CAX509Settings.EnrollmentType = EnrollmentType.Group;
+
+                                settings.GroupEnrollment.CAX509Settings.IdScope = idScope;
+                                settings.GroupEnrollment.CAX509Settings.DeviceX509Path = certificatePath;
+
+                                settings.GroupEnrollment.CAX509Settings.Password = Environment.GetEnvironmentVariable("DEVICE_CERTIFICATE_PASSWORD");
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
@@ -398,12 +504,32 @@ namespace IoT.Simulator
             }
         }
 
-        static void RegisterDeviceSimulators(IServiceCollection services)
+        static void RegisterDeviceSimulators(IServiceCollection services, DPSSettings dpsSettings)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.AddSingleton<IProvisioningService, DPSProvisioningService>();
+            if (dpsSettings == null)
+                throw new ArgumentNullException(nameof(dpsSettings));
+
+            if (dpsSettings.GroupEnrollment != null)
+            {
+                if (dpsSettings.GroupEnrollment.SecurityType == SecurityType.X509CA)
+                {
+                    if (dpsSettings.GroupEnrollment.CAX509Settings != null)
+                        services.AddSingleton<IProvisioningService, DPSProvisioningServiceX509CA>();
+                    else
+                        throw new Exception("RegisterDeviceSimulators::Missing CA X509 Settings");
+                }
+                else if (dpsSettings.GroupEnrollment.SecurityType == SecurityType.SymmetricKey)
+                {
+                    if (dpsSettings.GroupEnrollment.SymmetricKeySettings != null)
+                        services.AddSingleton<IProvisioningService, DPSProvisioningServiceSymmetricKey>();
+                    else
+                        throw new Exception("RegisterDeviceSimulators::Missing Symmetric Key Settings");
+                }
+            }
+
             services.AddSingleton<ISimulationService, DeviceSimulationService>();
         }
 
@@ -417,7 +543,8 @@ namespace IoT.Simulator
             services.AddTransient<ICommissioningMessageService, SimpleCommissioningMessageService>();
         }
 
-        static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services)
+        //TODO: take into account the CA X509 settings
+        static void RegisterModuleSimulators(DeviceSettings deviceSettings, IServiceCollection services, DPSSettings dpsSettings)
         {
             if (deviceSettings == null)
                 throw new ArgumentNullException(nameof(deviceSettings));
@@ -427,6 +554,9 @@ namespace IoT.Simulator
 
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
+
+            if (dpsSettings == null)
+                throw new ArgumentNullException(nameof(dpsSettings));
 
             if (deviceSettings.SimulationSettings.EnableModules)
             {

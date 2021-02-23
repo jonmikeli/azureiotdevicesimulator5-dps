@@ -31,14 +31,14 @@ namespace IoT.Simulator.Settings.DPS
     {
         [JsonProperty("securityType")]
         [JsonConverter(typeof(StringEnumConverter))]
-        [DefaultValue(SecurityType.SymetricKey)]
+        [DefaultValue(SecurityType.SymmetricKey)]
         public SecurityType SecurityType { get; set; }
 
-        [JsonProperty("symetricKeySettings")]
-        public DPSSymmetricKeySettings SymetricKeySettings { get; set; }
+        [JsonProperty("symmetricKeySettings")]
+        public DPSSymmetricKeySettings SymmetricKeySettings { get; set; }
 
-        //[JsonProperty("X509Settings")]
-        //public DPSX509Settings X509Settings { get; set; }
+        [JsonProperty("CAX509Settings")]
+        public DPSCAX509Settings CAX509Settings { get; set; }
 
         //[JsonProperty("tpmSettings")]
         //public DPSTPMSettings TMPSettings { get; set; }
