@@ -117,6 +117,12 @@ The simulator has been designed to work in different provisioning use cases:
 ### Module level (C2M/M2C)
 The features at the module level are the identical to the device features except for the latency tests.
 
+> NOTE
+>
+> The security type implemented for module identities is based on symetric keys. Depending on the faced use cases, additional use cases may be added in upcoming versions. Adding X509 module identities will require processes to add the required certificates in a secured way (to the cloud and the device sides).
+> Personnally, I am wondering why a given device and its module identities could implement different types of security. Which cases may lead to such scenarii?
+
+
 
 [Details](docs/Help.md).
 
