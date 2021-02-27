@@ -12,7 +12,7 @@ At first glance, we could think this is a simple integration of DPS with the [re
 The truth is that this version includes features beyond that "mere" integration to open the doors to broader possibilities in terms of use and integrtion.
 Not only the simulator takes in charge two authentication methods (symmetric keys and CA X509 certificates) but also allows different types of integration when it comes to DPS settings (environment variables, command line parameters and configuration file).
 
-
+This answers to different types of uses (industrialization, containerized industrialization, dev tool, etc).
 
 The purposes of the previous simulators were to:
  - cover a maximum set of features in the SDK, in a realistc way.
