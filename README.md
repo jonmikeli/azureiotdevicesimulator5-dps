@@ -7,8 +7,12 @@ It implements provisioning based on:
    - symmetric keys
    - CA X509 certificates
 
-## Description - Not just a simple DPS integration
-What could seem at first glance a simple feature addition has involved some deep work to keep the whole underlying mechanism coherent with full automatic provisioning and create at the same time "real life" representative value.
+## Description
+At first glance, we could think this is a simple integration of DPS with the [regular simulator]().
+The truth is that this version includes features beyond that "mere" integration to open the doors to broader possibilities in terms of use and integrtion.
+Not only the simulator takes in charge two authentication methods (symmetric keys and CA X509 certificates) but also allows different types of integration when it comes to DPS settings (environment variables, command line parameters and configuration file).
+
+
 
 The purposes of the previous simulators were to:
  - cover a maximum set of features in the SDK, in a realistc way.
