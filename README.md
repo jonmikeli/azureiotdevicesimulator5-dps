@@ -95,6 +95,10 @@ The simulator has been designed to work in different provisioning use cases:
 >
 > The device id may be provided through an environment variable too. This allows easier scripted provisioning scenarios (ex: loop to create a set of simulated devices).
 
+> NOTE 2
+>
+> The different authentication types require different parameters. More details [here](docs/HowTo.md).
+
 *Commands implemented by default*
  - request latency test
  - reboot device
