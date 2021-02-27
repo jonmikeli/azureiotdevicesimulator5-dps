@@ -15,6 +15,10 @@ Not only the simulator takes in charge two authentication methods (symmetric key
 This answers to different types of uses (industrialization, containerized industrialization, dev tool, etc).
 
 This simulator keeps the spirit and the philosophy of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
+It completes a set of simulators compounded of:
+ - [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5)
+ - [Plug and Play version](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) (based on DTDL v2)
+ - DPS version (this one)
 
 With those same purposes in mind, this version of the simulator implements mainly the same kind of experience but adapted to DPS oriented provisioning contexts.
 The experience will be the same for one device, a few of them or hundreds / thousands of them.
