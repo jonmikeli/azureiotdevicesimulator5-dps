@@ -25,7 +25,7 @@ The sample creates the containers in the local machine. You can use the same mec
 
 The whole set of simulated devices may be provisioned and running in a few seconds.....literally. Moreover, once the initial settings are configured (configuration files), everything runs automatically (provisioning, modules, telemetries, D2C/C2D flows, etc).
 
-Telemetry messages are based on the templates used in the previous simulators.
+Telemetry messages are based on the templates used in the regular simulator.
 
 <br/>
 
