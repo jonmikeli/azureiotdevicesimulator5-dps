@@ -8,15 +8,13 @@ It implements provisioning based on:
    - CA X509 certificates
 
 ## Description
-At first glance, we could think this is a simple integration of DPS with the [regular simulator]().
+At first glance, we could think this is a simple integration of DPS with the [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5).
 The truth is that this version includes features beyond that "mere" integration to open the doors to broader possibilities in terms of use and integrtion.
 Not only the simulator takes in charge two authentication methods (symmetric keys and CA X509 certificates) but also allows different types of integration when it comes to DPS settings (environment variables, command line parameters and configuration file).
 
 This answers to different types of uses (industrialization, containerized industrialization, dev tool, etc).
 
-The purposes of the previous simulators were to:
- - cover a maximum set of features in the SDK, in a realistc way.
- - help developers, testers, customers or any IoT related worker to facilitate the adoption and the use of device side code / tools / samples.
+This simulator keeps the spirit and the philosophy of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
 
 With those same purposes in mind, this version of the simulator implements mainly the same kind of experience but adapted to DPS oriented provisioning contexts.
 The experience will be the same for one device, a few of them or hundreds / thousands of them.
