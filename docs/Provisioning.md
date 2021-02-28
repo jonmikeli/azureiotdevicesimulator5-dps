@@ -106,11 +106,17 @@ To visualize the required settings, you can type:
 dotnet IoT.Simulator.dll symmetrickey --help
 ```
 
+![Symmetric Keys Settings](images/SymmetricKeysHelp.png)
+
+
 #### CA X509
 To visualize the required settings, you can type:
 ```bash
 dotnet IoT.Simulator.dll x509ca --help
 ```
+
+![CA X509 Settings](images/CAX509Help.png)
+
 
 ### DPS Settings - environment variables
 The list of the environment variables to set are:
