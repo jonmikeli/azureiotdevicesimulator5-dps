@@ -128,6 +128,11 @@ The required parameters are the same:
  - -s, the Id Scope of the DPS
  - -p, the primary key of the DPS
 
+Other required parameters by with default values:
+ - -e, enrollment type (default and only possible now, Group)
+ - -g, global DPS endpoint (default value, global.azure-devices-provisioning.net)
+ - -t, transport type (default valyue, MQTT. The only one globally tested for now)
+
 _Linux (bash)_
 ```bash
 dotnet IoT.Simulator.dll symmetrickey -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
@@ -213,6 +218,7 @@ The required parameters are the same:
  - -c, the leaf certificate path
  - -p, certificate password
 
+Other required parameters by with default values:
  - -e, enrollment type (default and only possible now, Group)
  - -g, global DPS endpoint (default value, global.azure-devices-provisioning.net)
  - -t, transport type (default valyue, MQTT. The only one globally tested for now)
