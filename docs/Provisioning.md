@@ -62,7 +62,7 @@ It is persisted in clear for develoment purposes but keep in mind this data shou
 If module identities are created, they will have their own connection string.
 The connection string (and keys) will be generated dynamically by the process (device simulator and IoT Hub REST API).
 
-If you need module identities to be created, do not forget to set the `moduleId` field in the `modulesettings.json` file.
+If you need to create module identities, do not forget to set the `moduleId` field in the `modulesettings.json` file.
 The `deviceId` has to be set too (either by the environment variable or in the `devicesettings.json` file).
 
 
