@@ -99,22 +99,18 @@ dotnet IoT.Simulator.dll x509ca SETTINGS
 ```
 
 Each authentication type, requires different DPS settings.
-To visualize the different settings for each verb, type the commands below:
-_Symmetric Keys_
+
+#### Symmetric keys
+To visualize the required settings, you can type:
 ```bash
 dotnet IoT.Simulator.dll symmetrickey --help
 ```
 
-_CA X509 Certificates_
+#### CA X509
+To visualize the required settings, you can type:
 ```bash
 dotnet IoT.Simulator.dll x509ca --help
 ```
-
-#### Symmetric keys
-TODO
-
-#### CA X509
-TODO
 
 ### DPS Settings - environment variables
 The list of the environment variables to set are:
