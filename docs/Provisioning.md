@@ -82,6 +82,23 @@ The first settings to be checked are environment variables.
 Command line settings overwrite any setting provided by the environment variables.
 If no environment setting or command line parameters are provided, a configuration file is searched. 
 
+### Authentication settings
+The simulator covers two authentication types:
+ - symmetric keys
+ - CA X509 certificates
+ 
+The authentication type is set throught the command line verbs:
+```bash
+dotnet IoT.Simulator.dll 
+```
+
+
+ The DPS settings are slightly different depending ont 
+
+#### Symmetric keys
+
+#### CA X509
+
 ### DPS Settings - environment variables
 The list of the environment variables to set are:
  - DPS_IDSCOPE, the Id Scope of the DPS
