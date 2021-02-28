@@ -161,10 +161,18 @@ It looks like this:
   "dpsSettings": {
     "enrollmentType": "Group",
     "groupEnrollmentSettings": {
-      "securityType": "SymmetricKey",
-      "symetricKeySettings": {
-        "idScope": "[YOUR ID SCOPE]",
-        "primaryKey": "[YOUR PRIMARY KEY]",
+      "securityType": "SymmetricKey", //SymmetricKey, X509CA
+      "symmetricKeySettings": {
+        "idScope": "0ne000E3E14",
+        "primaryKey": "wi3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rbb==",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
+      },
+      "CAX509Settings": {
+        "idScope": "",
+        "deviceX509Path": "",
+        "password": "",
         "enrollmentType": "Group",
         "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
         "transportType": "Mqtt"
@@ -244,10 +252,18 @@ It looks like this:
   "dpsSettings": {
     "enrollmentType": "Group",
     "groupEnrollmentSettings": {
-      "securityType": "SymmetricKey",
-      "symetricKeySettings": {
-        "idScope": "[YOUR ID SCOPE]",
-        "primaryKey": "[YOUR PRIMARY KEY]",
+      "securityType": "X509CA", //SymmetricKey, X509CA
+      "symmetricKeySettings": {
+        "idScope": "",
+        "primaryKey": "",
+        "enrollmentType": "Group",
+        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
+        "transportType": "Mqtt"
+      },
+      "CAX509Settings": {
+        "idScope": "0ne000E3E14",
+        "deviceX509Path": "X509\\new-device.devx5092.cert.pfx",
+        "password": "1234",
         "enrollmentType": "Group",
         "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
         "transportType": "Mqtt"
@@ -255,6 +271,7 @@ It looks like this:
     }
   }
 }
+
 ```
 
 Parameters like `enrollmentType`, `globalDeviceEndpoint` and `transportType` cannot be changed for now.
