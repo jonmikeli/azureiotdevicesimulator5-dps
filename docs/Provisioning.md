@@ -321,3 +321,5 @@ The easiest way to achieve this would be:
 > Be sure the simulator containers can reach the IoT Hub REST API if you need to create module identities dynamically.
 
 Simple script samples to create all this are provided [here](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
+
+Other more enterprise oriented architectures could be considered with ACI or AKS.
