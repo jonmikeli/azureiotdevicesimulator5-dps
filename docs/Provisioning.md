@@ -186,17 +186,19 @@ The list of the environment variables to set are:
 
 _Linux (bash)_
 ```bash
-export DPS_IDSCOPE='X509CA'
+export DPS_SECURITY_TYPE='X509CA'
 export DPS_IDSCOPE=[YOUR ID SCOPE]
 export DEVICE_CERTIFICATE_PATH=[Leaf certificate path]
+export DEVICE_CERTIFICATE_PASSWORD=[certificate password]
 dotnet IoT.Simulator.dll
 ```
 
 _Windows (cmd)_
 ```cmd
-set DPS_IDSCOPE='X509CA'
+set DPS_SECURITY_TYPE='X509CA'
 set DPS_IDSCOPE=[YOUR ID SCOPE]
 set DEVICE_CERTIFICATE_PATH=[Leaf certificate path]
+set DEVICE_CERTIFICATE_PASSWORD=[certificate password]
 dotnet IoT.Simulator.dll
 ```
 
