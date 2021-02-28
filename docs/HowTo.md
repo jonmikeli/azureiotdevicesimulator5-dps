@@ -20,19 +20,26 @@ Do not forget you will need an internet connection with specific open ports:
 
 ## Steps to run the simulator
 The Azure IoT Device Simulator needs three basic things before starting:
- - settings (need to be updated with proper values)
- - message templates (included by default)
- - deploy the REST API exposing the Azure IoT Hub Service SDK (this is required because module identities cannot be created from the Azure IoT Hub Device SDK). The code is provided. It can also be [containerized](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
+ - Required: settings (need to be updated with proper values)
+ - Required: message templates (included by default)
+ - Optional (needed for module identities): deploy the REST API exposing the Azure IoT Hub Service SDK (this is required because module identities cannot be created from the Azure IoT Hub Device SDK). The code is provided. It can also be [containerized](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
 
 
 ### Settings
-Settings are based on environment variables and on files (JSON).
+All the settings except those related to DPS rely on JSON files.
+DPS settings can be provided through 3 different ways in order to make the simulator more flexible:
+ - environment variables
+ - command line parameters
+ - files (JSON).
 
-Environment variables:
+#### Environment variables
  - ENVIRONMENT (Development, Release, null....or the environments you need to create)
  - PROVISIONING_REGISTRATION_ID, cooresponding to the device Id to be used for the provisioning. It can be provided in the devicesettings.json file too. The PROVISIONING_REGISTRATION_ID value overwrites the settings in the JSON file.
 
-JSON files:
+#### Command parameters
+TODO
+
+#### JSON files
  - [appsettings.json](###appsettings.json)
  - [devicesettings.json](###devicesettings.json)
  - [modulessettings.json](###modulessettings.json)
@@ -188,8 +195,8 @@ This file allows to configure the DPS settings.
 
 > NOTE
 >
-> The implemented code covers group enrollments with symetric keys and MQTT. Feel free to adapt the code to your own needs. Upcoming iterations will add other options.
-> In production environments, pay attention to how the primary is stored and managed.
+> The implemented code covers group enrollments with symetric keys or CA X509 certificates and MQTT. Feel free to adapt the code to your own needs. Upcoming iterations will add other options.
+> In production environments, pay attention to how the secrets are stored and managed.
 
 
 ## Message templates
