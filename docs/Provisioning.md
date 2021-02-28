@@ -23,7 +23,7 @@ The simulator has been designed to work with different provisioning use cases:
 >
 > Besides the DPS settings, the environment variables allow to configure the device Id. The environment value will overwrite the value in the configuration file `devicesettings.json`.
 
-## Simulator connection string (device)
+## Simulator connection settings (device)
 If the provisioning process succeeds, it will create a device identity in the associated Azure IoT Hub.
 The DPS will send back to the device the keys and the connection string.
 
@@ -58,7 +58,7 @@ It is persisted in clear for develoment purposes but keep in mind this data shou
 }
 
 ```
-## Simulator connection string (module identities)
+## Simulator connection settings (module identities)
 If module identities are created, they will have their own connection string.
 The connection string (and keys) will be generated dynamically by the process (device simulator and IoT Hub REST API).
 
@@ -277,30 +277,13 @@ It looks like this:
 Parameters like `enrollmentType`, `globalDeviceEndpoint` and `transportType` cannot be changed for now.
 Upcoming versions should allow more possibilities.
 
+> NOTE
+>
+> It seems that, when using CA X509 authentication with DPS, the device is created with symmetric keys.
+> Do not be surprised by this. For now, is the normal behavior. This said, it has been reported to Microsoft in order to know whether there will be a way in the future to configure this.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Device modules (a.k.a. module identities)
+## Device modules (a.k.a. module identities) provisioning
 At the time this post has been written, it did not seem to be a way to create device modules (a.k.a. module identities) during the provisioning process.
 
 This can be implemented by code but it requires one of the steps below:
