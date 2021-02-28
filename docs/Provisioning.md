@@ -304,6 +304,9 @@ The used REST API structure is based on a REST API Template for .NET:
    - [CLI version](https://www.nuget.org/packages/JMI.DotNet5.IoTHub.REST.API.Template.CSharp/)
 
 
+The authentication mode of module identities is totally decorrelated from devices'.
+For now, this implementation covers symmetric keys only for module identities.
+
 ## Dynamic creation of device simulators
 
 One of the straightforward use cases of this simulator would be to create a set of devices dynamically.
