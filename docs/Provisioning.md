@@ -227,12 +227,12 @@ Other required parameters by with default values:
 
 _Linux (bash)_
 ```bash
-dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
+dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -c [your leaf certificate path] -p [your certificate password]
 ```
 
 _Windows (cmd)_
 ```cmd
-dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
+dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -c [your leaf certificate path] -p [your certificate password]
 ```
 
 ##### Configuration file
