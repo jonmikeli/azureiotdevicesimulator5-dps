@@ -32,12 +32,7 @@ DPS settings can be provided through 3 different ways in order to make the simul
  - command line parameters
  - files (JSON).
 
-#### Environment variables
- - ENVIRONMENT (Development, Release, null....or the environments you need to create)
- - PROVISIONING_REGISTRATION_ID, cooresponding to the device Id to be used for the provisioning. It can be provided in the devicesettings.json file too. The PROVISIONING_REGISTRATION_ID value overwrites the settings in the JSON file.
-
-#### Command parameters
-TODO
+All the DPS settings details are described [here](Provisioning.md).
 
 #### JSON files
  - [appsettings.json](###appsettings.json)
@@ -171,32 +166,7 @@ This file allows to configure the module(s) simulation settings.
 ```
 
 ### dpssettings.json
-This file allows to configure the DPS settings.
-
-```json
-{
-  "dpsSettings": {
-    "enrollmentType": "Group",
-    "groupEnrollmentSettings": {
-      "securityType": "SymmetricKey",
-      "symetricKeySettings": {
-        "idScope": "[TO BE REPLACED]",
-        "primaryKey": "[TO BE REPLACED]",
-        "enrollmentType": "Group",
-        "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
-        "transportType": "Mqtt"
-      }
-    }
-  }
-}
-
-```
-
-
-> NOTE
->
-> The implemented code covers group enrollments with symetric keys or CA X509 certificates and MQTT. Feel free to adapt the code to your own needs. Upcoming iterations will add other options.
-> In production environments, pay attention to how the secrets are stored and managed.
+See [the provisining section](Provisioning.md).
 
 
 ## Message templates
@@ -262,24 +232,4 @@ In this section, you will find the default templates of the messages sent by the
     "roomId": null
   }
 } 
-```
-
-## Commands
-**Regular**
-```cmd
-dotnet IoT.Simulator.dll
-```
-
-**Changing the environment**
-
-Linux
-```cmd
-export ENVIRONMENT=Development
-dotnet IoT.Simulator.dll
-```
-
-Windows
-```cmd
-set ENVIRONMENT=Development
-dotnet IoT.Simulator.dll
 ```
