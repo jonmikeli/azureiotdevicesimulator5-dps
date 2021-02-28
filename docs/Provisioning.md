@@ -27,8 +27,8 @@ The simulator has been designed to work with different provisioning use cases:
 If the provisioning process succeeds, it will create a device identity in the associated Azure IoT Hub.
 The DPS will send back to the device the keys and the connection string.
 
-That connection settings may be stored at the device level to avoid having to reprovision the device.
-They should be stored in a secured way.
+Those connection settings may be stored at the device level to avoid having to reprovision the device.
+In production environments, they should be stored in a secured way (HSM, TPM, etc).
 
 The simulator saves the connection string in the `devicesettings.json` file.
 It is persisted in clear for develoment purposes but keep in mind this data should be protected more securely in production environments.
