@@ -11,9 +11,9 @@ Individual enrollments are not covered for now.
 
 ## Description
 The implementation of this simulator is not simply a [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5) with DPS capabilities.
-All the provisioning process has been recoded and includes additional features.
+All the provisioning process has been recoded to add new settings features and flexibility when it comes to enterprise oriented solutions.
+See [*Provisioning*](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/docs/Provisioning.md) for details.
 
-This answers to different types of uses (industrialization, containerized industrialization, dev tool, etc).
 
 This simulator keeps the spirit and the philosophy of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
 It completes a set of simulators compounded of:
