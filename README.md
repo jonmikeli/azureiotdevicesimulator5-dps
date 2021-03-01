@@ -172,7 +172,6 @@ Functional features are based on these generic technical features:
 - tools to create PKI.
 
 ## More information
-More information:
  - [*How to (Quickstart)*](docs/HowTo.md)
  - [*Help  and details*](docs/Help.md) 
  - [*Provisioning*](docs/Provisioning.md)
