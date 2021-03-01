@@ -14,6 +14,11 @@ The implementation of this simulator is not simply a [regular simulator](https:/
 All the provisioning process has been recoded to add new settings features and flexibility when it comes to enterprise oriented solutions.
 See [*Provisioning*](docs/Provisioning.md) for details.
 
+*Azure IoT Device Simulator logs*
+
+![Azure IoT Device Simulator Logs](docs/images/AzureIoTDeviceSimulatorLos.gif)
+
+
 ## IoT tools
 This simulator keeps the spirit of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
 It completes a set of tools compounded of:
@@ -36,20 +41,10 @@ Telemetry messages are based on the templates used in the regular simulator.
  - complete and configurable D2C (data and reported properties) and C2D (direct methods, desired properties, messages, jobs, etc).
  - etc
 
-<br/>
-
-Technical information:
+## Technical information
  - .NET 5 (C#)
  - Microsoft Azure IoT SDK (provisioning, properties, tags, C2D/D2C, device modules*).
  - Docker and bash for the containerized experiences.
-
-<br/>
-
-*Azure IoT Device Simulator logs*
-
-![Azure IoT Device Simulator Logs](docs/images/AzureIoTDeviceSimulatorLos.gif)
-
-<br/>
 
 ## Global features
  - device provisioning (group enrollment with symetric keys).
@@ -173,7 +168,6 @@ Functional features are based on these generic technical features:
  - Messages
 
 ## Upcoming features
-- Add X509 devices
 - IoT Plug and Play integration. An especial version totally IoT Plug and Play-oriented has been released [here](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp).
 - "fileupload" feature implementation.
 
