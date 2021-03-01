@@ -7,6 +7,8 @@ It implements provisioning based on:
    - symmetric keys
    - CA X509 certificates
 
+Individual enrollments are not covered for now.
+
 ## Description
 At first glance, we could think this is a simple integration of DPS with the [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5).
 The truth is that this version includes features beyond that "mere" integration to open the doors to broader possibilities in terms of use and integrtion.
