@@ -15,16 +15,16 @@ All the provisioning process has been recoded to add new settings features and f
 See [*Provisioning*](docs/Provisioning.md) for details.
 
 
-This simulator keeps the spirit and the philosophy of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
-It completes a set of simulators compounded of:
+This simulator keeps the spirit of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
+It completes a set of tools compounded of:
  - [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5)
  - [Plug and Play version](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) (based on DTDL v2)
  - DPS version (this one)
 
 A script is provided in the repository to showcase how to create a set of simulators (containerized version).
-The sample creates the containers in the local machine. You can use the same mecanism and adapt it to cloud services like ACR and ACI to create multiple containers in the cloud.
+The sample creates the containers in the local machine. You can use the same mecanism and adapt it to cloud services like ACR and ACI.
 
-The whole set of simulated devices may be provisioned and running in a few seconds.....literally. Moreover, once the initial settings are configured (configuration files), everything runs automatically (provisioning, modules, telemetries, D2C/C2D flows, etc).
+The whole set of simulated devices may be provisioned and running in a few seconds.....literally. Once the initial settings are configured (configuration files), everything runs automatically (provisioning, modules, telemetries, D2C/C2D flows, etc).
 
 Telemetry messages are based on the templates used in the regular simulator.
 
