@@ -168,8 +168,8 @@ Functional features are based on these generic technical features:
  - Messages
 
 ## Upcoming features
-- IoT Plug and Play integration. An especial version totally IoT Plug and Play-oriented has been released [here](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp).
-- "fileupload" feature implementation.
+- adding IoT Plug and Play capabilities may be interesting.
+- tools to create PKI.
 
 ## More information
 More information:
