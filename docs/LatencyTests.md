@@ -29,7 +29,7 @@ The structure of the latency message is specific.
 {
  "deviceId":"",
  "messageType":"latency",
- "startTimestamp":
+ "startTimestamp": 0
 }
 ```
 
