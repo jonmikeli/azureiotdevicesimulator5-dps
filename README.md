@@ -14,13 +14,14 @@ The implementation of this simulator is not simply a [regular simulator](https:/
 All the provisioning process has been recoded to add new settings features and flexibility when it comes to enterprise oriented solutions.
 See [*Provisioning*](docs/Provisioning.md) for details.
 
-
+## IoT tools
 This simulator keeps the spirit of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
 It completes a set of tools compounded of:
  - [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5)
  - [Plug and Play version](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) (based on DTDL v2)
  - DPS version (this one)
 
+## Automatization
 A script is provided in the repository to showcase how to create a set of simulators (containerized version).
 The sample creates the containers in the local machine. You can use the same mecanism and adapt it to cloud services like ACR and ACI.
 
@@ -28,7 +29,7 @@ The whole set of simulated devices may be provisioned and running in a few secon
 
 Telemetry messages are based on the templates used in the regular simulator.
 
-<br/>
+## Additional information
 
 More information:
  - [*How to (Quickstart)*](docs/HowTo.md)
