@@ -29,16 +29,7 @@ The whole set of simulated devices may be provisioned and running in a few secon
 
 Telemetry messages are based on the templates used in the regular simulator.
 
-## Additional information
-
-More information:
- - [*How to (Quickstart)*](docs/HowTo.md)
- - [*Help  and details*](docs/Help.md) 
- - [*Provisioning*](docs/Provisioning.md)
- 
- <br/>
-
-Examples of uses:
+## Examples of use
  - development tool for developers working in Microsoft Azure IoT solutions (cloud).
  - tester tool in IoT-oriented projects.
  - scalable IoT simulation platforms.
@@ -187,6 +178,7 @@ Functional features are based on these generic technical features:
 - "fileupload" feature implementation.
 
 ## More information
-
-- Details about **HOW the solution WORKS** are provided in the [help](docs/Help.md) section.
-- Details about **HOW the solution can be USED** are provided in the [how to](docs/HowTo.md) section.
+More information:
+ - [*How to (Quickstart)*](docs/HowTo.md)
+ - [*Help  and details*](docs/Help.md) 
+ - [*Provisioning*](docs/Provisioning.md)
