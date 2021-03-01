@@ -12,7 +12,7 @@ Individual enrollments are not covered for now.
 ## Description
 The implementation of this simulator is not simply a [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5) with DPS capabilities.
 All the provisioning process has been recoded to add new settings features and flexibility when it comes to enterprise oriented solutions.
-See [*Provisioning*](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/docs/Provisioning.md) for details.
+See [*Provisioning*](docs/Provisioning.md) for details.
 
 
 This simulator keeps the spirit and the philosophy of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
@@ -33,7 +33,7 @@ Telemetry messages are based on the templates used in the regular simulator.
 More information:
  - [*How to (Quickstart)*](docs/HowTo.md)
  - [*Help  and details*](docs/Help.md) 
- - [*Provisioning*](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/blob/master/docs/Provisioning.md)
+ - [*Provisioning*](docs/Provisioning.md)
  
  <br/>
 
