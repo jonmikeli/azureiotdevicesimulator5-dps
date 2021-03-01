@@ -10,9 +10,8 @@ It implements provisioning based on:
 Individual enrollments are not covered for now.
 
 ## Description
-At first glance, we could think this is a simple integration of DPS with the [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5).
-The truth is that this version includes features beyond that "mere" integration to open the doors to broader possibilities in terms of use and integrtion.
-Not only the simulator takes in charge two authentication methods (symmetric keys and CA X509 certificates) but also allows different types of integration when it comes to DPS settings (environment variables, command line parameters and configuration file).
+The implementation of this simulator is not simply a [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5) with DPS capabilities.
+All the provisioning process has been recoded and includes additional features.
 
 This answers to different types of uses (industrialization, containerized industrialization, dev tool, etc).
 
