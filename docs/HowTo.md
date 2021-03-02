@@ -5,7 +5,7 @@
 
 You can use the source code to compile the application and use it as a regular C# .NET 5 Console application. This may be enough if you need the simulator as a development tool.
 
-If you need instead reusable simulator and create more than one instance of the simulator, you will probably prefer to containerize the simulator. This may be particularly interesting if you want to create a set of simulated devices.
+If you need instead a reusable simulator and create more than one instance of the simulator, you will probably prefer to containerize it. This may be particularly interesting if you want to create a set of simulated devices.
 [This folder](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers) contains same examples about how to do that.
 
 ## Docker prerequisites
