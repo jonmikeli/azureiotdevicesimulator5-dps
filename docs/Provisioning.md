@@ -99,7 +99,7 @@ The list of the environment variables to set are:
 _Linux (bash)_
 ```bash
 export DPS_IDSCOPE='SymmetricKey'
-export DPS_IDSCOPE=[YOUR ID SCOPE]
+export DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 export PRIMARY_SYMMETRIC_KEY=[YOUR PRIMMARY KEY]
 dotnet IoT.Simulator.dll
 ```
@@ -107,7 +107,7 @@ dotnet IoT.Simulator.dll
 _Windows (cmd)_
 ```cmd
 set DPS_IDSCOPE='SymmetricKey'
-set DPS_IDSCOPE=[YOUR ID SCOPE]
+set DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 set PRIMARY_SYMMETRIC_KEY=[YOUR PRIMMARY KEY]
 dotnet IoT.Simulator.dll
 ```
@@ -195,18 +195,18 @@ The list of the environment variables to set are:
 _Linux (bash)_
 ```bash
 export DPS_SECURITY_TYPE='X509CA'
-export DPS_IDSCOPE=[YOUR ID SCOPE]
+export DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 export DEVICE_CERTIFICATE_PATH=[Leaf certificate path]
-export DEVICE_CERTIFICATE_PASSWORD=[certificate password]
+export DEVICE_CERTIFICATE_PASSWORD=[Certificate password]
 dotnet IoT.Simulator.dll
 ```
 
 _Windows (cmd)_
 ```cmd
 set DPS_SECURITY_TYPE='X509CA'
-set DPS_IDSCOPE=[YOUR ID SCOPE]
+set DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 set DEVICE_CERTIFICATE_PATH=[Leaf certificate path]
-set DEVICE_CERTIFICATE_PASSWORD=[certificate password]
+set DEVICE_CERTIFICATE_PASSWORD=[Certificate password]
 dotnet IoT.Simulator.dll
 ```
 
