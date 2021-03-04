@@ -170,7 +170,7 @@ Functional features are based on these generic technical features:
 
 ## Upcoming features
 - adding IoT Plug and Play capabilities may be interesting.
-- tools to create PKI.
+- tools to create PKIs.
 
 ## More information
  - [*How to (Quickstart)*](docs/HowTo.md)
