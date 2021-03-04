@@ -1,4 +1,4 @@
-﻿# Azure IoT Device Simulator (.NET 5) - DPS version - Provisoning
+﻿# Azure IoT Device Simulator (.NET 5, C#) - DPS version - Provisoning
 
 ## Provisioning
 The implemented provisioning relies on [Azure IoT Hub Device Provisioning Service](https://docs.microsoft.com/en-us/azure/iot-dps/).
