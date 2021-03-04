@@ -43,7 +43,7 @@ Telemetry messages are based on the templates used in the regular simulator.
 ## Technical information
  - .NET 5 (C#)
  - Microsoft Azure IoT SDK (provisioning, properties, tags, C2D/D2C, device modules*).
- - Docker and bash for the containerized experiences.
+ - Docker and bash for the containerized use cases.
 
 ## Global features
  - device provisioning (group enrollment with symetric keys).
