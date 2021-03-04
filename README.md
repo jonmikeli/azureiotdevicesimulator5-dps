@@ -47,6 +47,7 @@ Telemetry messages are based on the templates used in the regular simulator.
 
 ## Global features
  - device provisioning (group enrollment with symetric keys).
+ - device provisioning (group enrollment with CA X509 certificate).
  - device level simulation (C2D/D2C).
  - module level simulation (C2M/M2C).
  - device simulation configuration based on JSON files.
