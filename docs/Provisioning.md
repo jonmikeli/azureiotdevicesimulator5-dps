@@ -68,31 +68,15 @@ If you need to create module identities, do not forget to set the `moduleId` fie
 The `deviceId` has to be set too (either by the environment variable or in the `devicesettings.json` file).
 
 
-## DPS settings
-### Different possibilities
-The simulator accepts different ways to use the DPS settings:
- - envionment variables
- - command line parameters
- - configuration file
-
-> NOTE
->
-> The deviceId parameter is required by the provisioning process. It is located in the `devicesettings.json` file for all the configuration types.
-
-### Priorities
-The first settings to be checked are environment variables.
-Command line settings overwrite any setting provided by the environment variables.
-If no environment setting or command line parameters are provided, a configuration file is searched. 
-
-### Authentication settings
+## Authentication settings
 The simulator covers two authentication types:
  - symmetric keys
  - CA X509 certificates
  
 Each authentication type, requires different DPS settings.
 
-#### Symmetric keys
-##### Environment variables
+### Symmetric keys
+#### Environment variables
 The list of the environment variables to set are:
  - DPS_SECURITY_TYPE = SymmetricKey
  - DPS_IDSCOPE, the Id Scope of the DPS
@@ -118,7 +102,7 @@ dotnet IoT.Simulator.dll
 >
 > If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
 
-##### Command line
+#### Command line
 To visualize the required settings, you can type:
 ```bash
 dotnet IoT.Simulator.dll symmetrickey --help
@@ -146,7 +130,7 @@ dotnet IoT.Simulator.dll symmetrickey -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
 ```
 
 
-##### CA X509
+#### CA X509
 To visualize the required settings, you can type:
 ```bash
 dotnet IoT.Simulator.dll x509ca --help
@@ -154,7 +138,7 @@ dotnet IoT.Simulator.dll x509ca --help
 
 ![CA X509 Settings](images/CAX509Help.png)
 
-##### Configuration file
+#### Configuration file
 DPS settings can also be provided through a configuration file.
 It looks like this:
 
@@ -187,8 +171,8 @@ It looks like this:
 Parameters like `enrollmentType`, `globalDeviceEndpoint` and `transportType` cannot be changed for now.
 Upcoming versions should allow more possibilities.
 
-#### CA X509
-##### Environment variables
+### CA X509
+#### Environment variables
 The list of the environment variables to set are:
  - DPS_SECURITY_TYPE = SymmetricKey
  - DPS_IDSCOPE, the Id Scope of the DPS
@@ -216,7 +200,7 @@ dotnet IoT.Simulator.dll
 >
 > If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
 
-##### Command line
+#### Command line
 To visualize the required settings, you can type:
 ```bash
 dotnet IoT.Simulator.dll x509ca --help
@@ -245,7 +229,7 @@ _Windows (cmd)_
 dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -c [your leaf certificate path] -p [your certificate password]
 ```
 
-##### Configuration file
+#### Configuration file
 DPS settings can also be provided through a configuration file.
 It looks like this:
 
