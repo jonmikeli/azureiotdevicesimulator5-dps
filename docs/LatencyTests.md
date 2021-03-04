@@ -1,4 +1,4 @@
-﻿# Azure IoT Device Simulator (.NET 5) - DPS version - Latency Tests
+﻿# Azure IoT Device Simulator (.NET 5, C#) - DPS version - Latency Tests
 
 
 This section describes a way to measure first level latency between a given device and the cloud solution (Microsoft Azure IoT Hub and Azure Function).
