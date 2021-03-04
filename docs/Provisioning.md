@@ -5,7 +5,7 @@ The implemented provisioning relies on [Azure IoT Hub Device Provisioning Servic
 
 ## Azure IoT Hub Device Provisioning Service
 
-The simulator has the capability to contact the DPS with the provided configuration and get the connection settings for the assigned Azure IoT Hub.
+The simulator has the capability to contact a DPS with the provided configuration and get the connection settings for the assigned Azure IoT Hub.
 The Azure IoT Hub is assigned according to the rules set in the DPS.
 
 ## Simulator DPS settings
@@ -13,11 +13,13 @@ The Azure IoT Hub is assigned according to the rules set in the DPS.
 The simulator has been designed to work with different provisioning use cases:
  1. If the simulator has no connection string, a provisioning process is initiated.
    This process requires a DPS configuration to be set.
+
+
    The DPS configuration can be provided by:
      - environment variables (might be useful in containerized platforms. Pay attention though to the processes allowed to read the environment variables.).
      - command line parameters, that will overwrite any existing environment variables setting (recommended for not containerized targets. This is probably the safest alternative among the three, in terms of security.).
      - if none of the previous settings are found, a `dpssettings.json` file will be loaded (recommended only for development platforms, unless the JSON is encrypted or stored in safe location.).
- 1. If the simulator finds a connection string, the provisioning process is skipped and the found connection string is used. This avoids not necessary provisionning requests. In case a device needs to be reprovisionned, you only need to delete all the IoT Hub connection settings and the simulator will understand it needs to run the provisionning process again. Just keep in mind that to make this possible, the DPS settings need to be set.
+ 2. If the simulator finds a connection string, the provisioning process is skipped and the found connection string is used. This avoids not necessary provisionning requests. In case a device needs to be reprovisionned, you only need to delete all the IoT Hub connection settings and the simulator will understand it needs to run the provisionning process again. Just keep in mind that to make this possible, the DPS settings need to be set.
 
 > NOTE
 >
