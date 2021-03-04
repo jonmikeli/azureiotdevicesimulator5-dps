@@ -48,12 +48,13 @@ Telemetry messages are based on the templates used in the regular simulator.
 ## Global features
  - device provisioning (group enrollment with symetric keys).
  - device provisioning (group enrollment with CA X509 certificate).
+ - provisioning configuration through environment variables, command parameters or setting files.
  - device level simulation (C2D/D2C).
  - module level simulation (C2M/M2C).
  - device simulation configuration based on JSON files.
  - module simulation configuration based on JSON files.
  - no specific limitation on the number of modules (only limited by Microsoft Azure IoT Hub constraints).
- - containerizable and accepts environment variables.
+ - containerizable.
  - message templates based on JSON (3 message types by default in this first version).
  - implementation of full IoT flows (C2D, D2C, C2M, M2C).
 
