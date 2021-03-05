@@ -1,4 +1,4 @@
-﻿# Azure IoT Device Simulator (.NET 5), C# - DPS version - Help
+﻿# Azure IoT Device Simulator (.NET 5, C#) - DPS version - Help
 
 This section describes the different artifacts of the solution and how they work.
 
