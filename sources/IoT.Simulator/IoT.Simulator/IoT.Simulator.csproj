@@ -33,9 +33,9 @@ The first version was based on symmetric keys and a new version adds CA X509 key
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.33.1" />
-    <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Client" Version="1.16.2" />
-    <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Transport.Mqtt" Version="1.13.2" />
+    <PackageReference Include="Microsoft.Azure.Devices.Client" Version="1.35.0" />
+    <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Client" Version="1.16.3" />
+    <PackageReference Include="Microsoft.Azure.Devices.Provisioning.Transport.Mqtt" Version="1.14.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="5.0.0" />
