@@ -39,3 +39,10 @@ https://github.com/commandlineparser/commandline/wiki/HelpText-Configuration#Cus
 https://github.com/commandlineparser/commandline/wiki/Verbs
 https://github.com/commandlineparser/commandline/wiki/Option-Groups
 https://github.com/commandlineparser/commandline/wiki/Mutually-Exclusive-Options
+
+
+Docker issue with Certificates
+https://github.com/NuGet/Announcements/issues/49 (Mitigation)
+
+https://github.com/NuGet/Home/issues/10491
+https://github.com/dotnet/dotnet-docker/issues/2547

@@ -3,6 +3,12 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
+
+RUN apt-get update 
+RUN apt-get remove ca-certificates -y
+RUN apt-get purge ca-certificates -y
+RUN apt-get install -f ca-certificates=20200601~deb10u2 -y
+
 COPY ["IoT.Simulator/IoT.Simulator.csproj", "IoT.Simulator/"]
 RUN dotnet restore "IoT.Simulator/IoT.Simulator.csproj"
 COPY . .
