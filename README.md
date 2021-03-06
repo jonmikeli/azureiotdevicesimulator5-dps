@@ -15,7 +15,7 @@ See [*Provisioning*](docs/Provisioning.md) for details.
 
 *Azure IoT Device Simulator logs*
 
-![Azure IoT Device Simulator Logs](docs/images/AzureIoTDeviceSimulatorLos.gif)
+![Azure IoT Device Simulator Logs](docs/images/IoTSimulator-DPS-CAX509.gif)
 
 
 ## IoT tools
