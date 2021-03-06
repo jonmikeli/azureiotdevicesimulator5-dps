@@ -5,6 +5,16 @@ WORKDIR /app
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
+
+#RUN apt update & apt upgrade
+## REQUIRED TO OVERCOME THE ISSUE INTRODUCED AT 2021/01 DUE TO CA CERTIFICATES
+#https://github.com/NuGet/Announcements/issues/49
+RUN apt-get update 
+RUN apt-get remove ca-certificates -y
+RUN apt-get purge ca-certificates -y
+RUN apt-get install -f ca-certificates=20200601~deb10u2 -y
+##
+
 WORKDIR /src
 COPY ["IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/IoT.Simulator.API.DeviceManagement.API.csproj", "IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/"]
 COPY ["IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API.Common/IoT.Simulator.API.DeviceManagement.API.Common.csproj", "IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API.Common/"]
