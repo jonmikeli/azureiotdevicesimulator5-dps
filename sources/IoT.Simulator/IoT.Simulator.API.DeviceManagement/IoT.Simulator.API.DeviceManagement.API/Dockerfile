@@ -4,16 +4,19 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 
+FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS buildwithupdatedca
 #RUN apt update & apt upgrade
 ## REQUIRED TO OVERCOME THE ISSUE INTRODUCED AT 2021/01 DUE TO CA CERTIFICATES
 #https://github.com/NuGet/Announcements/issues/49
-RUN apt-get update 
-RUN apt-get remove ca-certificates -y
-RUN apt-get purge ca-certificates -y
-RUN apt-get install -f ca-certificates=20200601~deb10u2 -y
+RUN apt-get update \
+&& apt-get remove ca-certificates -y \
+&& apt-get purge ca-certificates -y \
+&& apt-get install -f ca-certificates=20200601~deb10u2 -y
 ##
+
+
+FROM buildwithupdatedca AS build
 
 WORKDIR /src
 COPY ["IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/IoT.Simulator.API.DeviceManagement.API.csproj", "IoT.Simulator.API.DeviceManagement/IoT.Simulator.API.DeviceManagement.API/"]
@@ -45,4 +48,4 @@ ENV ASPNETCORE_Kestrel__Certificates__Default__Password password
 
 #ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
 
-LABEL version="v1.0" environment="dev" author="Jon Mikel Inza" copyright="JMI" github="https://github.com/jonmikeli/azureiotdevicesimulator5-dps" name="IoTHub.SDK.API" description="Docker image of a REST API exposing Azure IoTHub SDK features." tags="IoT;Simulator;IoTHub;Azure IoT SDK;net5;chsarp;REST"
+LABEL version="v1.0" environment="dev" author="Jon Mikel Inza" copyright="JMI" github="https://github.com/jonmikeli/azureiotdevicesimulator5-dps" name="IoTHub.SDK.API" description="Docker image of a REST API exposing Azure IoTHub SDK features." tags="IoT;Simulator;Azure IoTHub;Azure IoT SDK;net5;csharp;REST;API;C2D;https"
