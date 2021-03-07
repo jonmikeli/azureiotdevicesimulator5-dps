@@ -81,8 +81,13 @@ namespace IoT.Simulator.Services
                     string deviceCertificateFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _dpsSettings.GroupEnrollment.CAX509Settings.DeviceX509Path);
 
                     // X509 device leaf certificate
-                    X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(deviceCertificateFullPath, _dpsSettings.GroupEnrollment.CAX509Settings.Password);
+                    string parameterDeviceId = _deviceSettingsDelegate.CurrentValue.ArtifactId;
+
+                    X509Certificate2 deviceLeafProvisioningCertificate = new X509Certificate2(deviceCertificateFullPath, _dpsSettings.GroupEnrollment.CAX509Settings.Password);                    
                     _deviceSettingsDelegate.CurrentValue.DeviceId = deviceLeafProvisioningCertificate.Subject.Remove(0, 3); //delete the 'CN='
+
+                    if (parameterDeviceId != _deviceSettingsDelegate.CurrentValue.DeviceId)
+                        _logger.LogWarning($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::The leaf certificate has been created for the device '{_deviceSettingsDelegate.CurrentValue.DeviceId}' but the provided deviceId through the settings is '{parameterDeviceId}'. Provisioning will be executed with the deviceId included in the certificate.");
 
                     _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Initializing the device provisioning client...");                    
 
