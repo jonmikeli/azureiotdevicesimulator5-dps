@@ -12,7 +12,7 @@
       },
       "CAX509Settings": {
         "idScope": "",
-        "deviceX509Path": "",
+        "deviceX509Path": "", //Note: be aware of the way of writing paths under Windows and Linux ecosystems
         "password": "",
         "enrollmentType": "Group",
         "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
