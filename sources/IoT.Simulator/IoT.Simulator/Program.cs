@@ -413,7 +413,7 @@ namespace IoT.Simulator
                 if (!string.IsNullOrEmpty(transportType))
                 {
                     if (transportType.Trim().ToLower() != "mqtt")
-                        throw new NotImplementedException();
+                        throw new NotImplementedException("Only MQTT has been fully tested.");
 
                     string securityType = Environment.GetEnvironmentVariable("DPS_SECURITY_TYPE");
                     string idScope = Environment.GetEnvironmentVariable("DPS_IDSCOPE");
