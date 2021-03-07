@@ -1,18 +1,18 @@
 FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /src
-
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS buildwithupdatedca
 #RUN apt update & apt upgrade
 ## REQUIRED TO OVERCOME THE ISSUE INTRODUCED AT 2021/01 DUE TO CA CERTIFICATES
 #https://github.com/NuGet/Announcements/issues/49
-RUN apt-get update 
-RUN apt-get remove ca-certificates -y
-RUN apt-get purge ca-certificates -y
-RUN apt-get install -f ca-certificates=20200601~deb10u2 -y
+RUN apt-get update \
+&& apt-get remove ca-certificates -y \
+&& apt-get purge ca-certificates -y \
+&& apt-get install -f ca-certificates=20200601~deb10u2 -y
 ##
 
+FROM buildwithupdatedca AS build
+WORKDIR /src
 COPY ["IoT.Simulator/IoT.Simulator.csproj", "IoT.Simulator/"]
 RUN dotnet restore "IoT.Simulator/IoT.Simulator.csproj"
 COPY . .
