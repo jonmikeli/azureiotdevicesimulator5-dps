@@ -98,7 +98,9 @@ namespace IoT.Simulator.Services
 
             string logPrefix = "system".BuildLogPrefix();
             _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Logger created.");
-            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device simulator created.");            
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Device simulator created.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Enrollment type:{_dpsSettings.EnrollmentType.ToString()}.");
+            _logger.LogDebug($"{logPrefix}::{_deviceSettingsDelegate.CurrentValue.ArtifactId}::Security type:{_dpsSettings.GroupEnrollment?.SecurityType.ToString()}.");
         }
 
         ~DeviceSimulationService()
