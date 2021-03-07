@@ -46,3 +46,6 @@ https://github.com/NuGet/Announcements/issues/49 (Mitigation)
 
 https://github.com/NuGet/Home/issues/10491
 https://github.com/dotnet/dotnet-docker/issues/2547
+
+https://github.com/dotnet/dotnet-docker/blob/fb30bdce6e982de944d25bc07b6f5d701ec91a1e/src/sdk/5.0/buster-slim/arm64v8/Dockerfile
+https://github.com/dotnet/dotnet-docker/blob/fb30bdce6e982de944d25bc07b6f5d701ec91a1e/src/sdk/5.0/buster-slim/amd64/Dockerfile
