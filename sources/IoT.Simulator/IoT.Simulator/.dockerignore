@@ -8,6 +8,8 @@
 !*.appsettings.json
 !*.devicesettings.json
 !*.modulessettings.json
+!*.dpssettings.json
 !*.appsettings.*.json
 !*.devicesettings.*.json
 !*.modulessettings.*.json
+!*.dpssettings.*.json
