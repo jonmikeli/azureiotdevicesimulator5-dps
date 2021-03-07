@@ -1,0 +1,1 @@
+﻿symmetrickey -s "0ne000E3ED3" -g "global.azure-devices-provisioning.net" -t "Mqtt" -p "wi3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rag=="
