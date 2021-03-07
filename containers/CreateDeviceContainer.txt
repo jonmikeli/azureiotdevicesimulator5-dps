@@ -3,4 +3,4 @@ docker build -t iotsimulator-dps -f ../sources/IoT.Simulator/IoT.Simulator/Docke
 
 #IoT Simulator DPS-Container-Creation
 docker run -ti --rm --name devx5092 -e PROVISIONING_REGISTRATION_ID=devx5092 -e ENVIRONMENT=Development -e DPS_SECURITY_TYPE="X509CA" -e DEVICE_CERTIFICATE_PATH="X509/new-device.devx5092.cert.pfx" -e DEVICE_CERTIFICATE_PASSWORD="1234" --network="host" iotsimulator-dps
-docker run -ti --rm --name device10Sym -e PROVISIONING_REGISTRATION_ID=device10Sym -e ENVIRONMENT=Development -e DPS_SECURITY_TYPE="SymmetricKey" --network="host" iotsimulator-dps
+docker run -ti --rm --name device10Sym -e PROVISIONING_REGISTRATION_ID=device10Sym -e ENVIRONMENT=Development -e DPS_SECURITY_TYPE="SymmetricKey" -e TRANSPORT_TYPE="Mqtt" -e DPS_IDSCOPE="0ne000E3ED3" -e PRIMARY_SYMMETRIC_KEY="wi3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rag==" --network="host" iotsimulator-dps
