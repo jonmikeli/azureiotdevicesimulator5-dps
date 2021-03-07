@@ -62,10 +62,6 @@ namespace IoT.Simulator.Tools
             if (!File.Exists(modulessettings))
                 sb.AppendLine($"{modulessettings} not found.");
 
-            var dpssettings = $"{DPS_SETTINGS_FILE_NAME}.{environment}.json";
-            if (!File.Exists(dpssettings))
-                sb.AppendLine($"{dpssettings} not found.");
-
             if (sb.Length > 0)
                 throw new MissingEnvironmentConfigurationFileException(sb.ToString());
 
