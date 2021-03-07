@@ -16,6 +16,7 @@ WORKDIR /src
 COPY ["IoT.Simulator/IoT.Simulator.csproj", "IoT.Simulator/"]
 RUN dotnet restore "IoT.Simulator/IoT.Simulator.csproj"
 COPY . .
+#RUN rm -f dpssettings.*
 WORKDIR "/src/IoT.Simulator"
 RUN dotnet build "IoT.Simulator.csproj" -c Release -o /app
 
