@@ -22,7 +22,7 @@ Do not forget you will need an internet connection with specific open ports:
 
 ## Steps to run the simulator
 The Azure IoT Device Simulator needs three basic things before starting:
- - Required: **settings** (need to be updated with proper values)
+ - Required: **[settings](Help.md)** (need to be updated with proper values)
  - Required: **[message templates](Help.md)** (included by default)
  - Optional (needed for module identities): deploy the REST API exposing the Azure IoT Hub Service SDK (this is required because module identities cannot be created from the Azure IoT Hub Device SDK). The code is provided. It can also be [containerized](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
 
