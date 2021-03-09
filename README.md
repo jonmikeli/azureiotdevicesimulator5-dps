@@ -88,7 +88,7 @@ The simulator has been designed to work in different provisioning use cases:
 
 > NOTE 2
 >
-> The different authentication types require different parameters. The details about [how to](docs/HowTo.md) set the dps settings are described [here](docs/HowTo.md).
+> The different authentication types require different parameters. The details about [how to](docs/HowTo.md) set the different DPS settings are described [here](docs/HowTo.md).
 
 *Commands implemented by default*
  - request latency test
