@@ -104,7 +104,7 @@ dotnet IoT.Simulator.dll
 
 > NOTE
 >
-> If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
+> If the primary key is stored at some point, it should be saved in a secured location.
 
 #### Command line
 To visualize the required settings, you can type:
