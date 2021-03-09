@@ -133,15 +133,6 @@ _Windows (cmd)_
 dotnet IoT.Simulator.dll symmetrickey -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY] -t Mqtt -e Group
 ```
 
-
-#### CA X509
-To visualize the required settings, you can type:
-```bash
-dotnet IoT.Simulator.dll x509ca --help
-```
-
-![CA X509 Settings](images/CAX509Help.png)
-
 #### Configuration file
 DPS settings can also be provided through a configuration file.
 It looks like this:
