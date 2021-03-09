@@ -118,7 +118,7 @@ The required parameters are the same:
  - -s, the Id Scope of the DPS
  - -p, the primary key of the DPS
 
-Other required parameters by with default values:
+Other required parameters but with default values:
  - -e, enrollment type (default and only possible now, Group)
  - -g, global DPS endpoint (default value, global.azure-devices-provisioning.net)
  - -t, transport type (default valyue, MQTT. The only one globally tested for now)
@@ -144,8 +144,8 @@ It looks like this:
     "groupEnrollmentSettings": {
       "securityType": "SymmetricKey", //SymmetricKey, X509CA
       "symmetricKeySettings": {
-        "idScope": "0ne000E3E14",
-        "primaryKey": "wi3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rbb==",
+        "idScope": "0ne000XXXXX",
+        "primaryKey": "ii3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rbb==",
         "enrollmentType": "Group",
         "globalDeviceEndpoint": "global.azure-devices-provisioning.net",
         "transportType": "Mqtt"
