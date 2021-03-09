@@ -168,8 +168,8 @@ Functional features are based on these generic technical features:
  - Messages
 
 ## Upcoming features
-- adding IoT Plug and Play capabilities may be interesting.
-- tools to create PKIs.
+- adding IoT Plug and Play (DTDL v2)?
+- tools to create PKIs
 
 ## More information
  - [*How to (Quickstart)*](docs/HowTo.md)
