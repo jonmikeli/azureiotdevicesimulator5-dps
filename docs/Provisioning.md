@@ -73,7 +73,7 @@ The simulator covers two authentication types:
  - symmetric keys
  - CA X509 certificates
  
-Each authentication type, requires different DPS settings.
+Each authentication type requires different DPS settings.
 
 ### Symmetric keys
 #### Environment variables
