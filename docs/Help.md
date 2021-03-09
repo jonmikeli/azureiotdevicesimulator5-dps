@@ -391,7 +391,7 @@ This being said, if at some point you need to avoid including that information i
 
 #### measureddata.json
 
-We consider each item (device or module) can send many "measured data" in a single message.
+We consider that each item (device or module) can send many "measured data" in a single message.
 This responds to data flow optimization scenarios and explains the chosen message schema.
 
 ```json
@@ -421,6 +421,13 @@ This responds to data flow optimization scenarios and explains the chosen messag
 ```
 
 > [!WARNING]
+> 
+> This version includes a dependency between message templates and message service implementation (randomized values and ID properties).
+> For that reason, if the message template is completely reviewed and new randomized properties are added, you will need to either update the existing message service or create yours and update the IoC/DI settings.
+> If you need dynamic content generation, this [version of the simulator based on IoT Plug and Play](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) may help you.
+
+
+> NOTE
 > 
 > `moduleId` can be empty in case the message is sent by a device.
 
