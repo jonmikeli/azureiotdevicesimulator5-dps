@@ -10,7 +10,7 @@ Individual enrollments are not covered yet.
 
 ## Description
 The implementation of this simulator is not simply a [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5) with DPS capabilities.
-All the provisioning process has been coded to add new settings features and flexibility when it comes to enterprise oriented solutions.
+All the provisioning process has been coded to add new configuration possibilities keeping in mind enterprise oriented use cases.
 See [*Provisioning*](docs/Provisioning.md) for details.
 
 *Azure IoT Device Simulator logs*
