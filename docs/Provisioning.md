@@ -78,13 +78,16 @@ Each authentication type requires different DPS settings.
 ### Symmetric keys
 #### Environment variables
 The list of the environment variables to set are:
+ - TRANSPORT_TYPE = Mqtt
  - DPS_SECURITY_TYPE = SymmetricKey
  - DPS_IDSCOPE, the Id Scope of the DPS
+ - PROVISIONING_REGISTRATION_ID, the device Id
  - PRIMARY_SYMMETRIC_KEY, the primary pey of the DPS
 
 _Linux (bash)_
 ```bash
-export DPS_IDSCOPE='SymmetricKey'
+export TRANSPORT_TYPE='Mqtt'
+export DPS_SECURITY_TYPE='SymmetricKey'
 export DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 export PRIMARY_SYMMETRIC_KEY=[YOUR PRIMMARY KEY]
 dotnet IoT.Simulator.dll
@@ -92,7 +95,8 @@ dotnet IoT.Simulator.dll
 
 _Windows (cmd)_
 ```cmd
-set DPS_IDSCOPE='SymmetricKey'
+set TRANSPORT_TYPE='Mqtt'
+set DPS_SECURITY_TYPE='SymmetricKey'
 set DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 set PRIMARY_SYMMETRIC_KEY=[YOUR PRIMMARY KEY]
 dotnet IoT.Simulator.dll
@@ -180,6 +184,7 @@ The list of the environment variables to set are:
 
 _Linux (bash)_
 ```bash
+export TRANSPORT_TYPE='Mqtt'
 export DPS_SECURITY_TYPE='X509CA'
 export DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 export DEVICE_CERTIFICATE_PATH=[Leaf certificate path]
