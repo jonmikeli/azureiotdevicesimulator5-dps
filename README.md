@@ -125,9 +125,6 @@ The features at the module level are the identical to the device features except
 > Personnally, I am wondering why a given device and its module identities could implement different types of security. What requirements may lead to such a scenario?
 
 
-
-[Help](docs/Help.md).
-
   
 ## Global technical features
 
