@@ -20,10 +20,12 @@ See [*Provisioning*](docs/Provisioning.md) for details.
 
 ## IoT tools
 This simulator keeps the spirit of the [regular version](https://github.com/jonmikeli/azureiotdevicesimulator5).
-It completes a set of tools including the items below:
+It completes other simulators like:
  - [regular version of the simulator](https://github.com/jonmikeli/azureiotdevicesimulator5)
  - [Plug and Play version of the simulator](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) (based on DTDL v2)
  - DPS version (this repository)
+
+Depending on how the market behaves, I guess that adding IoT Plug and Play capabilities may be a good next step.
 
 ## Automatization
 A script is provided in the repository to showcase how to create a set of simulators (containerized version).
