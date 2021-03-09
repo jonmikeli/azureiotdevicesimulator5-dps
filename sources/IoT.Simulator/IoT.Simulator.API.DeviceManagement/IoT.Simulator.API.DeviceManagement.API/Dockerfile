@@ -46,6 +46,6 @@ COPY --from=publish /app/publish .
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path /certificates/IoT.Simulator.API.DeviceManagement.API.pfx
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password password
 
-#ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
+ENTRYPOINT ["dotnet", "IoT.Simulator.API.DeviceManagement.API.dll"]
 
 LABEL version="v1.0" environment="dev" author="Jon Mikel Inza" copyright="JMI" github="https://github.com/jonmikeli/azureiotdevicesimulator5-dps" name="IoTHub.SDK.API" description="Docker image of a REST API exposing Azure IoTHub SDK features." tags="IoT;Simulator;Azure IoTHub;Azure IoT SDK;net5;csharp;REST;API;C2D;https"
