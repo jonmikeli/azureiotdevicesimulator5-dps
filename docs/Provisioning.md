@@ -81,7 +81,7 @@ The list of the environment variables to set are:
  - TRANSPORT_TYPE = Mqtt
  - DPS_SECURITY_TYPE = SymmetricKey
  - DPS_IDSCOPE, the Id Scope of the DPS
- - PROVISIONING_REGISTRATION_ID, the device Id
+ - PROVISIONING_REGISTRATION_ID, the device Id (optional. If not set here, it should be set in the devicesettings.json file.)
  - PRIMARY_SYMMETRIC_KEY, the primary pey of the DPS
 
 _Linux (bash)_
