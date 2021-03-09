@@ -78,8 +78,8 @@ Each authentication type requires different DPS settings.
 ### Symmetric keys
 #### Environment variables
 The list of the environment variables to set are:
- - TRANSPORT_TYPE = Mqtt
- - DPS_SECURITY_TYPE = SymmetricKey
+ - TRANSPORT_TYPE, Mqtt
+ - DPS_SECURITY_TYPE, SymmetricKey
  - DPS_IDSCOPE, the Id Scope of the DPS
  - PROVISIONING_REGISTRATION_ID, the device Id (optional. If not set here, it should be set in the devicesettings.json file.)
  - PRIMARY_SYMMETRIC_KEY, the primary pey of the DPS
@@ -169,9 +169,11 @@ Upcoming versions should allow more possibilities.
 ### CA X509
 #### Environment variables
 The list of the environment variables to set are:
- - DPS_SECURITY_TYPE = SymmetricKey
+ - TRANSPORT_TYPE, Mqtt
+ - DPS_SECURITY_TYPE, SymmetricKey
  - DPS_IDSCOPE, the Id Scope of the DPS
- - PRIMARY_SYMMETRIC_KEY, the primary pey of the DPS
+ - DEVICE_CERTIFICATE_PATH, leaf certificate path
+ - DEVICE_CERTIFICATE_PASSWORD, leaf certificate password
 
 _Linux (bash)_
 ```bash
