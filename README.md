@@ -78,7 +78,7 @@ The simulator has been designed to work in different provisioning use cases:
    This process requires a DPS configuration to be set (details [here](docs/Provisioning.md)).
    The DPS configuration can be provided by:
     - environment variables (recommended and useful for containerized targets. It is less prone to compromise security.).
-    - command line parameters, that will overwrite the environment variables (recommended for not containerized targets. Similarly to the previous point, it keeps the level of security rules.).
+    - command line parameters, that will overwrite the environment variables (may be used in not containerized targets, in automated processes and providing safe ways to instantiate the simulator).
     - if none of the previous settings are found, a `dpssettings.json` file will be loaded (not recommended unless the JSON file is persisted in a secured location).
  1. If the simulator finds a connection string, it uses and it skips the provisioning process.
  
