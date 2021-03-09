@@ -125,12 +125,12 @@ Other required parameters by with default values:
 
 _Linux (bash)_
 ```bash
-dotnet IoT.Simulator.dll symmetrickey -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
+dotnet IoT.Simulator.dll symmetrickey -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY] -t Mqtt -e Group
 ```
 
 _Windows (cmd)_
 ```cmd
-dotnet IoT.Simulator.dll symmetrickey -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY]
+dotnet IoT.Simulator.dll symmetrickey -s [YOUR ID SCOPE] -p [YOUR PRIMMARY KEY] -t Mqtt -e Group
 ```
 
 
