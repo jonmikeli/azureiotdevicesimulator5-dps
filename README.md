@@ -126,7 +126,7 @@ The features at the module level are the identical to the device features except
 
 
 
-[Details](docs/Help.md).
+[Help](docs/Help.md).
 
   
 ## Global technical features
