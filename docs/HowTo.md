@@ -32,17 +32,17 @@ All the settings except those related to DPS rely on JSON files.
 DPS settings can be provided through 3 different ways ([details](Provisioning.md)).
 
 #### JSON files
- - [appsettings.json](###appsettings.json)
- - [devicesettings.json](###devicesettings.json)
- - [modulessettings.json](###modulessettings.json)
- - [dpssettings.json](###dpssettings.json)
+ - appsettings.json
+ - devicesettings.json
+ - modulessettings.json
+ - dpssettings.json
 
-For details and explanations, see [help](Help.md).
+This [section](Help.md) explains in details all these files.
 
 > [!TIP]
 > 
 > The solution takes into account **settings** depending on the environment.
-> It can be set trough the environment variable ENVIRONMENT.
+> The environment can be set trough the environment variable ENVIRONMENT.
 > The solution looks for settings files following the pattern *file.ENVIRONMENT.json* (similar to former transformation files).
 > Default setting files will be loaded first in case no environment file is found.
 
