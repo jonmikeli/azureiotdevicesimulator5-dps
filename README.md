@@ -84,7 +84,7 @@ The simulator has been designed to work in different provisioning use cases:
  
 > NOTE
 >
-> The device id may be provided through an environment variable too. This allows easier scripted provisioning scenarios (ex: loop to create a set of simulated devices).
+> With symmetric key authentication type, the `device id` can be set through an environment variable too. This allows easier scripted provisioning scenarios (ex: loop to create a set of simulated devices). With X509 certificates, the `device id` is inside the certificate.
 
 > NOTE 2
 >
