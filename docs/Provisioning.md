@@ -33,7 +33,7 @@ These connection settings may be stored at the device level to avoid new reprovi
 In production environments, they should be stored in a secured way.
 
 The simulator saves the connection string in the `devicesettings.json` file.
-It is persisted in clear for develoment purposes but keep in mind this data should be protected more securely in production environments.
+It is persisted in clear for development purposes but keep in mind this data should be protected more securely in production environments.
 
 ```json
 {
