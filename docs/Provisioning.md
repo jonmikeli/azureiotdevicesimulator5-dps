@@ -185,6 +185,7 @@ dotnet IoT.Simulator.dll
 
 _Windows (cmd)_
 ```cmd
+set TRANSPORT_TYPE='Mqtt'
 set DPS_SECURITY_TYPE='X509CA'
 set DPS_IDSCOPE=[YOUR DPS ID SCOPE]
 set DEVICE_CERTIFICATE_PATH=[Leaf certificate path]
@@ -194,7 +195,7 @@ dotnet IoT.Simulator.dll
 
 > NOTE
 >
-> If the primary key is stored at some point, it should be saved in a secured mannger (TPM/HSM, etc).
+> If the primary key is stored at some point, it should be saved in a secured location.
 
 #### Command line
 To visualize the required settings, you can type:
@@ -217,12 +218,12 @@ Other required parameters by with default values:
 
 _Linux (bash)_
 ```bash
-dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -c [your leaf certificate path] -p [your certificate password]
+dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -c [your leaf certificate path] -p [your certificate password]  -t Mqtt -e Group
 ```
 
 _Windows (cmd)_
 ```cmd
-dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -c [your leaf certificate path] -p [your certificate password]
+dotnet IoT.Simulator.dll x509ca -s [YOUR ID SCOPE] -c [your leaf certificate path] -p [your certificate password]  -t Mqtt -e Group
 ```
 
 #### Configuration file
@@ -300,7 +301,7 @@ The easiest way to achieve this would be:
 
 > NOTE
 > 
-> Be sure the simulator containers can reach the IoT Hub REST API if you need to create module identities dynamically.
+> Check that the simulator containers can reach the IoT Hub REST API if you need to create module identities dynamically.
 
 Simple script samples to create all this are provided [here](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
 
