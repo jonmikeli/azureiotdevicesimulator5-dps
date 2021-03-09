@@ -23,7 +23,7 @@ Do not forget you will need an internet connection with specific open ports:
 ## Steps to run the simulator
 The Azure IoT Device Simulator needs three basic things before starting:
  - Required: **settings** (need to be updated with proper values)
- - Required: **message templates** (included by default)
+ - Required: **[message templates](Help.md)** (included by default)
  - Optional (needed for module identities): deploy the REST API exposing the Azure IoT Hub Service SDK (this is required because module identities cannot be created from the Azure IoT Hub Device SDK). The code is provided. It can also be [containerized](https://github.com/jonmikeli/azureiotdevicesimulator5-dps/tree/master/containers).
 
 
@@ -46,70 +46,3 @@ This [section](Help.md) explains in details all these files.
 > The solution looks for settings files following the pattern *file.ENVIRONMENT.json* (similar to former transformation files).
 > Default setting files will be loaded first in case no environment file is found.
 
-
-
-
-## Message templates
-In this section, you will find the default templates of the messages sent by the simulator.
-
-> [!WARNING]
-> 
-> This version includes a dependency between message templates and message service implementation (randomized values and ID properties).
-> For that reason, if the message template is completely reviewed and new randomized properties are added, you will need to either update the existing message service or create yours and update the IoC/DI settings.
-> If you need dynamic content generation, this [version of the simulator based on IoT Plug and Play](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) may help you.
-
-### Measured data / telemetry message
-```json
-{
-  "deviceId": "",
-  "moduleId": "",
-  "timestamp": 0,
-  "schemaVersion": "v1.0",
-  "messageType": "data",
-  "data": [
-    {
-      "timestamp": 0,
-      "propertyName": "P1",
-      "propertyValue": 35,
-      "propertyUnit": "T",
-      "propertyDivFactor": 1
-    },
-    {
-      "timestamp": 0,
-      "propertyName": "P2",
-      "propertyValue": 1566,
-      "propertyUnit": "U",
-      "propertyDivFactor": 10
-    }
-  ]
-}
-```
-
-### Error message
-```json
-{
-  "deviceId": "",
-  "moduleId": "",
-  "messageType": "error",
-  "errorCode": "code",
-  "errorSeverity": "severity",
-  "errorStatus": "status",
-  "timestamp": 13456
-}
-```
-
-### Commissioning message
-```json
-{
-  "deviceId": "",
-  "messageType": "commissioning",
-  "timestamp": 13456,
-  "userId": "",
-  "building": {
-    "buildingId": "",
-    "floor": "",
-    "departmentId": "",
-    "roomId": null
-  }
-} 
-```
