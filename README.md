@@ -6,7 +6,7 @@ It implements provisioning based on **group enrollment** with:
    - symmetric keys
    - CA X509 certificates
 
-**Individual enrollments** are not covered yet.
+Individual enrollments are not covered yet.
 
 ## Description
 The implementation of this simulator is not simply a [regular simulator](https://github.com/jonmikeli/azureiotdevicesimulator5) with DPS capabilities.
