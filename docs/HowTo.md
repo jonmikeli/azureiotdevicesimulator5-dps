@@ -29,12 +29,7 @@ The Azure IoT Device Simulator needs three basic things before starting:
 
 ### Settings
 All the settings except those related to DPS rely on JSON files.
-DPS settings can be provided through 3 different ways in order to make the simulator more flexible:
- - environment variables
- - command line parameters
- - files (JSON).
-
-All the DPS settings details are described [here](Provisioning.md).
+DPS settings can be provided through 3 different ways ([details](Provisioning.md)).
 
 #### JSON files
  - [appsettings.json](###appsettings.json)
