@@ -25,7 +25,7 @@ It completes other simulators like:
  - [Plug and Play version of the simulator](https://github.com/jonmikeli/azureiotdevicesimulator5-pnp) (based on DTDL v2)
  - DPS version (this repository)
 
-Depending on how the market behaves, I guess that adding IoT Plug and Play capabilities may be a good next step.
+I guess that forking this version with IoT Plug and Play capabilities may be a good next step.
 
 ## Automatization
 A script is provided in the repository to showcase how to create a set of simulators (containerized version).
