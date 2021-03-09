@@ -23,7 +23,7 @@ The simulator has been designed to work with different provisioning use cases:
 
 > NOTE
 >
-> Besides the DPS settings, the environment variables allow to configure the device Id. The environment value will overwrite the value in the configuration file `devicesettings.json`.
+> With Symmetric Key authentication, besides the DPS settings, the environment variables allow to configure the `device Id`. The environment value will overwrite the value in the configuration file `devicesettings.json`.
 
 ## Simulator connection settings (device)
 If the provisioning process succeeds, it will create a device identity in the associated Azure IoT Hub.
