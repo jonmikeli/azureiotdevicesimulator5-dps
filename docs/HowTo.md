@@ -15,6 +15,8 @@ Do not forget you will need an internet connection with specific open ports:
  - 8883
  - 5671
  - 443
+
+
 [Ports](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-devguide-protocols) required to communicate with Microsoft Azure IoT Hub.
 
 
