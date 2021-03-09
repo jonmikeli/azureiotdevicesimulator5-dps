@@ -36,7 +36,7 @@ The whole set of simulated devices may be provisioned and running in a few secon
 Telemetry messages are based on the templates used in the regular simulator.
 
 ## Examples of use
- - development tool for developers working in Microsoft Azure IoT solutions (cloud).
+ - development tool for developers working on Microsoft Azure IoT solutions (cloud).
  - tester tool in IoT-oriented projects.
  - scalable IoT simulation platforms.
  - complete and configurable D2C (data and reported properties) and C2D (direct methods, desired properties, messages, jobs, etc).
@@ -62,7 +62,7 @@ Telemetry messages are based on the templates used in the regular simulator.
 
 See below for more details.
 
-## Functional features
+## Functional details
 
 ### Device level (C2D/D2C)
 
