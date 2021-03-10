@@ -1,5 +1,5 @@
 #X509
-dotnet .\IoT.Simulator.dll x509ca -s "0ne000E3ED3" -e "Group" -g "global.azure-devices-provisioning.net" -t "Mqtt" -c "X509\new-device.devx5092.cert.pfx" -p "1234"
+dotnet .\IoT.Simulator.dll x509ca -s "0ne000XXXXX" -e "Group" -g "global.azure-devices-provisioning.net" -t "Mqtt" -c "X509\new-device.devx5092.cert.pfx" -p "1234"
 
 #Symmetric key
-dotnet .\IoT.Simulator.dll symmetrickey -s "0ne000E3ED3" -e "Group" -g "global.azure-devices-provisioning.net" -t "Mqtt" -p "wi3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rag=="
+dotnet .\IoT.Simulator.dll symmetrickey -s "0ne000XXXXX" -e "Group" -g "global.azure-devices-provisioning.net" -t "Mqtt" -p "ii3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rag=="
