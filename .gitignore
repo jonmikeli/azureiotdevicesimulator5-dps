@@ -333,3 +333,4 @@ ASALocalRun/
 **/*.Development.json
 *.pem
 **/*.Development.txt
+**/*.Development.sh

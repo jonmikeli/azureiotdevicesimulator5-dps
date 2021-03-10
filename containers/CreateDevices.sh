@@ -2,10 +2,10 @@
 i=1
 
 transportType="Mqtt"
-dpsIDScope="0ne000E3ED3"
+dpsIDScope="0ne000XXXXX"
 x509CertificatePath="X509/new-device.devx5092.cert.pfx"
 x509certificatePassword="1234"
-symmetricKey="wi3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rag=="
+symmetricKey="ii3VEjzWZpxhPlWT85O8sg/hZvqk2sNPHPDsP+M9v73BKs9NQHky+Tvg/IFNu1QEWqt5OPZuz1Ia/9IM6R+rag=="
 
 
 
