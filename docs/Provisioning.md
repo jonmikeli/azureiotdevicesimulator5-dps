@@ -235,7 +235,7 @@ It looks like this:
 ```json
 {
   "dpsSettings": {
-    "enrollmentType": "Group",
+    "enrollmentType": "Group", //Group
     "groupEnrollmentSettings": {
       "securityType": "X509CA", //SymmetricKey, X509CA
       "symmetricKeySettings": {
