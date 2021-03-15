@@ -121,7 +121,7 @@ The features at the module level are the identical to the device features except
 
 > NOTE
 >
-> The security type implemented for module identities is based on symmetric keys. Depending on the faced use cases, additional possibities may be added in upcoming versions. Adding X509 module identities will require processes to add the needed certificates in a secured way (to the cloud and the device).
+> The security type implemented for module identities is based on symmetric keys. Depending on the faced use cases, additional possibities may be added in upcoming versions. Adding X509 module identities will require to add the needed certificates in a secured way (to the cloud and the device).
 > Personnally, I am wondering why a given device and its module identities could implement different types of security. What requirements may lead to such a scenario?
 
 
